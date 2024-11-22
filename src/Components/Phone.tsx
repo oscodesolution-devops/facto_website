@@ -1,6 +1,6 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import iPhoneImage from "../assets/iPhone_13_pro.svg"; 
+import iPhoneImage from "../assets/iphone.svg"; 
 import QRCodeImage from "../assets/QRCode.svg"; 
 import { FaGooglePlay } from "react-icons/fa"; 
 import { Apple } from "lucide-react"; 
