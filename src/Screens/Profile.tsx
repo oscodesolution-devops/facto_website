@@ -38,31 +38,32 @@ const Profile = () => {
             // setIsEditing={setIsEditing}
           />
         </div>
-        <div className="px-[130px] py-[60px]">
-          <div className="bg-[white] w-[371px] h-[50px] font-[poppins] font-[500] text-[#3AB54A] pt-[13px] px-[10px]">
-            Active Services
-          </div>
-          <div className="w-[1000px] pt-[20px] flex flex-col gap-[15px]">
-            {activeCards.map((card, index) => (
-              <TaxCard
-                key={index}
-                title={card.title}
-                checkedItems={card.checkedItems}
-                showRevalidateButton={card.showRevalidateButton}
-                amount={card.amount}
-                dueDate={card.dueDate}
-                cardNumber={card.cardNumber}
-                cardExpiry={card.cardExpiry}
-                onViewDetails={() =>
-                  alert(`Viewing details for ${card.title}...`)
-                }
-                onRevalidate={() =>
-                  alert(`Revalidating ${card.title}...`)
-                }
-              />
-            ))}
-          </div>
-        </div>
+        <div className="px-4 sm:px-[130px] py-[60px]">
+  <div className="bg-white w-full sm:w-[371px] h-[50px] font-[poppins] font-[500] text-[#3AB54A] pt-[13px] px-[10px]">
+    Active Services
+  </div>
+  <div className="w-full sm:w-[1300px] pt-[20px] flex flex-col gap-[15px]">
+    {activeCards.map((card, index) => (
+      <TaxCard
+        key={index}
+        title={card.title}
+        checkedItems={card.checkedItems}
+        showRevalidateButton={card.showRevalidateButton}
+        amount={card.amount}
+        dueDate={card.dueDate}
+        cardNumber={card.cardNumber}
+        cardExpiry={card.cardExpiry}
+        onViewDetails={() =>
+          alert(`Viewing details for ${card.title}...`)
+        }
+        onRevalidate={() =>
+          alert(`Revalidating ${card.title}...`)
+        }
+      />
+    ))}
+  </div>
+</div>
+
       </div>
     </div>
   );

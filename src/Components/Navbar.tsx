@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import AOS from "aos"; 
-import "aos/dist/aos.css"; 
+import AOS from "aos";
+import "aos/dist/aos.css";
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  // NavigationMenuTrigger,
-  // NavigationMenuContent,
 } from "./ui/navigation-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Logo from "../assets/logo.svg";
 
 const Navbar = () => {
-  const [isLoggedIn] = useState(true);
+  const [isLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // Mobile menu state
   const user = {
     name: "John Doe",
     avatar: "./assets/user.png",
@@ -21,25 +20,54 @@ const Navbar = () => {
 
   const activeClass = "text-green-500 underline";
   const defaultClass = "text-primary hover:text-secondary";
+
   useEffect(() => {
     AOS.init({
-      duration: 400, 
+      duration: 400,
     });
   }, []);
 
   return (
-    <nav 
-      className="bg-white h-[108px] border border-primary flex items-center justify-between px-6 sm:px-4 md:px-6 lg:px-8 xl:px-[40px]"
+    <nav
+      className="bg-white h-auto border-b border-primary flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-10"
       style={{ fontFamily: "Erode Variable" }}
-      data-aos="fade-down" 
+      data-aos="fade-down"
     >
-      <div className="flex items-center">
-        <img src={Logo} alt="Logo" className="w-[190px] h-[101px]" />
+      
+      <div className="flex items-center justify-between w-full">
+
+        <NavLink to="/">
+        <img src={Logo} alt="Logo" className="w-48 h-auto cursor-pointer" />
+        </NavLink>
+
+        <button
+          className="block md:hidden text-primary focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
+            ></path>
+          </svg>
+        </button>
       </div>
 
-      <div className="flex items-center justify-between w-auto">
+      <div
+        className={`${
+          menuOpen ? "block" : "hidden"
+        } md:flex md:items-center md:space-x-6 w-full mt-4 md:mt-0`}
+      >
         <NavigationMenu>
-          <NavigationMenuList className="flex text-xl gap-[22px] py-[42px] pb-[34px] font-medium leading-base">
+          <NavigationMenuList className="flex flex-col md:flex-row text-lg gap-4 md:gap-8 font-medium">
             <NavigationMenuItem>
               <NavLink
                 to="/"
@@ -51,14 +79,14 @@ const Navbar = () => {
               </NavLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-                <NavLink
-                  to="/services"
-                  className={({ isActive }) =>
-                    isActive ? activeClass : defaultClass
-                  }
-                >
-                  Services
-                </NavLink>
+              <NavLink
+                to="/services"
+                className={({ isActive }) =>
+                  isActive ? activeClass : defaultClass
+                }
+              >
+                Services
+              </NavLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavLink
@@ -113,31 +141,46 @@ const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {isLoggedIn ? (
+        <div className="flex flex-col items-center mt-4 md:hidden">
+          {isLoggedIn ? (
+            <NavLink to="/profile">
+              <div className="w-14 h-14">
+                <Avatar className="cursor-pointer w-full h-full">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback>{user.name[0]}</AvatarFallback>
+                </Avatar>
+              </div>
+            </NavLink>
+          ) : (
+            <NavLink to="/login">
+              <button className="bg-primary text-white px-4 py-2 rounded-full">
+                Log In
+              </button>
+            </NavLink>
+          )}
+        </div>
+      </div>
+
+      {isLoggedIn && (
+        <div className="hidden md:block ml-4 w-20 h-20 mr-4">
           <NavLink to="/profile">
-            <div className="ml-4 w-[60px] h-[60px]">
-              <Avatar
-                className="cursor-pointer w-[60px] h-[60px] hover:shadow-[0px_6px_15px_rgba(0,0,0,0.4)] transition-shadow duration-300 ease-in-out"
-              >
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback>{user.name[0]}</AvatarFallback>
-              </Avatar>
-            </div>
+            <Avatar className="cursor-pointer w-20 h-20">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback>{user.name[0]}</AvatarFallback>
+            </Avatar>
           </NavLink>
-        ) : (
+        </div>
+      )}
+
+      {!isLoggedIn && (
+        <div className="hidden md:block w-[200px] h-[auto] ml-4">
           <NavLink to="/login">
-            <button
-              className="ml-4 bg-primary font-[inter] text-white text-base font-[16.15px] leading-base w-[122px] h-[43.85px] rounded-[30px] border-[1.15px solid #3AB54A]"
-              style={{
-                padding: "10.38px 36.92px",
-                gap: "11.54px",
-              }}
-            >
+            <button className="bg-primary text-white px-4 py-2 rounded-full">
               Log In
             </button>
           </NavLink>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };

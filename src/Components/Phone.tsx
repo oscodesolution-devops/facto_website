@@ -12,28 +12,25 @@ const Phone = () => {
       duration: 700, 
     });
   }, []);
+  
   return (
-    <div className="w-[full] h-[734px] bg- pt-[60px] px-[170px] pb-0 flex items-center">
-      <div className="flex items-center gap-[36px]">
+    <div className="w-full h-auto bg- pt-[60px] px-[10px] md:px-[170px] pb-0 flex items-center">
+      <div className="flex flex-col md:flex-row items-center gap-[36px]">
 
-        <img data-aos="fade-up" src={iPhoneImage} alt="iPhone 13 Pro" className="w-auto h-auto" />
+        <img data-aos="fade-up" src={iPhoneImage} alt="iPhone 13 Pro" className="w-[200px] sm:w-[300px] md:w-auto h-auto" />
 
-
-        <div data-aos="fade-up">
-          <h2 className="w-[522px] font-[poppins] text-[40px] font-semibold leading-[46.48px] text-left">
+        <div data-aos="fade-up" className="text-center md:text-left">
+          <h2 className="text-[28px] sm:text-[34px] md:text-[40px] font-[poppins] font-semibold leading-[46.48px] text-left w-full sm:w-[522px]">
             Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Tax Solutions</span>
           </h2>
 
-
-          <p className="w-[522px] font-[poppins] text-[16px] font-[300] leading-[25.6px] tracking-[-0.02em] text-left mt-[17px] text-[#4F4F4F]">
+          <p className="text-[14px] sm:text-[16px] font-[300] leading-[25.6px] tracking-[-0.02em] text-[#4F4F4F] mt-[17px] sm:w-[522px]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
             Ut enim ad minim veniam, quis nostrud exercitation.
           </p>
 
-
-          <div className="mt-[17px] flex items-center gap-[36px]">
-
-            <img src={QRCodeImage} alt="QR Code" className="w-[159px] h-[159px]" />
+          <div className="mt-[17px] flex flex-col sm:flex-row gap-[20px] md:gap-[36px] justify-center items-center md:items-start">
+            <img src={QRCodeImage} alt="QR Code" className="w-[120px] sm:w-[159px] h-[120px] sm:h-[159px]" />
 
             <div className="flex flex-col gap-[10px]">
               <button className="p-3 bg-black text-white w-[200px] h-[50px] flex items-center justify-center gap-2 rounded-md">

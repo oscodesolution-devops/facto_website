@@ -90,40 +90,43 @@ const Courses = () => {
     <div>
       <Navbar />
 
-      <div className="w-full flex justify-center pt-[90px] pl-[78px]">
-        <div data-aos="fade-up" className="flex gap-5 mr-[auto]">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`min-w-[138px] px-4 py-2 rounded-full font-[Poppins] font-[300] text-sm transition-all ${
-                activeCategory === category
-                  ? "bg-primary text-white"
-                  : "bg-[#D1FADF] text-black"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
+      <div className="w-full flex justify-start pt-6 md:pt-[90px] px-4 md:px-[78px]">
+  <div data-aos="fade-up" className="flex flex-wrap gap-3 md:gap-5">
+    {categories.map((category) => (
+      <button
+        key={category}
+        onClick={() => setActiveCategory(category)}
+        className={`min-w-[100px] md:min-w-[138px] px-3 md:px-4 py-1 md:py-2 rounded-full font-[Poppins] font-[300] text-xs md:text-sm transition-all ${
+          activeCategory === category
+            ? "bg-primary text-white"
+            : "bg-[#D1FADF] text-black"
+        }`}
+      >
+        {category}
+      </button>
+    ))}
+  </div>
+</div>
 
-      <div className="mt-5 flex items-center justify-center pl-[78px] mr-[auto] pt-[20px]">
-        <div data-aos="fade-up"
-          className="flex items-center bg-white rounded-full w-[762px] mr-[auto] px-4 py-2"
-          style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
-        >
-          <Search size={20} className="text-gray-500 mr-3" />
-          <Input
-            type="text"
-            placeholder="Search"
-            className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
-          />
-          <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
-            Search
-          </button>
-        </div>
-      </div>
+
+
+<div className="mt-5 flex items-center justify-start px-4 md:pl-[78px] md:pt-[20px]">
+  <div
+    data-aos="fade-up"
+    className="flex items-center bg-white rounded-full w-full md:w-[762px] px-4 py-2"
+    style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
+  >
+    <Search size={20} className="text-gray-500 mr-3" />
+    <Input
+      type="text"
+      placeholder="Search"
+      className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
+    />
+    <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
+      Search
+    </button>
+  </div>
+</div>
 
           <div >
       {filteredCourses.map((course) => (

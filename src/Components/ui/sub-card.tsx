@@ -32,14 +32,14 @@ export default function Component({
   onRevalidate = () => {},
 }: TaxCardProps) {
   return (
-    <Card className="w-full max-w-[1300px]">
+    <Card className="w-full max-w-[1300px] mx-auto">
       <CardHeader className="bg-green-500 text-white">
         <CardTitle className="text-lg font-medium">1. {title}</CardTitle>
       </CardHeader>
       <CardContent className="p-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {checkedItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500">
@@ -83,5 +83,5 @@ export default function Component({
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

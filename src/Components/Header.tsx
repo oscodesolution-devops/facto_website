@@ -1,33 +1,33 @@
 import { useEffect } from "react";
-import AOS from "aos"; 
-import "aos/dist/aos.css"; 
+import AOS from "aos";
+import "aos/dist/aos.css";
 import iPhoneImage from "../assets/iPhone_15_pro.png";
 import headerBg from "../assets/headerbg.svg";
 import PhoneNum from "./PhoneNum";
 import QRCodeImage from "../assets/QRCode.svg";
 import { FaGooglePlay } from "react-icons/fa";
 import { Apple } from "lucide-react";
-import WhatsAppIcon from "../assets/whatsapp.svg"; 
-import PhoneButtonIcon from "../assets/Phonebutton.svg"; 
+import WhatsAppIcon from "../assets/whatsapp.svg";
+import PhoneButtonIcon from "../assets/Phonebutton.svg";
 
 const Header = () => {
   useEffect(() => {
     AOS.init({
-      duration: 400,   
-      once: true,      
-      startEvent: 'load', 
+      duration: 400,
+      once: true,
+      startEvent: "load",
     });
   }, []);
 
   return (
     <div
-      className="relative flex items-stretch justify-between h-screen bg-cover bg-center overflow-hidden"
+      className="relative flex flex-col-reverse lg:flex-row items-stretch justify-between h-screen bg-cover bg-center overflow-hidden"
       style={{ backgroundImage: `url(${headerBg})` }}
-      data-aos="fade-up" 
+      data-aos="fade-up"
     >
       <div
-        className="z-20 flex flex-col justify-center text-white px-[80px] pl-[80px] pt-[110px] pb-[40px] lg:w-1/2"
-        data-aos="fade-right" 
+        className="z-20 flex flex-col justify-center text-white px-[80px] pt-[110px] pb-[40px] lg:w-1/2"
+        data-aos="fade-right"
       >
         <div className="text-4xl md:text-5xl lg:text-6xl font-[actor] font-light leading-tight">
           Your Trusted Partner <br />
@@ -47,17 +47,15 @@ const Header = () => {
             src={QRCodeImage}
             alt="QR Code"
             className="w-32 h-32 md:w-40 md:h-40"
-            data-aos="fade-left" 
+            data-aos="fade-left"
           />
           <div className="flex flex-col gap-3">
             <button
               className="flex items-center justify-center gap-2 px-4 py-3 bg-black border-[1px] border-white text-white rounded-md w-52 md:w-64"
-              data-aos="zoom-in" 
+              data-aos="zoom-in"
             >
               <FaGooglePlay size={20} />
-              <span className="text-xs md:text-sm">
-                Get on Google Play Store
-              </span>
+              <span className="text-xs md:text-sm">Get on Google Play Store</span>
             </button>
             <button
               className="flex items-center justify-center gap-2 px-4 py-3 bg-black text-white border-[1px] border-white rounded-md w-52 md:w-64"
@@ -95,7 +93,7 @@ const Header = () => {
             src={iPhoneImage}
             alt="iPhone 15 Pro"
             className="absolute bottom-[-300px] right-[-60px] max-w-[110%] object-contain"
-            data-aos="fade-up" 
+            data-aos="fade-up"
           />
         </div>
       </div>

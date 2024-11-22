@@ -113,8 +113,8 @@ export default function ProfileCard() {
   };
 
   return (
-    <Card className="w-[1282px] h-auto mx-auto">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
+    <Card className="w-full max-w-[1282px] mx-auto">
+      <CardHeader className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 pb-7">
         <div className="flex items-center space-x-4">
           <img
             alt="Profile picture"
@@ -143,7 +143,7 @@ export default function ProfileCard() {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
@@ -269,32 +269,30 @@ export default function ProfileCard() {
             </div>
 
             {/* Address Fields in a horizontal row */}
-            <div className="space-y-2">
-              <Label htmlFor="address.houseNumber">House Number</Label>
-              <Input
-                id="address.houseNumber"
-                name="address.houseNumber"
-                value={formData.address.houseNumber}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                placeholder="House Number"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="address.street">Street</Label>
-              <Input
-                id="address.street"
-                name="address.street"
-                value={formData.address.street}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                placeholder="Street Name"
-              />
-            </div>
-            
-            {/* Pincode, State, City in a single row */}
-            <div className="flex space-x-4">
-              <div className="space-y-2 flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="address.houseNumber">House Number</Label>
+                <Input
+                  id="address.houseNumber"
+                  name="address.houseNumber"
+                  value={formData.address.houseNumber}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                  placeholder="Enter house number"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="address.street">Street</Label>
+                <Input
+                  id="address.street"
+                  name="address.street"
+                  value={formData.address.street}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                  placeholder="Enter street name"
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="address.city">City</Label>
                 <Input
                   id="address.city"
@@ -302,20 +300,15 @@ export default function ProfileCard() {
                   value={formData.address.city}
                   onChange={handleInputChange}
                   disabled={!isEditing}
-                  placeholder="City"
+                  placeholder="Enter city"
                 />
               </div>
-              <div className="space-y-2 flex-1">
+              <div className="space-y-2">
                 <Label htmlFor="address.state">State</Label>
                 <Select
                   disabled={!isEditing}
                   value={formData.address.state}
-                  onValueChange={(value) =>
-                    setFormData(prev => ({
-                      ...prev,
-                      address: { ...prev.address, state: value }
-                    }))
-                  }
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, address: { ...prev.address, state: value } }))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select state" />
@@ -329,7 +322,7 @@ export default function ProfileCard() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2 flex-1">
+              <div className="space-y-2">
                 <Label htmlFor="address.pincode">Pincode</Label>
                 <Input
                   id="address.pincode"
@@ -337,7 +330,7 @@ export default function ProfileCard() {
                   value={formData.address.pincode}
                   onChange={handleInputChange}
                   disabled={!isEditing}
-                  placeholder="Pincode"
+                  placeholder="Enter pincode"
                 />
               </div>
             </div>

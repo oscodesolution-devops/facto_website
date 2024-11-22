@@ -60,87 +60,86 @@ const ActivePlans = () => {
             <div>
                 <Navbar />
             </div>
-            <div className="bg-[#DFFFE3] pt-[87px] pb-[127px]">
-                <div data-aos="fade-up" className="justify-center flex gap-5">
-                    <button
-                        onClick={() => setActiveButton("active")}
-                        className={`w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${
-                            activeButton === "active"
-                                ? "bg-primary text-white border-primary"
-                                : "bg-white text-primary border-primary"
-                        }`}
-                    >
-                        Active Subscription
-                    </button>
-                    <button
-                        onClick={() => setActiveButton("expired")}
-                        className={`w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${
-                            activeButton === "expired"
-                                ? "bg-primary text-white border-primary"
-                                : "bg-white text-primary border-primary"
-                        }`}
-                    >
-                        Expired Subscription
-                    </button>
-                </div>
-                <div className="mt-5 flex items-center justify-center pl-[78px] mr-[auto] pt-[20px]">
-                    <div data-aos="fade-up"
-                        className="flex items-center bg-white rounded-full w-[762px] mx-[auto] px-4 py-2"
-                        style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
-                    >
-                        <Search size={20} className="text-gray-500 mr-3" />
-                        <Input
-                            type="text"
-                            placeholder="Search"
-                            className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
-                        />
-                        <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
-                            Search
-                        </button>
-                    </div>
-                </div>
-                <div data-aos="fade-up" className="mt-[40px] w-[1312px] pl-[130px]">
-                    {activeButton === "active" &&
-                        activeCards.map((card, index) => (
-                            <div key={index} className="mb-6">
-                                <TaxCard
-                                    title={card.title}
-                                    checkedItems={card.checkedItems}
-                                    showRevalidateButton={card.showRevalidateButton}
-                                    amount={card.amount}
-                                    dueDate={card.dueDate}
-                                    cardNumber={card.cardNumber}
-                                    cardExpiry={card.cardExpiry}
-                                    onViewDetails={() =>
-                                        alert(`Viewing details for ${card.title}...`)
-                                    }
-                                    onRevalidate={() =>
-                                        alert(`Revalidating ${card.title}...`)
-                                    }
-                                />
-                            </div>
-                        ))}
-                    {activeButton === "expired" &&
-                        expiredCards.map((card, index) => (
-                            <div data-aos="fade-up" key={index} className="mb-6">
-                                <TaxCard
-                                    title={card.title}
-                                    checkedItems={card.checkedItems}
-                                    showRevalidateButton={card.showRevalidateButton}
-                                    amount={card.amount}
-                                    dueDate={card.dueDate}
-                                    cardNumber={card.cardNumber}
-                                    cardExpiry={card.cardExpiry}
-                                    onViewDetails={() =>
-                                        alert(`Viewing details for ${card.title}...`)
-                                    }
-                                    onRevalidate={() =>
-                                        alert(`Revalidating ${card.title}...`)
-                                    }
-                                />
-                            </div>
-                        ))}
-                </div>
+            <div className="bg-[#DFFFE3] pt-[87px] pb-[127px] px-10">
+            <div data-aos="fade-up" className="flex flex-col sm:flex-row gap-5 justify-center">
+  <button
+    onClick={() => setActiveButton("active")}
+    className={`w-full sm:w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${
+      activeButton === "active" ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary"
+    }`}
+  >
+    Active Subscription
+  </button>
+  <button
+    onClick={() => setActiveButton("expired")}
+    className={`w-full sm:w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${
+      activeButton === "expired" ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary"
+    }`}
+  >
+    Expired Subscription
+  </button>
+</div>
+
+<div className="mt-5 flex items-center justify-center px-4 md:pl-[78px] md:pt-[20px]">
+  <div
+    data-aos="fade-up"
+    className="flex items-center bg-white rounded-full w-full md:w-[762px] px-4 py-2 mx-auto"
+    style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
+  >
+    <Search size={20} className="text-gray-500 mr-3" />
+    <Input
+      type="text"
+      placeholder="Search"
+      className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
+    />
+    <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
+      Search
+    </button>
+  </div>
+</div>
+<div data-aos="fade-up" className="mt-[40px] w-full px-4 sm:px-[130px]">
+  {activeButton === "active" &&
+    activeCards.map((card, index) => (
+      <div key={index} className="mb-6">
+        <TaxCard
+          title={card.title}
+          checkedItems={card.checkedItems}
+          showRevalidateButton={card.showRevalidateButton}
+          amount={card.amount}
+          dueDate={card.dueDate}
+          cardNumber={card.cardNumber}
+          cardExpiry={card.cardExpiry}
+          onViewDetails={() =>
+            alert(`Viewing details for ${card.title}...`)
+          }
+          onRevalidate={() =>
+            alert(`Revalidating ${card.title}...`)
+          }
+        />
+      </div>
+    ))}
+  {activeButton === "expired" &&
+    expiredCards.map((card, index) => (
+      <div data-aos="fade-up" key={index} className="mb-6">
+        <TaxCard
+          title={card.title}
+          checkedItems={card.checkedItems}
+          showRevalidateButton={card.showRevalidateButton}
+          amount={card.amount}
+          dueDate={card.dueDate}
+          cardNumber={card.cardNumber}
+          cardExpiry={card.cardExpiry}
+          onViewDetails={() =>
+            alert(`Viewing details for ${card.title}...`)
+          }
+          onRevalidate={() =>
+            alert(`Revalidating ${card.title}...`)
+          }
+        />
+      </div>
+    ))}
+</div>
+
             </div>
             <div className="bg-[#DDE2FF] pt-[60px]">
             <div className="text-center ">

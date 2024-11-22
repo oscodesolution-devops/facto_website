@@ -10,6 +10,7 @@ const VideoCard = ({
   descriptionHeading?: string;
   description?: string;
   width?: string; 
+  className?: string;
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 

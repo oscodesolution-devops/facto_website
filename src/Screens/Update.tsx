@@ -162,60 +162,71 @@ const Update = () => {
         </div>
 
         <div className="w-full flex justify-center py-6">
-          <div data-aos="fade-up" className="flex gap-5">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`min-w-[138px] px-4 py-2 rounded-full font-[Poppins] font-[300] text-sm transition-all ${
-                  activeCategory === category
-                    ? "bg-primary text-white"
-                    : "bg-[#D1FADF] text-black"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
+  <div data-aos="fade-up" className="flex gap-5 flex-wrap justify-center">
+    {categories.map((category) => (
+      <button
+        key={category}
+        onClick={() => setActiveCategory(category)}
+        className={`min-w-[138px] px-4 py-2 rounded-full font-[Poppins] font-[300] text-sm transition-all ${
+          activeCategory === category
+            ? "bg-primary text-white"
+            : "bg-[#D1FADF] text-black"
+        }`}
+      >
+        {category}
+      </button>
+    ))}
+  </div>
+</div>
 
-        <div className="pl-[137px] pr-[160px]">
-          <div className="mt-5 flex items-center justify-between w-[full] mx-auto">
-   
-            <div data-aos="fade-up" className="flex items-center bg-white rounded-full w-[762px]  px-4 py-2 flex-1" style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}>
-              <Search size={20} className="text-gray-500 mr-3" />
-              <Input
-                type="text"
-                placeholder="Search"
-                className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
-              />
-              <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
-                Search
-              </button>
-            </div>
 
-            <div data-aos="fade-up" className="flex items-center gap-4 ml-4">
-              <span className="text-sm font-[Poppins] font-[300] text-black pl-[91px]">
-                Sort by:
-              </span>
-              <DropdownMenuDemo
-                selected={selectedTimeframe}
-                setSelected={setSelectedTimeframe}
-              />
-            </div>
-          </div>
+<div className="">
+<div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-[20px] lg:gap-[180px] w-full mx-auto">
 
-          <div data-aos="fade-up" className="mt-10 grid grid-cols-3 gap-6 pt-[40px] pb-[140px]">
-            {newsData.map((news, index) => (
-              <NewsCard
-                key={index}
-                {...news}
-                buttonText="Read More"
-                onButtonClick={() => handleReadMore(news.title)}
-              />
-            ))}
-          </div>
-        </div>
+
+  <div className="mt-5 flex items-center justify-center px-4 md:pl-[78px] md:pt-[20px]">
+  <div
+    data-aos="fade-up"
+    className="flex items-center bg-white rounded-full w-full md:w-[762px] px-4 py-2 mx-auto"
+    style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
+  >
+    <Search size={20} className="text-gray-500 mr-3" />
+    <Input
+      type="text"
+      placeholder="Search"
+      className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
+    />
+    <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
+      Search
+    </button>
+  </div>
+</div>
+
+    <div data-aos="fade-up" className="flex flex-col sm:flex-row items-center gap-4 mt-4 sm:mt-0">
+      <span className="text-sm font-[Poppins] font-[600] text-black">
+        Sort by:
+      </span>
+      <DropdownMenuDemo
+        selected={selectedTimeframe}
+        setSelected={setSelectedTimeframe}
+      />
+    </div>
+  </div>
+
+  <div data-aos="fade-up" className="mt-10 pl-7 sm:pl-1 grid grid-cols-1 sm:grid-cols-3 gap-x-40 gap-7 pt-[40px] pb-[140px] mx-auto max-w-screen-lg">
+    {newsData.map((news, index) => (
+      <NewsCard
+        key={index}
+        {...news}
+        buttonText="Read More"
+        onButtonClick={() => handleReadMore(news.title)}
+      />
+    ))}
+  </div>
+</div>
+
+
+
       </section>
 
       <div className="bg-[#DDE2FF] h-[734px]">
