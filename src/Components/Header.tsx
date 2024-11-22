@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AOS from "aos"; 
 import "aos/dist/aos.css"; 
-import iPhoneImage from "../assets/iPhone 15 pro.png";
+import iPhoneImage from "../assets/iPhone_15_pro.png";
 import headerBg from "../assets/headerbg.svg";
 import PhoneNum from "./PhoneNum";
 import QRCodeImage from "../assets/QRCode.svg";
