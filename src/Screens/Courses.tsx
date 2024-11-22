@@ -17,7 +17,7 @@ const Courses = () => {
   }, []);
 
   const [activeCategory, setActiveCategory] = useState("Your Courses");
-  const [videoProgress, setVideoProgress] = useState<{ [key: number]: number }>({}); 
+  // const [videoProgress, setVideoProgress] = useState<{ [key: number]: number }>({}); 
 
   const hasPurchasedCourses = true;
 
@@ -79,12 +79,12 @@ const Courses = () => {
       : course.title.includes(activeCategory)
   );
 
-  const handleVideoCompletion = (courseId: number, lectureId: number) => {
-    setVideoProgress((prev) => ({
-      ...prev,
-      [courseId]: lectureId + 1, 
-    }));
-  };
+  // const handleVideoCompletion = (courseId: number, lectureId: number) => {
+  //   setVideoProgress((prev) => ({
+  //     ...prev,
+  //     [courseId]: lectureId + 1, 
+  //   }));
+  // };
 
   return (
     <div>

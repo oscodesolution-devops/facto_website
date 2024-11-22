@@ -59,11 +59,11 @@ const CoursesBuy = () => {
     return { fullStars, hasHalfStar, emptyStars };
   };
 
-  const truncateDescription = (description: string) => {
-    if (!description) return ''; 
-    const words = description.split(' ');
-    return words.slice(0, 20).join(' ') + (words.length > 20 ? '...' : '');
-  };
+  // const truncateDescription = (description: string) => {
+  //   if (!description) return ''; 
+  //   const words = description.split(' ');
+  //   return words.slice(0, 20).join(' ') + (words.length > 20 ? '...' : '');
+  // };
 
 
   const courseDescription = course?.description || "fnjanvajnkja jnvnvfnbodfjsnboifabno dmbkdmboinjobnaonvionjoi eanoirnviomvoembomkdjdbnkj naovnrawio vuir avnfsakfmlvmflvmfkvfsmvkfsmv  vsi nvsfn  vniofi nvsofs vofi vpofsmvfpo mnoabnofnbkl fvfs vmvfpovjfs mvfsklnvko vifjv iorwvnkf vmmkvnofs oij io ";

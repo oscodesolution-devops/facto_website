@@ -6,7 +6,7 @@ import PaymentForm from "@/Components/payment-form";
 import OrderSummary from "@/Components/order-summary";  
 
 const Payment = () => {
-  const [selectedCourse, setSelectedCourse] = useState({
+  const [selectedCourse] = useState({
     title: "Sample Course",
       amount: 1999,
   });

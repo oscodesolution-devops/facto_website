@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // React Router navigation
+import { useNavigate } from "react-router-dom"; 
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
@@ -12,7 +12,7 @@ import { Separator } from "@/Components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/Components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-export default function Component({ amount = 1009, className }: { amount?: number; className?: string }) {
+export default function Component({ className }: { amount?: number; className?: string }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");

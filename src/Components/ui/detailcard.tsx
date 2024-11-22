@@ -18,7 +18,7 @@ export default function GSTServiceCard({
   primaryButtonText = "Start Filing",
   secondaryButtonText = "More Details",
   onPrimaryClick = () => {},
-  onSecondaryClick = () => {}
+  // onSecondaryClick = () => {}
 }: GSTServiceCardProps) {
   const navigate = useNavigate();  // Use the hook to navigate
 

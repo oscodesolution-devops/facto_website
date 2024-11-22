@@ -13,7 +13,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Logo from "../assets/logo.svg";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn] = useState(true);
   const user = {
     name: "John Doe",
     avatar: "./assets/user.png",

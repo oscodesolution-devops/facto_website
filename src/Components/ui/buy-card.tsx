@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from "@/Components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/Components/ui/card"
+import { Card, CardContent, CardHeader} from "@/Components/ui/card"
 import { Separator } from "@/Components/ui/separator"
 import { Mail, Share2, Twitter, PhoneIcon as WhatsApp, BookOpen, BarChart, Globe, Subtitles, Link } from 'lucide-react'
 import { Toast, ToastDescription } from "@/Components/ui/toast"
@@ -21,8 +21,8 @@ interface CourseCardProps {
 }
 
 export default function Component({
-  title = "Tax Certificate Course",
-  description = "Lorem ipsum dolor sit amet",
+  // title = "Tax Certificate Course",
+  // description = "Lorem ipsum dolor sit amet",
   currentPrice = 1999,
   originalPrice = 2599,
   discount = 56,
