@@ -11,7 +11,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Logo from "../assets/logo.svg";
 
 const Navbar = () => {
-  const [isLoggedIn] = useState(false);
+  const [isLoggedIn] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false); // Mobile menu state
   const user = {
     name: "John Doe",
