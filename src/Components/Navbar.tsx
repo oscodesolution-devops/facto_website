@@ -12,7 +12,7 @@ import Logo from "../assets/logo.svg";
 
 const Navbar = () => {
   const [isLoggedIn] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false); // Mobile menu state
+  const [menuOpen, setMenuOpen] = useState(false); 
   const user = {
     name: "John Doe",
     avatar: "./assets/user.png",

@@ -17,16 +17,16 @@ const Payment = () => {
         <Navbar />
       </div>
 
-      <div className="flex h-[calc(100vh-108px)]">
+      <div className="flex flex-col lg:flex-row h-auto lg:h-[calc(100vh-108px)]">
         {/* Left side: Payment Form */}
-        <div className="w-1/2 flex items-center justify-center p-4">
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
           <PaymentForm amount={selectedCourse.amount} />
         </div>
 
         {/* Right side: Order Summary */}
-        <div className="w-1/2 bg-[#E9FFE9] border-[1px] border-[#D9D9D9] flex flex-col p-[48px]">
+        <div className="w-full lg:w-1/2 bg-[#E9FFE9] border border-[#D9D9D9] flex flex-col p-6 lg:p-[48px]">
           <div className="flex justify-center">
-          <OrderSummary /> {/* Use the imported OrderSummary component */}
+            <OrderSummary /> {/* Use the imported OrderSummary component */}
           </div>
         </div>
       </div>

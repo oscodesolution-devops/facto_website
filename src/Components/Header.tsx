@@ -29,16 +29,20 @@ const Header = () => {
         className="z-20 flex flex-col justify-center text-white px-[80px] pt-[110px] pb-[40px] lg:w-1/2"
         data-aos="fade-right"
       >
-        <div className="text-4xl md:text-5xl lg:text-6xl font-[actor] font-light leading-tight">
-          Your Trusted Partner <br />
-          for Easy <span className="text-secondary">GST</span> and{" "}
-          <span className="text-secondary">Tax Solutions</span>
-        </div>
-        <p className="mt-5 text-sm md:text-base lg:w-4/5" data-aos="fade-up">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-          ad minim veniam, quis nostrud exercitation.
-        </p>
+<div className="pt-10 sm:pt-14 md:pt-20 lg:pt-24 px-4 text-4xl sm:text-4xl md:text-4xl lg:text-5xl font-[actor] font-light leading-snug sm:leading-tight text-center sm:text-left">
+  Your Trusted Partner <br />
+  for Easy <span className="text-secondary">GST</span> and{" "}
+  <span className="text-secondary">Tax Solutions</span>
+</div>
+<p
+  className="mt-3 sm:mt-5 text-xs sm:text-sm md:text-base lg:w-4/5 px-4 mx-auto sm:mx-0 text-center sm:text-left"
+  data-aos="fade-up"
+>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+  quis nostrud exercitation.
+</p>
+
         <div className="mt-5">
           <PhoneNum />
         </div>

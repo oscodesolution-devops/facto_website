@@ -24,7 +24,9 @@ const LandingPage = () => {
   return (
     <div>
       <Navbar />
+      <div >
       <Header />
+      </div>
 
       <main className="flex flex-col md:flex-row gap-[5%] z-20">
   {/* Left Section */}
