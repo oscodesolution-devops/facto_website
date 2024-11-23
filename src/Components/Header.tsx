@@ -21,12 +21,12 @@ const Header = () => {
 
   return (
     <div
-      className="relative flex flex-col-reverse lg:flex-row  items-stretch justify-between h-screen bg-cover bg-center overflow-scroll"
+      className="relative flex flex-col-reverse lg:flex-row  items-stretch justify-between h-screen bg-cover bg-center overflow-hidden"
       style={{ backgroundImage: `url(${headerBg})` }}
       data-aos="fade-up"
     >
       <div
-        className="z-20 flex flex-col justify-center  text-white px-[80px] pb-[40px] lg:w-1/2"
+        className="z-20 flex flex-col justify-center  text-white px-[30px] pb-[40px] lg:w-1/2"
         data-aos="fade-right"
       >
 <div className="sm:pt-14 md:pt-20 lg:pt-24 px-4 text-[28px] sm:text-4xl md:text-4xl lg:text-5xl font-[actor] font-light leading-snug sm:leading-tight text-center sm:text-left">
