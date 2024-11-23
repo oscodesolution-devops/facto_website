@@ -162,10 +162,10 @@ const LandingPage = () => {
   <div>
   <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 gap-[15px] mt-[20px] md:gap-[70px] md:ml-[80px] pt-[120px]">
 
-      <VideoCard width="400px" videoSrc="/assets/bulb.mp4" descriptionHeading="Timely E-filing for Prompt Refunds" description="Timely e-filing expedites verification, ensuring prompt refunds." />
-      <VideoCard width="400px" videoSrc="/assets/bulb.mp4" descriptionHeading="Penalty-Free Tax Filing" description="Stay clear of penalties by filing your taxes accurately and on time." />
-      <VideoCard width="400px" videoSrc="/assets/bulb.mp4" descriptionHeading="Defective Return Notice Prevention" description="Avoid receiving a Defective Return Notice through accurate tax filing." />
-      <VideoCard width="400px" videoSrc="/assets/bulb.mp4" descriptionHeading="Escape the Last-Minute Filing Rush" description="Say goodbye to the commotion of the last-minute tax filing rush." />
+      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Timely E-filing for Prompt Refunds" description="Timely e-filing expedites verification, ensuring prompt refunds." />
+      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Penalty-Free Tax Filing" description="Stay clear of penalties by filing your taxes accurately and on time." />
+      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Defective Return Notice Prevention" description="Avoid receiving a Defective Return Notice through accurate tax filing." />
+      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Escape the Last-Minute Filing Rush" description="Say goodbye to the commotion of the last-minute tax filing rush." />
     </div>
   </div>
 
