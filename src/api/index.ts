@@ -88,7 +88,14 @@ export const User = {
       data: {
         fullName: data.fullName,
         email: data.email,
-        password: data.password,
+        role: data?.role,
+        phoneNumber: data?.phoneNumber,
+        aadharNumber: data?.aadharNumber,
+        panNumber: data?.panNumber,
+        gender: data?.gender,
+        gstNumber: data?.gstNumber,
+        dateOfBirth: data?.dateOfBirth,
+        address: data?.address,
       },
       // headers: {
       //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
