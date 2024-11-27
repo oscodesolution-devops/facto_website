@@ -11,14 +11,62 @@ import { Input } from "./ui/input";
 import PricingCard from "./ui/pricingcard";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
+import { Services } from "@/api";
+
+type SubService = {
+  _id: string;
+  serviceId: string;
+  title: string;
+  description: string;
+  features: string[];
+  price: string;
+  period: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+
 
 const HeroSection = () => {
+  const location = useLocation();
+  const [id, setId] = useState<string | null>(null);
+  const [subServices, setSubServices] = useState<SubService[]>([]);
+
   useEffect(() => {
-    AOS.init({
-      duration: 700, 
-    });
+    AOS.init({ duration: 700 });
   }, []);
+
+  // Extract `id` from the URL query params
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const fetchedId = queryParams.get('id');
+    console.log("Fetched ID:", fetchedId);
+    setId(fetchedId);
+  }, [location]);
+
+  // Fetch sub-services when `id` is available
+  useEffect(() => {
+    if (id) {
+      const fetchSubServices = async () => {
+        try {
+          const res = await Services.getSubServices(id as string);
+          setSubServices(res.data.subServices);
+        } catch (error) {
+          console.error("Error fetching sub-services:", error);
+        }
+      };
+      fetchSubServices();
+    }
+  }, [id]); // Runs whenever `id` changes
+
+
+
+
+
 
   return (
     <section className="bg-[#E9FFE9] pt-2 pb-36 px-5 lg:px-28">
@@ -63,16 +111,14 @@ const HeroSection = () => {
       </div>
 
       <div data-aos="fade-up" className="mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
-        <PricingCard />
+
+        {
+          subServices.map((subService) => (
+            <PricingCard key={subService._id} title={subService.title} description={subService.description} features={subService.features} price={subService.price} period={subService.period} />
+          ))
+        }
       </div>
+
 
       <div className="mt-16">
         <div data-aos="fade-up" className="text-[#101828] text-sm leading-5 font-light font-[poppins] space-y-4">

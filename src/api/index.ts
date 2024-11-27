@@ -131,4 +131,12 @@ export const Services = {
     });
     return response.data;
   },
+  getSubServices: async (id: string, cancel = false) => {
+    const response = await api.request({
+      url: `https://facto-backend-8spm.onrender.com/api/v1/sub-services/${id}`,
+      method: "GET",
+      signal: cancel ? cancelApiObject.getSubServices.handleRequestCancellation().signal : undefined,
+    });
+    return response.data;
+  },
 };
