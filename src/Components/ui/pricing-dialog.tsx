@@ -17,6 +17,7 @@ import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group"
 import { Dialog, DialogContent } from "@/Components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { useNavigate } from 'react-router-dom'
+import { useGlobalContext } from "@/context/GlobalContext"
 
 interface PricingDialogProps {
   title: string
@@ -54,9 +55,18 @@ export default function PricingDialog({
   const navigate = useNavigate()  // Hook to navigate to payment page
 
   const handleActivatePlan = () => {
-    // Navigate to the payment screen
-    navigate('/payment')
-  }
+    // Assume `useGlobalContext` provides `user` with `hasUploadedAadhar` and `hasUploadedPan`
+    const { user } = useGlobalContext();
+  
+    if (user?.hasUploadedAadhar && user?.hasUploadedPan) {
+      // Navigate to payment if documents are uploaded
+      navigate('/payment');
+    } else {
+      // Redirect to profile and display a message to complete profile information
+      navigate('/profile', { state: { message: 'Please upload your Aadhar and PAN card to activate the plan.' } });
+    }
+  };
+  
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import logo from "../assets/logo.svg";
+import { Link } from "react-router-dom"; 
 
 const UserDetails = () => {
   const [formData, setFormData] = useState({
@@ -104,9 +105,9 @@ const UserDetails = () => {
               Create Account
             </button>
 
-            <button type="submit" className="w-full font-[Poppins] text-[#969696] text-[12px] font-[600] ">
+            <Link to="/" className="w-full font-[Poppins] text-[#969696] text-[12px] font-[600] block text-center mt-4">
                 Skip Now
-            </button>
+              </Link>
           </form>
         </div>
       </div>

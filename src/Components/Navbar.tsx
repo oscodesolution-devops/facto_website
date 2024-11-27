@@ -9,15 +9,12 @@ import {
 } from "./ui/navigation-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Logo from "../assets/logo.svg";
+import { useGlobalContext } from "@/context/GlobalContext"; 
 
 const Navbar = () => {
-  const [isLoggedIn] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false); 
-  const user = {
-    name: "John Doe",
-    avatar: "./assets/user.png",
-  };
-
+  const { user, isAuthenticated } = useGlobalContext(); 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const defaultAvatar = "./assets/user.png"; 
   const activeClass = "text-green-500 underline";
   const defaultClass = "text-primary hover:text-secondary";
 
@@ -26,6 +23,12 @@ const Navbar = () => {
       duration: 400,
     });
   }, []);
+  
+  useEffect(() => {
+    console.log('User:', user);
+    console.log("isAuthenticated in Navbar:", isAuthenticated); // Debugging
+  }, [isAuthenticated]);
+  
 
   return (
     <nav
@@ -33,11 +36,9 @@ const Navbar = () => {
       style={{ fontFamily: "Erode Variable" }}
       data-aos="fade-down"
     >
-      
       <div className="flex items-center justify-between w-full">
-
         <NavLink to="/">
-        <img src={Logo} alt="Logo" className="w-48 h-auto cursor-pointer" />
+          <img src={Logo} alt="Logo" className="w-48 h-auto cursor-pointer" />
         </NavLink>
 
         <button
@@ -67,7 +68,7 @@ const Navbar = () => {
         } md:flex md:items-center md:space-x-6 w-full mt-4 md:mt-0`}
       >
         <NavigationMenu>
-          <NavigationMenuList className="flex flex-col md:flex-row text-lg gap-4 md:gap-8 font-medium">
+          <NavigationMenuList className="flex font-[poppins] flex-col md:flex-row text-lg gap-4 md:gap-8 font-medium">
             <NavigationMenuItem>
               <NavLink
                 to="/"
@@ -141,13 +142,19 @@ const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
+        {/* Mobile version */}
         <div className="flex flex-col items-center mt-4 md:hidden">
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <NavLink to="/profile">
               <div className="w-14 h-14">
                 <Avatar className="cursor-pointer w-full h-full">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback>{user.name[0]}</AvatarFallback>
+                  <AvatarImage
+                    src={user?.avatar || defaultAvatar}
+                    alt={user?.name || "User"}
+                  />
+                  <AvatarFallback>
+                    {user?.name ? user.name[0] : "U"}
+                  </AvatarFallback>
                 </Avatar>
               </div>
             </NavLink>
@@ -161,21 +168,23 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isLoggedIn && (
-        <div className="hidden md:block ml-4 w-20 h-20 mr-4">
-          <NavLink to="/profile">
-            <Avatar className="cursor-pointer w-20 h-20">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-          </NavLink>
-        </div>
+      {/* Desktop version */}
+      {isAuthenticated && user && (
+ <div className="block md:block ml-4 w-20 h-20 mr-4">
+ <NavLink to="/profile">
+   <Avatar className="cursor-pointer w-20 h-20">
+     <AvatarImage src={user.avatar || defaultAvatar} alt={user.name || "User"} />
+     <AvatarFallback>{user.name ? user.name[0] : "U"}</AvatarFallback>
+   </Avatar>
+ </NavLink>
+</div>
+
       )}
 
-      {!isLoggedIn && (
+      {!isAuthenticated && (
         <div className="hidden md:block w-[200px] h-[auto] ml-4">
           <NavLink to="/login">
-            <button className="bg-primary text-white px-4 py-2 rounded-full">
+            <button className="bg-primary font-[poppins] font-[600] text-white px-4 py-2 rounded-full">
               Log In
             </button>
           </NavLink>

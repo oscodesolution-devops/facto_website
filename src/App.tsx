@@ -13,10 +13,13 @@ import ActivePlans from "./Screens/ActivePlans";
 import Profile from "./Screens/Profile";
 import Payment from "./Screens/Payment";
 import UploadPage from "./Screens/Documents";
+import GlobalProvider from "@/context/GlobalContext";
 
-function App() {
+const App: React.FC = () => {
   return (
+
     <Router>
+          <GlobalProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/services" element={<Services />} />
@@ -33,7 +36,9 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/upload-page" element={<UploadPage />} />
       </Routes>
+      </GlobalProvider>
     </Router>
+
   );
 }
 

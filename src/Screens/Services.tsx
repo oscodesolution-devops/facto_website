@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 const ServicesPage = () => {
   useEffect(() => {
-    // Scroll to the top of the page when the component is mounted
     window.scrollTo(0, 0);
   }, []);
 

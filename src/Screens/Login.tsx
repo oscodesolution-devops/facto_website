@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AUTH } from "@/api"; // Adjust the path based on your project structure
+import { useGlobalContext } from "@/context/GlobalContext"; // Adjust the path based on your project structure
 import facebookLogo from "../assets/facebook-logo.svg";
 import googleLogo from "../assets/google-logo.svg";
 import Navbar from "@/Components/Navbar";
@@ -7,12 +9,48 @@ import Navbar from "@/Components/Navbar";
 const Login = () => {
   const [activeTab, setActiveTab] = useState("signup");
   const navigate = useNavigate();
+  const { saveUser } = useGlobalContext();
 
-  const handleSignup = (e: React.FormEvent) => {
+  // Handle Signup API Call
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // (add API call here)
 
-    navigate("/user-details");
+    const data = {
+      fullName: (e.target as HTMLFormElement)["full-name"].value,
+      // lastName: (e.target as HTMLFormElement)["last-name"].value,
+      email: (e.target as HTMLFormElement)["email"].value,
+      password: (e.target as HTMLFormElement)["signup-password"].value,
+    };
+    console.log("Posting data to signup API:", data);
+
+    try {
+      const response = await AUTH.PostSignup(data);
+      console.log("Signup Successful:", response);
+      navigate("/user-details");
+    } catch (error) {
+      console.error("Signup Failed:", error);
+      alert("Signup failed. Please try again.");
+    }
+  };
+
+  // Handle Login API Call
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      email: (e.target as HTMLFormElement)["login-email"].value,
+      password: (e.target as HTMLFormElement)["login-password"].value,
+    };
+
+    try {
+      const response = await AUTH.PostLogin(data);
+      console.log("Login Successful:", response);
+      saveUser(response.user); // Save user to context
+      navigate("/user-details");
+    } catch (error) {
+      console.error("Login Failed:", error);
+      alert("Login failed. Please check your credentials.");
+    }
   };
 
   return (
@@ -50,16 +88,17 @@ const Login = () => {
               <form className="mt-6 space-y-6" onSubmit={handleSignup}>
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="w-full md:w-1/2">
-                    <label htmlFor="first-name" className="text-sm text-gray-700 font-light">
-                      First name
+                    <label htmlFor="full-name" className="text-sm text-gray-700 font-light">
+                      Full Name
                     </label>
                     <input
-                      id="first-name"
+                      id="full-name"
                       type="text"
                       className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                      required
                     />
                   </div>
-                  <div className="w-full md:w-1/2">
+                  {/* <div className="w-full md:w-1/2">
                     <label htmlFor="last-name" className="text-sm text-gray-700 font-light">
                       Last name
                     </label>
@@ -67,8 +106,9 @@ const Login = () => {
                       id="last-name"
                       type="text"
                       className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                      required
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="w-full">
                   <label htmlFor="email" className="text-sm text-gray-700 font-light">
@@ -78,8 +118,23 @@ const Login = () => {
                     id="email"
                     type="email"
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                    required
                   />
                 </div>
+                <div className="w-full">
+  <label htmlFor="signup-password" className="text-sm text-gray-700 font-light">
+    Password
+  </label>
+  <input
+    id="signup-password"
+    type="password"
+    name="password" 
+    className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+    required
+  />
+</div>
+
+
                 <button
                   type="submit"
                   className="w-full bg-[#3AB54A] text-white py-3 rounded-full text-lg font-medium"
@@ -87,21 +142,6 @@ const Login = () => {
                   Sign up
                 </button>
               </form>
-
-              <div className="flex items-center my-6">
-                <hr className="flex-grow border-gray-300" />
-                <span className="mx-3 text-gray-500 text-sm">OR</span>
-                <hr className="flex-grow border-gray-300" />
-              </div>
-
-              <button className="w-full flex items-center justify-center border border-[#3AB54A] py-3 rounded-full text-base text-gray-600 font-medium mb-4">
-                <img src={facebookLogo} alt="Facebook Logo" className="w-6 h-6 mr-2" />
-                Sign up with Facebook
-              </button>
-              <button className="w-full flex items-center justify-center border border-[#3AB54A] py-3 rounded-full text-base text-gray-600 font-medium">
-                <img src={googleLogo} alt="Google Logo" className="w-6 h-6 mr-2" />
-                Sign up with Google
-              </button>
             </div>
           )}
 
@@ -109,7 +149,7 @@ const Login = () => {
           {activeTab === "login" && (
             <div className="w-full mt-6">
               <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">Log in</h2>
-              <form className="mt-6 space-y-6">
+              <form className="mt-6 space-y-6" onSubmit={handleLogin}>
                 <div className="w-full">
                   <label htmlFor="login-email" className="text-sm text-gray-700 font-light">
                     Email address
@@ -118,6 +158,7 @@ const Login = () => {
                     id="login-email"
                     type="email"
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                    required
                   />
                 </div>
                 <div className="w-full">
@@ -128,9 +169,13 @@ const Login = () => {
                     id="login-password"
                     type="password"
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                    required
                   />
                 </div>
-                <button className="w-full bg-[#3AB54A] text-white py-3 rounded-full text-lg font-medium">
+                <button
+                  type="submit"
+                  className="w-full bg-[#3AB54A] text-white py-3 rounded-full text-lg font-medium"
+                >
                   Log in
                 </button>
               </form>

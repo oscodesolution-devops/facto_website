@@ -107,7 +107,7 @@ const LandingPage = () => {
   </div>
 
   <div className="mt-[19px] md:mt-20 sm:mt-20 flex justify-center">
-    <div className="flex items-center bg-white rounded-full px-4 py-1 w-full md:w-[429px] h-[43px] hidden sm:flex" style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}>
+    <div className="items-center bg-white rounded-full px-4 py-1 w-full md:w-[429px] h-[43px] hidden sm:flex" style={{ boxShadow: "0px 0.94px 6.57px 0px #00000040" }}>
       <div className="mr-3">
         <Search size={20} className="text-gray-500" />
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
@@ -12,7 +12,20 @@ import { Separator } from "@/Components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/Components/ui/dialog";
 import { cn } from "@/lib/utils";
 
+// Assuming you have a way to track user authentication status
+import { useGlobalContext } from "@/context/GlobalContext"; // Or your authentication logic
+
 export default function Component({ className }: { amount?: number; className?: string }) {
+  const { isAuthenticated } = useGlobalContext (); // Fetching authentication status from context
+  const navigate = useNavigate();
+
+  // If not authenticated, redirect to login page
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login"); // Redirect to login page if not authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -24,7 +37,6 @@ export default function Component({ className }: { amount?: number; className?: 
   const [showOtp, setShowOtp] = useState(false);
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const navigate = useNavigate();
 
   const handleExpiryChange = (value: string) => {
     const formatted = value.replace(/[^\d]/g, "").replace(/^(\d{2})/, "$1/").slice(0, 5);

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { CalendarIcon, Check } from 'lucide-react';
-
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
@@ -20,6 +19,7 @@ import {
 import { Calendar } from "@/Components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useGlobalContext } from "@/context/GlobalContext"; 
 
 const dummyData = {
   name: "Somesh Patel",
@@ -46,15 +46,16 @@ const states = [
 
 export default function ProfileCard() {
   const [isEditing, setIsEditing] = useState(false);
-
   const [formData, setFormData] = useState(dummyData);
-
   const [errors, setErrors] = useState({
     phone: "",
     aadhar: "",
     pan: "",
     gst: "",
   });
+
+  // Access the logout function and other context values
+  const { logout } = useGlobalContext();
 
   const validateField = (name: string, value: string) => {
     let error = "";
@@ -249,93 +250,70 @@ export default function ProfileCard() {
                     disabled={!isEditing}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formData.dob ? format(formData.dob, "dd MMMM yyyy") : "Select a date"}
+                    {formData.dob ? format(formData.dob, "PPP") : "Select date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={formData.dob}
-                    onSelect={(date) => {
-                      if (date) {
-                        setFormData(prev => ({ ...prev, dob: date }));
-                      }
-                    }}
-                    disabled={!isEditing}
-                    initialFocus
-                  />
+                <PopoverContent align="start">
+                  <Calendar selected={formData.dob} onChange={(date) => setFormData(prev => ({ ...prev, dob: date }))} />
                 </PopoverContent>
               </Popover>
             </div>
-
-            {/* Address Fields in a horizontal row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="address.houseNumber">House Number</Label>
-                <Input
-                  id="address.houseNumber"
-                  name="address.houseNumber"
-                  value={formData.address.houseNumber}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  placeholder="Enter house number"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="address.street">Street</Label>
-                <Input
-                  id="address.street"
-                  name="address.street"
-                  value={formData.address.street}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  placeholder="Enter street name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="address.city">City</Label>
-                <Input
-                  id="address.city"
-                  name="address.city"
-                  value={formData.address.city}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  placeholder="Enter city"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="address.state">State</Label>
-                <Select
-                  disabled={!isEditing}
-                  value={formData.address.state}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, address: { ...prev.address, state: value } }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {states.map((state) => (
-                      <SelectItem key={state} value={state}>
-                        {state}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="address.pincode">Pincode</Label>
-                <Input
-                  id="address.pincode"
-                  name="address.pincode"
-                  value={formData.address.pincode}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  placeholder="Enter pincode"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label>Address</Label>
+              <Input
+                name="address.houseNumber"
+                value={formData.address.houseNumber}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                placeholder="House Number"
+              />
+              <Input
+                name="address.street"
+                value={formData.address.street}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                placeholder="Street"
+              />
+              <Input
+                name="address.city"
+                value={formData.address.city}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                placeholder="City"
+              />
+              <Select
+                name="address.state"
+                disabled={!isEditing}
+                value={formData.address.state}
+                onValueChange={(value) => setFormData(prev => ({
+                  ...prev,
+                  address: { ...prev.address, state: value },
+                }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select state" />
+                </SelectTrigger>
+                <SelectContent>
+                  {states.map(state => <SelectItem key={state} value={state}>{state}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Input
+                name="address.pincode"
+                value={formData.address.pincode}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                placeholder="Pincode"
+              />
             </div>
           </div>
         </div>
+
+        {/* Log Out Button */}
+
+          <Button variant="destructive" className="mt-4 w-full" onClick={logout}>
+            Log Out
+          </Button>
+    
       </CardContent>
     </Card>
   );
