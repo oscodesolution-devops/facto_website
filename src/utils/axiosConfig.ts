@@ -1,7 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../utils/apiConstants";
 
-
 export const api = axios.create({
   withCredentials: false,
   baseURL: BASE_URL,
@@ -9,9 +8,9 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");  
+    const token = sessionStorage.getItem("token");
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;  
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -19,7 +18,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 
 const errorHandler = (error: any) => {
   const statusCode = error.response?.status;

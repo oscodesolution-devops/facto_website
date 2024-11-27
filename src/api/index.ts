@@ -17,7 +17,9 @@ export const fetchUserProfile = async (cancel = false) => {
     if (error instanceof Error) {
       throw new Error(error.message || "Failed to fetch user profile");
     } else {
-      throw new Error("An unknown error occurred while fetching the user profile");
+      throw new Error(
+        "An unknown error occurred while fetching the user profile"
+      );
     }
   }
 };
@@ -37,11 +39,12 @@ export const updateUserProfile = async (profileData: any, cancel = false) => {
     if (error instanceof Error) {
       throw new Error(error.message || "Failed to update user profile");
     } else {
-      throw new Error("An unknown error occurred while updating the user profile");
+      throw new Error(
+        "An unknown error occurred while updating the user profile"
+      );
     }
   }
 };
-
 
 export const AUTH = {
   PostLogin: async (data: any, cancel = false) => {
@@ -72,7 +75,42 @@ export const AUTH = {
         ? cancelApiObject.PostSignup.handleRequestCancellation().signal
         : undefined,
     });
-    console.log(response)
+    console.log(response);
+    return response.data;
+  },
+};
+
+export const User = {
+  addDetails: async (data: any, cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/user/profile",
+      method: "PUT",
+      data: {
+        fullName: data.fullName,
+        email: data.email,
+        password: data.password,
+      },
+      // headers: {
+      //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      //   "Content-Type": "application/json",
+      // },
+      signal: cancel
+        ? cancelApiObject.PostSignup.handleRequestCancellation().signal
+        : undefined,
+    });
+    console.log(response);
+    return response.data;
+  },
+
+  getDetails: async (cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/user/profile",
+      method: "GET",
+      signal: cancel
+        ? cancelApiObject.PostSignup.handleRequestCancellation().signal
+        : undefined,
+    });
+
     return response.data;
   },
 };

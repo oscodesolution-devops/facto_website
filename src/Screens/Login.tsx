@@ -21,11 +21,11 @@ const Login = () => {
       email: (e.target as HTMLFormElement)["email"].value,
       password: (e.target as HTMLFormElement)["signup-password"].value,
     };
-    console.log("Posting data to signup API:", data);
 
     try {
       const response = await AUTH.PostSignup(data);
       console.log("Signup Successful:", response);
+      sessionStorage.setItem("token", response.data.token);
       navigate("/user-details");
     } catch (error) {
       console.error("Signup Failed:", error);
@@ -45,8 +45,8 @@ const Login = () => {
     try {
       const response = await AUTH.PostLogin(data);
       console.log("Login Successful:", response);
-      saveUser(response.user); // Save user to context
-      navigate("/user-details");
+      saveUser(response.data.user); // Save user to context
+      navigate("/");
     } catch (error) {
       console.error("Login Failed:", error);
       alert("Login failed. Please check your credentials.");
@@ -66,7 +66,9 @@ const Login = () => {
             <button
               onClick={() => setActiveTab("signup")}
               className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${
-                activeTab === "signup" ? "bg-[#0033A1] text-white" : "bg-transparent text-[#0033A1]"
+                activeTab === "signup"
+                  ? "bg-[#0033A1] text-white"
+                  : "bg-transparent text-[#0033A1]"
               }`}
             >
               Sign up
@@ -74,7 +76,9 @@ const Login = () => {
             <button
               onClick={() => setActiveTab("login")}
               className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${
-                activeTab === "login" ? "bg-[#0033A1] text-white" : "bg-transparent text-[#0033A1]"
+                activeTab === "login"
+                  ? "bg-[#0033A1] text-white"
+                  : "bg-transparent text-[#0033A1]"
               }`}
             >
               Log in
@@ -84,11 +88,16 @@ const Login = () => {
           {/* Sign Up Form */}
           {activeTab === "signup" && (
             <div className="w-full mt-6">
-              <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">Sign up</h2>
+              <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">
+                Sign up
+              </h2>
               <form className="mt-6 space-y-6" onSubmit={handleSignup}>
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="w-full md:w-1/2">
-                    <label htmlFor="full-name" className="text-sm text-gray-700 font-light">
+                    <label
+                      htmlFor="full-name"
+                      className="text-sm text-gray-700 font-light"
+                    >
                       Full Name
                     </label>
                     <input
@@ -111,7 +120,10 @@ const Login = () => {
                   </div> */}
                 </div>
                 <div className="w-full">
-                  <label htmlFor="email" className="text-sm text-gray-700 font-light">
+                  <label
+                    htmlFor="email"
+                    className="text-sm text-gray-700 font-light"
+                  >
                     Email address
                   </label>
                   <input
@@ -122,18 +134,20 @@ const Login = () => {
                   />
                 </div>
                 <div className="w-full">
-  <label htmlFor="signup-password" className="text-sm text-gray-700 font-light">
-    Password
-  </label>
-  <input
-    id="signup-password"
-    type="password"
-    name="password" 
-    className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
-    required
-  />
-</div>
-
+                  <label
+                    htmlFor="signup-password"
+                    className="text-sm text-gray-700 font-light"
+                  >
+                    Password
+                  </label>
+                  <input
+                    id="signup-password"
+                    type="password"
+                    name="password"
+                    className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                    required
+                  />
+                </div>
 
                 <button
                   type="submit"
@@ -148,10 +162,15 @@ const Login = () => {
           {/* Login Form */}
           {activeTab === "login" && (
             <div className="w-full mt-6">
-              <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">Log in</h2>
+              <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">
+                Log in
+              </h2>
               <form className="mt-6 space-y-6" onSubmit={handleLogin}>
                 <div className="w-full">
-                  <label htmlFor="login-email" className="text-sm text-gray-700 font-light">
+                  <label
+                    htmlFor="login-email"
+                    className="text-sm text-gray-700 font-light"
+                  >
                     Email address
                   </label>
                   <input
@@ -162,7 +181,10 @@ const Login = () => {
                   />
                 </div>
                 <div className="w-full">
-                  <label htmlFor="login-password" className="text-sm text-gray-700 font-light">
+                  <label
+                    htmlFor="login-password"
+                    className="text-sm text-gray-700 font-light"
+                  >
                     Password
                   </label>
                   <input

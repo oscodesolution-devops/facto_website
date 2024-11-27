@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CalendarIcon, Check } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { CalendarIcon, Check } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/Components/ui/select";
+import { User } from "@/api";
 import {
   Popover,
   PopoverContent,
@@ -19,15 +20,15 @@ import {
 import { Calendar } from "@/Components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { useGlobalContext } from "@/context/GlobalContext"; 
+import { useGlobalContext } from "@/context/GlobalContext";
 
 const dummyData = {
-  name: "Somesh Patel",
+  fullName: "Somesh Patel",
   email: "Somesh2732@gmail.com",
-  phone: "9123456789",  
+  phone: "9123456789",
   aadhar: "123456789012",
   pan: "ABCDE1234F",
-  dob: new Date("1990-01-01"), 
+  dob: new Date("1990-01-01"),
   gender: "male",
   address: {
     houseNumber: "123",
@@ -40,13 +41,21 @@ const dummyData = {
   avatar: "/assets/user.png",
 };
 
-const states = [
-  "Andhra Pradesh", "Maharashtra", "Karnataka", "Tamil Nadu",
-];
+const states = ["Andhra Pradesh", "Maharashtra", "Karnataka", "Tamil Nadu"];
 
 export default function ProfileCard() {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(dummyData);
+  const [user, setUser] = useState({
+    fullName: "",
+    email: "",
+    role: "",
+    phoneNumber: "",
+    aadharNumber: "",
+    panNumber: "",
+    dateOfBirth: "",
+    address: "",
+  });
   const [errors, setErrors] = useState({
     phone: "",
     aadhar: "",
@@ -62,20 +71,30 @@ export default function ProfileCard() {
     if (value.length > 0) {
       switch (name) {
         case "phone":
-          error = value.length !== 10 ? "Phone number must be exactly 10 digits" : "";
+          error =
+            value.length !== 10 ? "Phone number must be exactly 10 digits" : "";
           break;
         case "aadhar":
-          error = value.length !== 12 ? "Aadhar number must be exactly 12 digits" : "";
+          error =
+            value.length !== 12
+              ? "Aadhar number must be exactly 12 digits"
+              : "";
           break;
         case "pan":
-          error = value.length !== 10 ? "PAN number must be exactly 10 characters" : "";
+          error =
+            value.length !== 10
+              ? "PAN number must be exactly 10 characters"
+              : "";
           break;
         case "gst":
-          error = value.length !== 15 ? "GST number must be exactly 15 characters" : "";
+          error =
+            value.length !== 15
+              ? "GST number must be exactly 15 characters"
+              : "";
           break;
       }
     }
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
     return error === "";
   };
 
@@ -83,7 +102,7 @@ export default function ProfileCard() {
     const { name, value } = e.target;
     if (name.startsWith("address.")) {
       const addressField = name.split(".")[1];
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         address: {
           ...prev.address,
@@ -91,7 +110,7 @@ export default function ProfileCard() {
         },
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         [name]: value,
       }));
@@ -101,8 +120,19 @@ export default function ProfileCard() {
     }
   };
 
+  const getData = async () => {
+    try {
+      const response = await User.getDetails();
+      console.log("Login Successful:", response);
+      setUser(response?.data?.user);
+    } catch (error) {
+      console.error("Login Failed:", error);
+      alert("Login failed. Please check your credentials.");
+    }
+  };
+
   const handleSubmit = () => {
-    const isValid = ["phone", "aadhar", "pan", "gst"].every(field => 
+    const isValid = ["phone", "aadhar", "pan", "gst"].every((field) =>
       validateField(field, formData[field as keyof typeof formData] as string)
     );
     if (isValid) {
@@ -112,6 +142,10 @@ export default function ProfileCard() {
       console.log("Form has errors, please correct them before submitting");
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Card className="w-full max-w-[1282px] mx-auto">
@@ -129,7 +163,7 @@ export default function ProfileCard() {
             width="100"
           />
           <div>
-            <h2 className="text-2xl font-bold">{formData.name}</h2>
+            <h2 className="text-2xl font-bold">{formData.fullName}</h2>
             <p className="text-muted-foreground">{formData.email}</p>
           </div>
         </div>
@@ -151,7 +185,7 @@ export default function ProfileCard() {
               <Input
                 id="name"
                 name="name"
-                value={formData.name}
+                value={user?.fullName || formData?.fullName}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="Your Full Name"
@@ -167,7 +201,9 @@ export default function ProfileCard() {
                 disabled={!isEditing}
                 placeholder="91 xxxxx xxxxx"
               />
-              {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
+              {errors.phone && (
+                <p className="text-sm text-red-500">{errors.phone}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="pan">Pan Number</Label>
@@ -179,14 +215,18 @@ export default function ProfileCard() {
                 disabled={!isEditing}
                 placeholder="PAN XXX XXXX"
               />
-              {errors.pan && <p className="text-sm text-red-500">{errors.pan}</p>}
+              {errors.pan && (
+                <p className="text-sm text-red-500">{errors.pan}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label>Gender</Label>
               <Select
                 disabled={!isEditing}
                 value={formData.gender}
-                onValueChange={(value) => setFormData(prev => ({ ...prev, gender: value }))}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, gender: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
@@ -208,7 +248,9 @@ export default function ProfileCard() {
                 disabled={!isEditing}
                 placeholder="22AAAAA0000A1Z5"
               />
-              {errors.gst && <p className="text-sm text-red-500">{errors.gst}</p>}
+              {errors.gst && (
+                <p className="text-sm text-red-500">{errors.gst}</p>
+              )}
             </div>
           </div>
 
@@ -235,7 +277,9 @@ export default function ProfileCard() {
                 disabled={!isEditing}
                 placeholder="XXXX XXXX XXXX"
               />
-              {errors.aadhar && <p className="text-sm text-red-500">{errors.aadhar}</p>}
+              {errors.aadhar && (
+                <p className="text-sm text-red-500">{errors.aadhar}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label>Date of Birth</Label>
@@ -254,7 +298,12 @@ export default function ProfileCard() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="start">
-                  <Calendar selected={formData.dob} onChange={(date) => setFormData(prev => ({ ...prev, dob: date }))} />
+                  <Calendar
+                    selected={formData.dob}
+                    onMonthChange={(date: any) =>
+                      setFormData((prev) => ({ ...prev, dob: date }))
+                    }
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -285,16 +334,22 @@ export default function ProfileCard() {
                 name="address.state"
                 disabled={!isEditing}
                 value={formData.address.state}
-                onValueChange={(value) => setFormData(prev => ({
-                  ...prev,
-                  address: { ...prev.address, state: value },
-                }))}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    address: { ...prev.address, state: value },
+                  }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
                 <SelectContent>
-                  {states.map(state => <SelectItem key={state} value={state}>{state}</SelectItem>)}
+                  {states.map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Input
@@ -310,10 +365,9 @@ export default function ProfileCard() {
 
         {/* Log Out Button */}
 
-          <Button variant="destructive" className="mt-4 w-full" onClick={logout}>
-            Log Out
-          </Button>
-    
+        <Button variant="destructive" className="mt-4 w-full" onClick={logout}>
+          Log Out
+        </Button>
       </CardContent>
     </Card>
   );

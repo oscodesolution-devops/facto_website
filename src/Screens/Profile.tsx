@@ -2,7 +2,7 @@
 import Navbar from "@/Components/Navbar";
 import ProfileCard from "@/Components/ui/profile-card";
 import TaxCard from "@/Components/ui/sub-card";
-import { getActiveCards } from "@/utils/cardData"; 
+import { getActiveCards } from "@/utils/cardData";
 
 const Profile = () => {
   // const dummyData = {
@@ -25,7 +25,7 @@ const Profile = () => {
   // };
 
   // const [isEditing, setIsEditing] = useState(false);
-  const activeCards = getActiveCards(); 
+  const activeCards = getActiveCards();
 
   return (
     <div>
@@ -33,37 +33,34 @@ const Profile = () => {
       <div className="bg-[#DDE2FF]">
         <div className="flex justify-center py-10">
           <ProfileCard
-            // dummyData={dummyData}
-            // isEditing={isEditing}
-            // setIsEditing={setIsEditing}
+          // dummyData={dummyData}
+          // isEditing={isEditing}
+          // setIsEditing={setIsEditing}
           />
         </div>
         <div className="px-4 sm:px-[130px] py-[60px]">
-  <div className="bg-white w-full sm:w-[371px] h-[50px] font-[poppins] font-[500] text-[#3AB54A] pt-[13px] px-[10px]">
-    Active Services
-  </div>
-  <div className="w-full sm:w-[1300px] pt-[20px] flex flex-col gap-[15px]">
-    {activeCards.map((card, index) => (
-      <TaxCard
-        key={index}
-        title={card.title}
-        checkedItems={card.checkedItems}
-        showRevalidateButton={card.showRevalidateButton}
-        amount={card.amount}
-        dueDate={card.dueDate}
-        cardNumber={card.cardNumber}
-        cardExpiry={card.cardExpiry}
-        onViewDetails={() =>
-          alert(`Viewing details for ${card.title}...`)
-        }
-        onRevalidate={() =>
-          alert(`Revalidating ${card.title}...`)
-        }
-      />
-    ))}
-  </div>
-</div>
-
+          <div className="bg-white w-full sm:w-[371px] h-[50px] font-[poppins] font-[500] text-[#3AB54A] pt-[13px] px-[10px]">
+            Active Services
+          </div>
+          <div className="w-full sm:w-[1300px] pt-[20px] flex flex-col gap-[15px]">
+            {activeCards.map((card, index) => (
+              <TaxCard
+                key={index}
+                title={card.title}
+                checkedItems={card.checkedItems}
+                showRevalidateButton={card.showRevalidateButton}
+                amount={card.amount}
+                dueDate={card.dueDate}
+                cardNumber={card.cardNumber}
+                cardExpiry={card.cardExpiry}
+                onViewDetails={() =>
+                  alert(`Viewing details for ${card.title}...`)
+                }
+                onRevalidate={() => alert(`Revalidating ${card.title}...`)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
