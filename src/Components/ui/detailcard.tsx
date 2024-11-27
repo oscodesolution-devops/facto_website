@@ -10,13 +10,23 @@ interface GSTServiceCardProps {
   secondaryButtonText?: string
   onPrimaryClick?: () => void
   onSecondaryClick?: () => void
+  title?: string
+  description?: string
+  icon?: string
+  _id?: string
 }
+
+
 
 export default function GSTServiceCard({
   showPrimaryButton = true,
   showSecondaryButton = true,
   primaryButtonText = "Start Filing",
   secondaryButtonText = "More Details",
+  title,
+  description,
+  icon,
+  _id,
   onPrimaryClick = () => {},
   // onSecondaryClick = () => {}
 }: GSTServiceCardProps) {
@@ -37,8 +47,8 @@ export default function GSTServiceCard({
           </div>
         </div>
         <div className="space-y-1">
-          <CardTitle className="text-xl font-bold text-[#32357B]">GST Service</CardTitle>
-          <p className="text-sm text-gray-700">Choose monthly, quarterly, or annual GST services tailored for all taxpayers - in just 3 easy steps!</p>
+          <CardTitle className="text-xl font-bold text-[#32357B]">{title}</CardTitle>
+          <p className="text-sm text-gray-700">{description}</p>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
