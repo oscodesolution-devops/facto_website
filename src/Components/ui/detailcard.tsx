@@ -29,7 +29,7 @@ export default function GSTServiceCard({
     }
   };
   return (
-    <Card className="w-[369.06px] max-h-[410px] overflow-auto">
+    <Card className="w-[369.06px] sm:w-[320px] md:w-[300px] lg:w-[369.06px] max-h-[410px] mx-auto overflow-auto">
       <CardHeader className="space-y-4 pb-4">
         <div className="flex items-center justify-start">
           <div className="rounded-full bg-[#E6F7EC] p-3">
@@ -37,12 +37,16 @@ export default function GSTServiceCard({
           </div>
         </div>
         <div className="space-y-1">
-          <CardTitle className="text-xl font-bold text-[#32357B]">GST Service</CardTitle>
-          <p className="text-sm text-gray-700">Choose monthly, quarterly, or annual GST services tailored for all taxpayers - in just 3 easy steps!</p>
+          <CardTitle className="text-xl sm:text-lg md:text-base font-bold text-[#32357B]">
+            GST Service
+          </CardTitle>
+          <p className="text-sm sm:text-xs md:text-[12px] text-gray-700">
+            Choose monthly, quarterly, or annual GST services tailored for all taxpayers - in just 3 easy steps!
+          </p>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <ul className="space-y-2 text-sm text-gray-600">
+        <ul className="space-y-2 text-sm sm:text-xs md:text-[10px] text-gray-600">
           {[
             'Click "More Details" or "Start Filing," then select the return type or request a callback directly.',
             'Choose options to get an estimated price.',
@@ -54,10 +58,10 @@ export default function GSTServiceCard({
             </li>
           ))}
         </ul>
-        
+  
         <p className="text-xs italic text-[#32357B]">Note: You can pay after your GST filing is completed.</p>
-
-        <div className="flex gap-2">
+  
+        <div className="flex flex-col sm:flex-row gap-2">
           {showSecondaryButton && (
             <Button 
               variant="outline" 
@@ -78,5 +82,9 @@ export default function GSTServiceCard({
         </div>
       </CardContent>
     </Card>
-  )
+  );
+  
+  
+  
+  
 }

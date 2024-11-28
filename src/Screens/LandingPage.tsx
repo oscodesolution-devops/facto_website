@@ -22,13 +22,13 @@ const LandingPage = () => {
     });
   }, []);
   return (
-    <div>
+<div>
       <Navbar />
       <div >
       <Header />
       </div>
 
-      <main className="flex flex-col md:flex-row gap-[5%] z-20">
+      <main className="flex flex-col md:flex-row gap-[5%] z-20 overflow-hidden">
   {/* Left Section */}
   <div className="w-full md:w-[50%] pt-[100px] pl-[10px] md:pl-[66px]">
     <div className="w-full md:w-[554px]">
@@ -84,7 +84,7 @@ const LandingPage = () => {
       </div>
 
       <div className="mt-[30px] pl-[20px] md:pl-[52px]">
-        <Link to="/updates">
+        <Link to="/update">
           <button data-aos="fade-up" className="bg-[#253483] text-white font-[poppins] font-medium text-[16px] rounded-[7.17px] w-[188px] h-[48px] px-[20px] py-[10px]">
             Check Updates
           </button>
@@ -95,7 +95,7 @@ const LandingPage = () => {
 </main>
 
 
-<section id="GstService" className="bg-[#DDE2FF] pt-[57px] pb-[80px] px-[10px] md:px-[111px] h-auto">
+<section id="GstService" className="bg-[#DDE2FF] pt-[57px] pb-[80px] px-[10px] md:px-[111px] h-auto overflow-hidden">
   <div className="w-full md:w-[833px] h-[90px] mx-auto">
     <h2 className="font-[500] text-center text-[30px] leading-[45px] tracking-[-0.03em] font-[Erode] text-black">
       FACTO: Your partner for E-Tax filing
@@ -126,17 +126,22 @@ const LandingPage = () => {
     </div>
   </div>
 
-  <div className="pt-[60px] px-[10px] md:px-[111px]">
-    <div data-aos="fade-up" data-aos-duration="700" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[30px] md:gap-[55px] justify-center">
-      <GSTServiceCard />
-      <GSTServiceCard />
-      <GSTServiceCard />
-      <GSTServiceCard />
-      <GSTServiceCard />
-      <GSTServiceCard />
-      <GSTServiceCard />
-    </div>
-  </div>
+  <div className="pt-[60px]">
+  <div 
+    data-aos="fade-up" 
+    data-aos-duration="700" 
+    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[30px] md:gap-[40px] lg:gap-[50px] justify-center">
+  <GSTServiceCard />
+  <GSTServiceCard />
+  <GSTServiceCard />
+  <GSTServiceCard />
+  <GSTServiceCard />
+  <GSTServiceCard />
+  <GSTServiceCard />
+</div>
+
+</div>
+
 </section>
 
 
@@ -145,7 +150,7 @@ const LandingPage = () => {
         <Phone />
       </div>
 
-      <section className="h-auto bg-[#E9FFE9] py-[78px] px-[10px] md:px-[208px]">
+      <section className="h-auto bg-[#E9FFE9] py-[78px] px-[10px] md:px-[208px] overflow-hidden">
   <div className="flex flex-col md:flex-row justify-center items-center gap-[20px]">
     <img data-aos="fade-up" src={Logo} alt="Facto Logo" className="w-[120px] h-[60px] md:w-[141px] md:h-[75px]" />
     <h3 data-aos="fade-up" className="font-[poppins] font-[500] text-[24px] md:text-[28px] text-center md:text-left pl-[0] md:pl-[20px]">
@@ -160,13 +165,13 @@ const LandingPage = () => {
   </div>
 
   <div>
-  <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 gap-[15px] mt-[20px] md:gap-[70px] md:ml-[80px] pt-[120px]">
+  <div data-aos="fade-up" className="grid grid-cols-1 gap-[15px] mt-[20px] md:gap-[30px] md:ml-0 pt-[120px]">
+  <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Timely E-filing for Prompt Refunds" description="Timely e-filing expedites verification, ensuring prompt refunds." />
+  <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Penalty-Free Tax Filing" description="Stay clear of penalties by filing your taxes accurately and on time." />
+  <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Defective Return Notice Prevention" description="Avoid receiving a Defective Return Notice through accurate tax filing." />
+  <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Escape the Last-Minute Filing Rush" description="Say goodbye to the commotion of the last-minute tax filing rush." />
+</div>
 
-      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Timely E-filing for Prompt Refunds" description="Timely e-filing expedites verification, ensuring prompt refunds." />
-      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Penalty-Free Tax Filing" description="Stay clear of penalties by filing your taxes accurately and on time." />
-      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Defective Return Notice Prevention" description="Avoid receiving a Defective Return Notice through accurate tax filing." />
-      <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Escape the Last-Minute Filing Rush" description="Say goodbye to the commotion of the last-minute tax filing rush." />
-    </div>
   </div>
 
   <div>
@@ -188,53 +193,7 @@ const LandingPage = () => {
   </div>
 </section>
 
-
-
-
-
-      {/* <div className="w-[151px] h-[151px] text-[90px] bg-green-500 text-white font-bold flex items-center justify-center rounded-full shadow-[0px_8px_15px_rgba(0,0,0,0.2)]">
-        <span className="drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">F</span>
-      </div>
-      <p className="text-black font-[poppins] mt-3 text-center text-lg font-[600] drop-shadow-[0_4px_8px_rgba(0,128,0,0.4)]">
-        Finance
-      </p>
-    </div>
-
-    <div className="flex flex-col items-center">
-      <div className="w-[151px] h-[151px] text-[90px] bg-green-500 text-white font-bold flex items-center justify-center rounded-full shadow-[0px_8px_15px_rgba(0,0,0,0.2)]">
-        <span className="drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]">A</span>
-      </div>
-      <p className="text-black font-[poppins] mt-3 text-center text-lg font-[600] drop-shadow-[0_4px_8px_rgba(0,128,0,0.4)]">
-        Assurance
-      </p>
-    </div>
-
-    <div className="flex flex-col items-center">
-      <div className="w-[151px] h-[151px] text-[90px] bg-green-500 text-white font-bold flex items-center justify-center rounded-full shadow-[0px_8px_15px_rgba(0,0,0,0.2)]">
-        <span className="drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]">C</span>
-      </div>
-      <p className="text-black font-[poppins] mt-3 text-center text-lg font-[600] drop-shadow-[0_4px_8px_rgba(0,128,0,0.4)]">
-        Consultancy
-      </p>
-    </div>
-
-    <div className="flex flex-col items-center">
-      <div className="w-[151px] h-[151px] text-[90px] bg-green-500 text-white font-bold flex items-center justify-center rounded-full shadow-[0px_8px_15px_rgba(0,0,0,0.2)]">
-        <span className="drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]">T</span>
-      </div>
-      <p className="text-black mt-3 font-[poppins] text-center text-lg font-[600] drop-shadow-[0_4px_8px_rgba(0,128,0,0.4)]">
-        Taxation
-      </p>
-    </div>
-
-    <div className="flex flex-col items-center">
-      <div className="w-[151px] h-[151px] text-[90px] bg-green-500 text-white font-bold flex items-center justify-center rounded-full shadow-[0px_8px_15px_rgba(0,0,0,0.2)]">
-        <span className="drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]">O</span>
-      </div>
-      <p className="text-black mt-3 font-[poppins] text-center text-lg font-[600] drop-shadow-[0_4px_8px_rgba(0,128,0,0.4)]">
-        Outsourcing
-      </p>*/}
-            <section className="py-10 pt-[110px] pb-[170px]">
+            <section className="py-10 pt-[110px] pb-[170px] overflow-hidden">
   <div className="container mx-auto flex justify-center gap-8">
     <div className="flex flex-col items-center">
       <div data-aos="fade-up">

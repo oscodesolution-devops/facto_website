@@ -46,16 +46,17 @@ const Pricing = () => {
         </div>
 
         <div className="pt-16 px-5 lg:px-28 pb-24">
-          <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[50px]">
-            <GSTServiceCard />
-            <GSTServiceCard />
-            <GSTServiceCard />
-            <GSTServiceCard />
-            <GSTServiceCard />
-            <GSTServiceCard />
-            <GSTServiceCard />
-          </div>
-        </div>
+  <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]">
+    <GSTServiceCard />
+    <GSTServiceCard />
+    <GSTServiceCard />
+    <GSTServiceCard />
+    <GSTServiceCard />
+    <GSTServiceCard />
+    <GSTServiceCard />
+  </div>
+</div>
+
       </div>
 
       <div className="bg-[#E9FFE9]">

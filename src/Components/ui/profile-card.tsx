@@ -22,24 +22,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useGlobalContext } from "@/context/GlobalContext";
 
-const dummyData = {
-  fullName: "Somesh Patel",
-  email: "Somesh2732@gmail.com",
-  phoneNumber: "9123456789",
-  aadharNumber: "123456789012",
-  panNumber: "ABCDE1234F",
-  dateOfBirth: new Date("1990-01-01"),
-  gender: "male",
-  address: {
-    houseNumber: "123",
-    street: "Main Street",
-    city: "Mumbai",
-    state: "Maharashtra",
-    pincode: "400001",
-  },
-  gstNumber: "22AAAAA0000A1Z5",
-  avatar: "/assets/user.png",
-};
+
 
 const states = ["Andhra Pradesh", "Maharashtra", "Karnataka", "Tamil Nadu"];
 
@@ -348,12 +331,16 @@ export default function ProfileCard() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="start">
-                  <Calendar
-                    selected={formData.dateOfBirth}
-                    onMonthChange={(date: any) =>
-                      setFormData((prev) => ({ ...prev, dateOfBirth: date }))
-                    }
-                  />
+                <Calendar
+                  selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : undefined}
+                  onSelect={(date: Date | undefined) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      dateOfBirth: date ? date.toISOString() : "", 
+                    }))
+                  }
+                />
+
                 </PopoverContent>
               </Popover>
             </div>
