@@ -140,3 +140,14 @@ export const Services = {
     return response.data;
   },
 };
+
+export const Notifications = {
+  getNotifications: async (cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/notification",
+      method: "GET",
+      signal: cancel ? cancelApiObject.getNotifications.handleRequestCancellation().signal : undefined,
+    });
+    return response.data;
+  },
+};

@@ -13,7 +13,7 @@ import Factoo from "../assets/Factoo.png"
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
-import { Services } from "@/api";
+import { Notifications, Services } from "@/api";
 
 
 type Service = {
@@ -28,18 +28,45 @@ type Service = {
 }
 
 
+
+type Notification = {
+  _id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+
 const LandingPage = () => {
   const [services, setServices] = useState<Service[]>([])
+  const [notifications, setNotifications] = useState<Notification[]>([])
   useEffect(() => {
     AOS.init({
       duration: 500,
     });
 
     async function fetchServices() {
-      const res = await Services.getServices()
-      setServices(res.data.services)
+      try {
+        const res = await Services.getServices()
+        setServices(res.data.services)
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
     }
+
+    async function fetchNotifications() {
+      try {
+        const res = await Notifications.getNotifications()
+        setNotifications(res.data.notifications)
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    }
+
     fetchServices()
+    fetchNotifications()
   }, []);
 
 
@@ -67,7 +94,6 @@ const LandingPage = () => {
                 Watch Video: Learn to use our platform
               </p>
             </div>
-
             <div data-aos="fade-up" className="mt-[23px]">
               <video className="w-full md:w-[552px] h-auto" controls autoPlay loop>
                 <source src="/assets/bulb.mp4" type="video/mp4" />
@@ -98,10 +124,11 @@ const LandingPage = () => {
 
             <div className="mt-[30px] pl-[20px] pr-[20px] md:pl-[52px] md:pr-[80px]">
               <ul data-aos="fade-up" className="list-disc pl-5 text-lg text-black text-[19px] font-[poppins] font-[300]">
-                <li className="mb-[18px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                <li className="mb-[18px]">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                <li className="mb-[18px]">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li>
-                <li className="mb-[18px]">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</li>
+                {
+                  notifications.map((notification) => (
+                    <li className="mb-[18px]" key={notification._id}>{notification.title}</li>
+                  ))
+                }
               </ul>
             </div>
 
