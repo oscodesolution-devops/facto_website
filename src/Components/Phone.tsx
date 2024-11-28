@@ -14,33 +14,54 @@ const Phone = () => {
   }, []);
   
   return (
-    <div className="w-full h-auto bg- pt-[60px] px-[10px] md:px-[170px] pb-0 flex items-center">
-      <div className="flex flex-col md:flex-row items-center gap-[36px]">
-
-        <img data-aos="fade-up" src={iPhoneImage} alt="iPhone 13 Pro" className="w-[200px] sm:w-[300px] md:w-auto h-auto" />
-
-        <div data-aos="fade-up" className="text-center md:text-left">
-          <h2 className="text-[28px] sm:text-[34px] md:text-[40px] font-[poppins] font-semibold leading-[46.48px] text-left w-full sm:w-[522px]">
-            Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Tax Solutions</span>
-          </h2>
-
-          <p className="text-[14px] sm:text-[16px] font-[300] leading-[25.6px] tracking-[-0.02em] text-[#4F4F4F] mt-[17px] sm:w-[522px]">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation.
-          </p>
-
-          <div className="mt-[17px] flex flex-col sm:flex-row gap-[20px] md:gap-[36px] justify-center items-center md:items-start">
-            <img src={QRCodeImage} alt="QR Code" className="w-[120px] sm:w-[159px] h-[120px] sm:h-[159px]" />
-
+    <div className="w-full h-auto bg- pt-[60px] px-[10px] sm:px-[20px] md:px-[20px] pb-0 flex items-center">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-[20px] sm:gap-[30px]">
+  
+        {/* Image Section */}
+        <img
+          data-aos="fade-up"
+          src={iPhoneImage}
+          alt="iPhone 13 Pro"
+          className="w-[180px] sm:w-[250px] md:w-[250px] lg:w-[280px] xl:w-[350px] h-auto"
+        />
+  
+        {/* Text Section */}
+        <div data-aos="fade-up" className="text-center sm:text-left w-full">
+  
+          {/* Heading in Separate Div */}
+          <div className="w-full sm:w-[400px] md:w-[400px] lg:w-[450px] xl:w-[520px] mx-auto">
+            <h2 className="text-[22px] sm:text-[28px] md:text-[28px] lg:text-[32px] xl:text-[36px] font-[poppins] font-semibold leading-[30px] sm:leading-[36px] md:leading-[36px] lg:leading-[42px] xl:leading-[46px]">
+              Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Tax Solutions</span>
+            </h2>
+          </div>
+  
+          {/* Paragraph in Separate Div */}
+          <div className="w-full sm:w-[400px] md:w-[400px] lg:w-[450px] xl:w-[520px] mx-auto mt-[17px]">
+            <p className="text-[12px] sm:text-[14px] md:text-[14px] font-[300] leading-[20px] sm:leading-[22px] md:leading-[22px] tracking-[-0.02em] text-[#4F4F4F]">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+              Ut enim ad minim veniam, quis nostrud exercitation.
+            </p>
+          </div>
+  
+          {/* QR Code and Buttons */}
+          <div className="mt-[17px] flex flex-col sm:flex-row gap-[16px] sm:gap-[20px] justify-center items-center sm:items-start">
+            <img
+              src={QRCodeImage}
+              alt="QR Code"
+              className="w-[100px] sm:w-[120px] md:w-[120px] lg:w-[140px] xl:w-[150px] h-[100px] sm:h-[120px] md:h-[120px] lg:h-[140px] xl:h-[150px]"
+            />
+  
             <div className="flex flex-col gap-[10px]">
-              <button className="p-3 bg-black text-white w-[200px] h-[50px] flex items-center justify-center gap-2 rounded-md">
+              {/* Google Play Button */}
+              <button className="p-3 bg-black text-white w-full sm:w-[180px] md:w-[180px] lg:w-[200px] xl:w-[220px] h-[45px] sm:h-[50px] md:h-[50px] lg:h-[55px] xl:h-[60px] flex items-center justify-center gap-2 rounded-md">
                 <FaGooglePlay size={20} />
-                <span>Get on Google Play Store</span>
+                <span className="text-[12px] sm:text-[14px] md:text-[14px] xl:text-[16px]">Get on Google Play Store</span>
               </button>
-
-              <button className="p-3 bg-black text-white w-[200px] h-[50px] flex items-center justify-center gap-2 rounded-md">
+  
+              {/* App Store Button */}
+              <button className="p-3 bg-black text-white w-full sm:w-[180px] md:w-[180px] lg:w-[200px] xl:w-[220px] h-[45px] sm:h-[50px] md:h-[50px] lg:h-[55px] xl:h-[60px] flex items-center justify-center gap-2 rounded-md">
                 <Apple size={20} />
-                <span>Get from App Store</span>
+                <span className="text-[12px] sm:text-[14px] md:text-[14px] xl:text-[16px]">Get from App Store</span>
               </button>
             </div>
           </div>
@@ -48,6 +69,9 @@ const Phone = () => {
       </div>
     </div>
   );
+  
+  
+  
 };
 
 export default Phone;

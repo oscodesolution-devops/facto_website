@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AUTH } from "@/api"; // Adjust the path based on your project structure
 import { useGlobalContext } from "@/context/GlobalContext"; // Adjust the path based on your project structure
-import facebookLogo from "../assets/facebook-logo.svg";
-import googleLogo from "../assets/google-logo.svg";
+// import facebookLogo from "../assets/facebook-logo.svg";
+// import googleLogo from "../assets/google-logo.svg";
 import Navbar from "@/Components/Navbar";
 
 const Login = () => {
