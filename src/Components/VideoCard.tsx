@@ -4,7 +4,6 @@ const VideoCard = ({
   videoSrc = "/assets/bulb.mp4",
   descriptionHeading = "Default Heading",
   description = "Default Description",
-  width = "400px", 
 }: {
   videoSrc?: string;
   descriptionHeading?: string;
