@@ -38,7 +38,7 @@ const UpdateDetails = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
 
       <div className="mt-5 flex items-center justify-center pl-[180px] pt-[84px]">

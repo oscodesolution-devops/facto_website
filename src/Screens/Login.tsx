@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <div className="font-[poppins] min-h-screen m-0 bg-[#DDE2FF] flex flex-col">
+    <div className="font-[poppins] min-h-screen m-0 bg-[#DDE2FF] flex flex-col overflow-hidden">
       {/* Navbar */}
       <Navbar />
 

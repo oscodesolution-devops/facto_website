@@ -28,7 +28,7 @@ const Profile = () => {
   const activeCards = getActiveCards();
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
       <div className="bg-[#DDE2FF]">
         <div className="flex justify-center py-10">

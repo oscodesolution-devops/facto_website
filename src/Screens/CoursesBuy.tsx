@@ -75,7 +75,7 @@ const CoursesBuy = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
 
       <div className="mt-5 flex items-center justify-center pl-[78px] mr-[auto] pt-[20px]">

@@ -72,7 +72,7 @@ const LandingPage = () => {
 
 
   return (
-    <div>
+<div className="overflow-hidden">
       <Navbar />
       <div >
         <Header />
