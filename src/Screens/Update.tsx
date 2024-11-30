@@ -26,6 +26,7 @@ import Phone from "@/Components/Phone";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
+import { Updates } from "@/api";
 
 const DropdownMenuDemo = ({ selected, setSelected }: any) => {
 
@@ -70,13 +71,29 @@ const DropdownMenuDemo = ({ selected, setSelected }: any) => {
   );
 };
 
+// {
+//   "_id": "67489bc2d4f4b2315368adf3",
+//   "title": "How to Install Apps",
+//   "imageUrl": "https://res.cloudinary.com/diush63ly/image/upload/v1732811713/course_thumbnails/bh6asyo8ru4g2u3ouyph.jpg",
+//   "tags": [],
+//   "createdAt": "2024-11-28T16:35:14.821Z"
+// }
+type Blog = {
+  _id: string;
+  title: string;
+  imageUrl: string;
+  tags: string[];
+  createdAt: string;
+}
+
 const Update = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedTimeframe, setSelectedTimeframe] = useState("Weekly");
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const navigate = useNavigate();
 
-  const handleReadMore = (title: string) => {
-    navigate(`/update-details`, { state: { title } });
+  const handleReadMore = (id: string) => {
+    navigate(`/update-details?id=${id}`);
   };
 
   const categories = [
@@ -89,51 +106,65 @@ const Update = () => {
     "Other3",
   ];
 
-  const newsData = [
-    {
-      imageUrl: "https://via.placeholder.com/355x180",
-      imageAlt: "News Image 1",
-      title: "GST Collection Drops Amid Global Uncertainty",
-      description:
-        "The GST collections have seen a decline due to fluctuating exports and slowing domestic consumption.",
-    },
-    {
-      imageUrl: "https://via.placeholder.com/355x180",
-      imageAlt: "News Image 2",
-      title: "Economic Slowdown: What It Means for Businesses",
-      description:
-        "India's economic slowdown continues to impact various sectors, with a significant rise in unemployment.",
-    },
-    {
-      imageUrl: "https://via.placeholder.com/355x180",
-      imageAlt: "News Image 3",
-      title: "Income Tax Reform: A New Chapter",
-      description:
-        "The government introduces reforms to simplify the income tax structure and ease the burden on taxpayers.",
-    },
-    {
-      imageUrl: "https://via.placeholder.com/355x180",
-      imageAlt: "News Image 1",
-      title: "GST Collection Drops Amid Global Uncertainty",
-      description:
-        "The GST collections have seen a decline due to fluctuating exports and slowing domestic consumption.",
-    },
-    {
-      imageUrl: "https://via.placeholder.com/355x180",
-      imageAlt: "News Image 2",
-      title: "Economic Slowdown: What It Means for Businesses",
-      description:
-        "India's economic slowdown continues to impact various sectors, with a significant rise in unemployment.",
-    },
-    {
-      imageUrl: "https://via.placeholder.com/355x180",
-      imageAlt: "News Image 3",
-      title: "Income Tax Reform: A New Chapter",
-      description:
-        "The government introduces reforms to simplify the income tax structure and ease the burden on taxpayers.",
-    },
+  // const newsData = [
+  //   {
+  //     imageUrl: "https://via.placeholder.com/355x180",
+  //     imageAlt: "News Image 1",
+  //     title: "GST Collection Drops Amid Global Uncertainty",
+  //     description:
+  //       "The GST collections have seen a decline due to fluctuating exports and slowing domestic consumption.",
+  //   },
+  //   {
+  //     imageUrl: "https://via.placeholder.com/355x180",
+  //     imageAlt: "News Image 2",
+  //     title: "Economic Slowdown: What It Means for Businesses",
+  //     description:
+  //       "India's economic slowdown continues to impact various sectors, with a significant rise in unemployment.",
+  //   },
+  //   {
+  //     imageUrl: "https://via.placeholder.com/355x180",
+  //     imageAlt: "News Image 3",
+  //     title: "Income Tax Reform: A New Chapter",
+  //     description:
+  //       "The government introduces reforms to simplify the income tax structure and ease the burden on taxpayers.",
+  //   },
+  //   {
+  //     imageUrl: "https://via.placeholder.com/355x180",
+  //     imageAlt: "News Image 1",
+  //     title: "GST Collection Drops Amid Global Uncertainty",
+  //     description:
+  //       "The GST collections have seen a decline due to fluctuating exports and slowing domestic consumption.",
+  //   },
+  //   {
+  //     imageUrl: "https://via.placeholder.com/355x180",
+  //     imageAlt: "News Image 2",
+  //     title: "Economic Slowdown: What It Means for Businesses",
+  //     description:
+  //       "India's economic slowdown continues to impact various sectors, with a significant rise in unemployment.",
+  //   },
+  //   {
+  //     imageUrl: "https://via.placeholder.com/355x180",
+  //     imageAlt: "News Image 3",
+  //     title: "Income Tax Reform: A New Chapter",
+  //     description:
+  //       "The government introduces reforms to simplify the income tax structure and ease the burden on taxpayers.",
+  //   },
 
-  ];
+  // ];
+
+  useEffect(() => {
+    async function fetchBlogs(){
+      try{
+        const res = await Updates.getBlogs();
+        setBlogs(res.data.blogs);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    fetchBlogs();
+  }, []);
+
+  
 
   return (
     <div>
@@ -214,14 +245,28 @@ const Update = () => {
   </div>
 
   <div data-aos="fade-up" className="mt-10 pl-7 sm:pl-1 grid grid-cols-1 sm:grid-cols-3 gap-x-40 gap-7 pt-[40px] pb-[140px] mx-auto max-w-screen-lg">
-    {newsData.map((news, index) => (
+    {/* {newsData.map((news, index) => (
       <NewsCard
         key={index}
         {...news}
         buttonText="Read More"
         onButtonClick={() => handleReadMore(news.title)}
       />
-    ))}
+    ))} */}
+
+    {
+      blogs.map((blog) => (
+        <NewsCard
+          key={blog._id}
+          imageUrl={blog.imageUrl}
+          imageAlt={blog.title}
+          title={blog.title}
+          description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
+          buttonText="Read More"
+          onButtonClick={() => handleReadMore(blog._id)}
+        />
+      ))
+    }
   </div>
 </div>
 

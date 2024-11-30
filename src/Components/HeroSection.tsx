@@ -44,7 +44,6 @@ const HeroSection = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const fetchedId = queryParams.get('id');
-    console.log("Fetched ID:", fetchedId);
     setId(fetchedId);
   }, [location]);
 

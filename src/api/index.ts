@@ -151,3 +151,23 @@ export const Notifications = {
     return response.data;
   },
 };
+
+export const Updates = {
+  getBlogs: async (cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/blogs",
+      method: "GET",
+      signal: cancel ? cancelApiObject.getBlogs.handleRequestCancellation().signal : undefined,
+    });
+    return response.data;
+  },
+  getBlogById: async (id: string, cancel = false) => {
+    const response = await api.request({
+      url: `https://facto-backend-8spm.onrender.com/api/v1/blogs/${id}`,
+      method: "GET",
+      signal: cancel ? cancelApiObject.getBlogById.handleRequestCancellation().signal : undefined,
+    });
+    return response.data;
+  },
+};
+

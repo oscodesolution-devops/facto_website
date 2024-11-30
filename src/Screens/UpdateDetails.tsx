@@ -1,41 +1,90 @@
-import { useLocation } from "react-router-dom";
 import Navbar from "@/Components/Navbar";
 import { Search } from "lucide-react";
 import { Input } from "@/Components/ui/input";
-import newsImg from "@/assets/newsimg.svg";
 import Phone from "@/Components/Phone";
 import Footer from "@/Components/Footer";
+import { useEffect, useState } from "react";
+import { Updates } from "@/api";
+
+
+// "blog": {
+//             "reference": {
+//                 "title": "Link",
+//                 "url": "https://example.com"
+//             },
+//             "_id": "67489bc2d4f4b2315368adf3",
+//             "title": "How to Install Apps",
+//             "content": "In our day to day use we use app store to install Apps",
+//             "imageUrl": "https://res.cloudinary.com/diush63ly/image/upload/v1732811713/course_thumbnails/bh6asyo8ru4g2u3ouyph.jpg",
+//             "author": "Anonymous",
+//             "tags": [],
+//             "createdAt": "2024-11-28T16:35:14.821Z",
+//             "updatedAt": "2024-11-28T16:35:14.821Z",
+//             "__v": 0
+//         }
+type Blog = {
+  reference: {
+    title: string;
+    url: string;
+  };
+  _id: string;
+  title: string;
+  content: string;
+  imageUrl: string;
+  author: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
 const UpdateDetails = () => {
-  const location = useLocation();
-  const { state } = location || {};
-  const { title } = state || {};
+  const [id, setId] = useState<string | null>(null);
+  const [blog, setBlog] = useState<Blog | null>(null);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const fetchedId = queryParams.get('id');
+    setId(fetchedId);
 
-  const newsDetails = {
-    date: "October 19, 2024",
-    description:
-      "What seemed like a one-off issue is starting to look like a trend. Growth in GST collection fell to 6.5%, its lowest in 40 months. The trade deficit widened to $29.7 billion in August from $24.2 billion a year earlier...",
-    url: "https://www.example.com",
-    additionalNews: [
-      {
-        title:
-          "GST Collection Falls, Exports Drop: Is India's Economic Growth Slowing?",
-        date: "October 20, 2024",
-        description:
-          "Exports dropped significantly due to sluggish economic activity worldwide. Experts predict further decline in upcoming months...",
-        image: newsImg,
-        url: "https://www.example1.com",
-      },
-      {
-        title: "GST May Touch New Lows Amid Stagnant Revenue Collection Efforts",
-        date: "October 21, 2024",
-        description:
-          "The government is considering revising tax slabs to address revenue gaps caused by decreased GST collections...",
-        image: newsImg,
-        url: "https://www.example2.com",
-      },
-    ],
-  };
+    async function fetchBlog() {
+      const res = await Updates.getBlogById(fetchedId || "");
+      console.log(res.data.blog);
+      setBlog(res.data.blog);
+    }
+    fetchBlog();
+  }, [id]);
+
+  function formatDate(isoDate: string) {
+    const date = new Date(isoDate);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
+
+  // const newsDetails = {
+  //   date: "October 19, 2024",
+  //   description:
+  //     "What seemed like a one-off issue is starting to look like a trend. Growth in GST collection fell to 6.5%, its lowest in 40 months. The trade deficit widened to $29.7 billion in August from $24.2 billion a year earlier...",
+  //   url: "https://www.example.com",
+  //   additionalNews: [
+  //     {
+  //       title:
+  //         "GST Collection Falls, Exports Drop: Is India's Economic Growth Slowing?",
+  //       date: "October 20, 2024",
+  //       description:
+  //         "Exports dropped significantly due to sluggish economic activity worldwide. Experts predict further decline in upcoming months...",
+  //       image: newsImg,
+  //       url: "https://www.example1.com",
+  //     },
+  //     {
+  //       title: "GST May Touch New Lows Amid Stagnant Revenue Collection Efforts",
+  //       date: "October 21, 2024",
+  //       description:
+  //         "The government is considering revising tax slabs to address revenue gaps caused by decreased GST collections...",
+  //       image: newsImg,
+  //       url: "https://www.example2.com",
+  //     },
+  //   ],
+  // };
 
   return (
     <div>
@@ -61,36 +110,35 @@ const UpdateDetails = () => {
         <div className="w-[80%] max-w-[1300px] flex flex-col items-center text-left mb-10">
           <ul className="list-disc pl-5 w-full">
             <li className="text-2xl font-[erode] font-bold text-gray-800">
-              {title ||
-                "GST Collection Falls, Exports Drop: Is India's Economic Growth Slowing?"}
+              {blog?.title}
             </li>
           </ul>
 
           <img
-            src={newsImg}
+            src={blog?.imageUrl}
             alt="News"
             className="w-full h-[344px] mt-5 object-cover rounded-md"
           />
 
-          <p className="text-gray-600 font-[poppins] font-[300] mr-[auto] text-sm mt-4">{newsDetails.date}</p>
+          <p className="text-gray-600 font-[poppins] font-[300] mr-[auto] text-sm mt-4">{formatDate(blog?.createdAt || "")}</p>
 
-          <p className="text-gray-700 font-[poppins] font-[300] mt-8 leading-6">{newsDetails.description}</p>
+          <p className="text-gray-700 font-[poppins] font-[300] mt-8 leading-6">{blog?.content}</p>
 
           <p className="text-gray-700 mr-[auto] font-[erode] font-[600] mt-8">
             URL:{" "}
             <a
-              href={newsDetails.url}
+              href={blog?.reference.url}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 underline"
             >
-              {newsDetails.url}
+              {blog?.reference.url}
             </a>
           </p>
         </div>
 
- 
-        {newsDetails.additionalNews.map((news, index) => (
+
+        {/* {newsDetails.additionalNews.map((news, index) => (
           <div
             key={index}
             className="w-[80%] max-w-[1300px] flex flex-col items-center text-left mt-[50px] mb-[50px] border-t border-gray-300 pt-6"
@@ -121,7 +169,8 @@ const UpdateDetails = () => {
               </a>
             </p>
           </div>
-        ))}
+        ))} */}
+
       </div>
       <div className="bg-[#E9FFE9]">
         <Phone />
