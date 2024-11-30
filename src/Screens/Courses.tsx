@@ -87,7 +87,7 @@ const Courses = () => {
   // };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
 
       <div className="w-full flex justify-start pt-6 md:pt-[90px] px-4 md:px-[78px]">

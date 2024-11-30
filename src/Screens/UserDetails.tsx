@@ -36,7 +36,7 @@ const UserDetails = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <nav className="flex items-center justify-between px-6 py-3 border-[1px] border-primary">
         <div className="flex items-center">
           <img src={logo} alt="Logo" className="w-[181px] h-[101px]" />

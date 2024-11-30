@@ -56,7 +56,7 @@ const ActivePlans = () => {
   const expiredCards = cardData.filter((card) => card.showRevalidateButton);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <div>
         <Navbar />
       </div>

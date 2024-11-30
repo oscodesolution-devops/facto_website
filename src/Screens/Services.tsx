@@ -14,7 +14,7 @@ const ServicesPage = () => {
   }, []); // Re-run effect whenever the location changes
 
   return (
-    <div>
+    <div className='overflow-hidden'>
       <Navbar />
       <HeroSection /> 
       <StartFilling />

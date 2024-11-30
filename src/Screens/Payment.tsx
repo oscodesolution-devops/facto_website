@@ -12,7 +12,7 @@ const Payment = () => {
   });
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <div>
         <Navbar />
       </div>

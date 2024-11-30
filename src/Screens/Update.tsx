@@ -167,7 +167,7 @@ const Update = () => {
   
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
       <section>
 
