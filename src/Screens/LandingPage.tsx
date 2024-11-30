@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { Notifications, Services } from "@/api";
 
 
-type Service = {
+export interface Service {
   _id: string;
   title: string;
   description: string;
@@ -29,7 +29,7 @@ type Service = {
 
 
 
-type Notification = {
+interface Notification {
   _id: string;
   title: string;
   content: string;
@@ -50,7 +50,6 @@ const LandingPage = () => {
     async function fetchServices() {
       try {
         const res = await Services.getServices()
-        console.log("services", res);
         setServices(res.data.services)
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -72,7 +71,7 @@ const LandingPage = () => {
 
 
   return (
-<div className="overflow-hidden">
+    <div className="overflow-hidden">
       <Navbar />
       <div >
         <Header />

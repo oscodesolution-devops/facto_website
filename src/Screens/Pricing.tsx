@@ -6,15 +6,28 @@ import Phone from "@/Components/Phone";
 import Footer from "@/Components/Footer";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Service } from "./LandingPage";
+import { Services } from "@/api";
 
 
 const Pricing = () => {
+  const [services, setServices] = useState<Service[]>([])
 
   useEffect(() => {
     AOS.init({
       duration: 800,
     });
+
+    async function fetchServices() {
+      try {
+        const res = await Services.getServices()
+        setServices(res.data.services)
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    }
+    fetchServices()
   }, []);
   return (
     <div className="overflow-hidden">
@@ -46,16 +59,12 @@ const Pricing = () => {
         </div>
 
         <div className="pt-16 px-5 lg:px-28 pb-24">
-  <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]">
-    <GSTServiceCard />
-    <GSTServiceCard />
-    <GSTServiceCard />
-    <GSTServiceCard />
-    <GSTServiceCard />
-    <GSTServiceCard />
-    <GSTServiceCard />
-  </div>
-</div>
+          <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]">
+            {services.map((service) => (
+              <GSTServiceCard key={service._id} title={service.title} description={service.description} icon={service.icon} _id={service._id} />
+            ))}
+          </div>
+        </div>
 
       </div>
 

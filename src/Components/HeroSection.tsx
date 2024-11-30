@@ -14,6 +14,8 @@ import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
 import { Services } from "@/api";
+import { Service } from "@/Screens/LandingPage";
+import GSTServiceCard from "./ui/detailcard";
 
 type SubService = {
   _id: string;
@@ -35,6 +37,8 @@ const HeroSection = () => {
   const location = useLocation();
   const [id, setId] = useState<string | null>(null);
   const [subServices, setSubServices] = useState<SubService[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+
 
   useEffect(() => {
     AOS.init({ duration: 700 });
@@ -59,6 +63,16 @@ const HeroSection = () => {
         }
       };
       fetchSubServices();
+    } else {
+      async function fetchServices() {
+        try {
+          const res = await Services.getServices()
+          setServices(res.data.services)
+        } catch (error) {
+          console.error('Error fetching services:', error);
+        }
+      }
+      fetchServices()
     }
   }, [id]); // Runs whenever `id` changes
 
@@ -111,11 +125,12 @@ const HeroSection = () => {
 
       <div data-aos="fade-up" className="mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
 
-        {
-          subServices.map((subService) => (
+        
+        {id != undefined ? subServices.map((subService) => (
             <PricingCard key={subService._id} title={subService.title} description={subService.description} features={subService.features} price={subService.price} period={subService.period} />
-          ))
-        }
+          )) : services.map((service) => (
+            <GSTServiceCard key={service._id} title={service.title} description={service.description} icon={service.icon} _id={service._id} />
+          ))}
       </div>
 
 
