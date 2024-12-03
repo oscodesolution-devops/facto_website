@@ -16,6 +16,8 @@ import { useLocation } from "react-router-dom";
 import { Services } from "@/api";
 import { Service } from "@/Screens/LandingPage";
 import GSTServiceCard from "./ui/detailcard";
+import PricingCardSkeleton from "./ui/pricingcardskeleton";
+import GSTServiceCardSkeleton from "./GSTServiceCardLoader";
 
 type SubService = {
   _id: string;
@@ -38,6 +40,8 @@ const HeroSection = () => {
   const [id, setId] = useState<string | null>(null);
   const [subServices, setSubServices] = useState<SubService[]>([]);
   const [services, setServices] = useState<Service[]>([]);
+  const [isLoadingSubServices, setIsLoadingSubServices] = useState(true);
+  const [isLoadingServices, setIsLoadingServices] = useState(true);
 
 
   useEffect(() => {
@@ -53,11 +57,13 @@ const HeroSection = () => {
 
   // Fetch sub-services when `id` is available
   useEffect(() => {
-    if (id) {
+    console.log(id, "id");
+    if (id !== null) {
       const fetchSubServices = async () => {
         try {
           const res = await Services.getSubServices(id as string);
           setSubServices(res.data.subServices);
+          setIsLoadingSubServices(false);
         } catch (error) {
           console.error("Error fetching sub-services:", error);
         }
@@ -66,8 +72,9 @@ const HeroSection = () => {
     } else {
       async function fetchServices() {
         try {
-          const res = await Services.getServices()
-          setServices(res.data.services)
+          const res = await Services.getServices();
+          setServices(res.data.services);
+          setIsLoadingServices(false);
         } catch (error) {
           console.error('Error fetching services:', error);
         }
@@ -124,14 +131,46 @@ const HeroSection = () => {
       </div>
 
       <div data-aos="fade-up" className="mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-
-        
-        {id != undefined ? subServices.map((subService) => (
-            <PricingCard key={subService._id} title={subService.title} description={subService.description} features={subService.features} price={subService.price} period={subService.period} />
-          )) : services.map((service) => (
-            <GSTServiceCard key={service._id} title={service.title} description={service.description} icon={service.icon} _id={service._id} />
-          ))}
+        {id !== null ? (
+          // Show loading skeletons if `isLoadingSubServices` is true
+          isLoadingSubServices ? (
+            Array(3)
+              .fill(null)
+              .map((_, index) => <PricingCardSkeleton key={index} />)
+          ) : (
+            // Show actual sub-services when data is loaded
+            subServices.map((subService) => (
+              <PricingCard
+                key={subService._id}
+                title={subService.title}
+                description={subService.description}
+                features={subService.features}
+                price={subService.price}
+                period={subService.period}
+              />
+            ))
+          )
+        ) : (
+          // Show loading skeletons if `isLoadingServices` is true
+          isLoadingServices ? (
+            Array(3)
+              .fill(null)
+              .map((_, index) => <GSTServiceCardSkeleton key={index} />)
+          ) : (
+            // Show actual services when data is loaded
+            services.map((service) => (
+              <GSTServiceCard
+                key={service._id}
+                title={service.title}
+                description={service.description}
+                icon={service.icon}
+                _id={service._id}
+              />
+            ))
+          )
+        )}
       </div>
+
 
 
       <div className="mt-16">

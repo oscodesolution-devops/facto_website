@@ -5,6 +5,7 @@ import Phone from "@/Components/Phone";
 import Footer from "@/Components/Footer";
 import { useEffect, useState } from "react";
 import { Updates } from "@/api";
+import BlogSkeleton from "@/Components/BlogSkeleton";
 
 
 // "blog": {
@@ -41,6 +42,7 @@ type Blog = {
 const UpdateDetails = () => {
   const [id, setId] = useState<string | null>(null);
   const [blog, setBlog] = useState<Blog | null>(null);
+  const [isLoadingBlog, setIsLoadingBlog] = useState(true);
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const fetchedId = queryParams.get('id');
@@ -50,6 +52,7 @@ const UpdateDetails = () => {
       const res = await Updates.getBlogById(fetchedId || "");
       console.log(res.data.blog);
       setBlog(res.data.blog);
+      setIsLoadingBlog(false);
     }
     fetchBlog();
   }, [id]);
@@ -60,7 +63,7 @@ const UpdateDetails = () => {
     return date.toLocaleDateString('en-US', options);
   }
 
-  // const newsDetails = {
+
   //   date: "October 19, 2024",
   //   description:
   //     "What seemed like a one-off issue is starting to look like a trend. Growth in GST collection fell to 6.5%, its lowest in 40 months. The trade deficit widened to $29.7 billion in August from $24.2 billion a year earlier...",
@@ -104,41 +107,41 @@ const UpdateDetails = () => {
         </div>
       </div>
 
+      {isLoadingBlog ? <BlogSkeleton /> : (
+        <div className="p-8 flex flex-col items-center">
 
-      <div className="p-8 flex flex-col items-center">
+          <div className="w-[80%] max-w-[1300px] flex flex-col items-center text-left mb-10">
+            <ul className="list-disc pl-5 w-full">
+              <li className="text-2xl font-[erode] font-bold text-gray-800">
+                {blog?.title}
+              </li>
+            </ul>
 
-        <div className="w-[80%] max-w-[1300px] flex flex-col items-center text-left mb-10">
-          <ul className="list-disc pl-5 w-full">
-            <li className="text-2xl font-[erode] font-bold text-gray-800">
-              {blog?.title}
-            </li>
-          </ul>
+            <img
+              src={blog?.imageUrl}
+              alt="News"
+              className="w-full h-[344px] mt-5 object-cover rounded-md"
+            />
 
-          <img
-            src={blog?.imageUrl}
-            alt="News"
-            className="w-full h-[344px] mt-5 object-cover rounded-md"
-          />
+            <p className="text-gray-600 font-[poppins] font-[300] mr-[auto] text-sm mt-4">{formatDate(blog?.createdAt || "")}</p>
 
-          <p className="text-gray-600 font-[poppins] font-[300] mr-[auto] text-sm mt-4">{formatDate(blog?.createdAt || "")}</p>
+            <p className="text-gray-700 font-[poppins] font-[300] mt-8 leading-6">{blog?.content}</p>
 
-          <p className="text-gray-700 font-[poppins] font-[300] mt-8 leading-6">{blog?.content}</p>
-
-          <p className="text-gray-700 mr-[auto] font-[erode] font-[600] mt-8">
-            URL:{" "}
-            <a
-              href={blog?.reference.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
-            >
-              {blog?.reference.url}
-            </a>
-          </p>
-        </div>
+            <p className="text-gray-700 mr-[auto] font-[erode] font-[600] mt-8">
+              URL:{" "}
+              <a
+                href={blog?.reference.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                {blog?.reference.url}
+              </a>
+            </p>
+          </div>
 
 
-        {/* {newsDetails.additionalNews.map((news, index) => (
+          {/* {newsDetails.additionalNews.map((news, index) => (
           <div
             key={index}
             className="w-[80%] max-w-[1300px] flex flex-col items-center text-left mt-[50px] mb-[50px] border-t border-gray-300 pt-6"
@@ -171,7 +174,11 @@ const UpdateDetails = () => {
           </div>
         ))} */}
 
-      </div>
+        </div>
+      )}
+
+
+
       <div className="bg-[#E9FFE9]">
         <Phone />
       </div>

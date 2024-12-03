@@ -9,11 +9,12 @@ import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
 import { Service } from "./LandingPage";
 import { Services } from "@/api";
+import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
 
 
 const Pricing = () => {
   const [services, setServices] = useState<Service[]>([])
-
+  const [isLoadingServices, setIsLoadingServices] = useState(true);
   useEffect(() => {
     AOS.init({
       duration: 800,
@@ -23,6 +24,7 @@ const Pricing = () => {
       try {
         const res = await Services.getServices()
         setServices(res.data.services)
+        setIsLoadingServices(false);
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -60,7 +62,9 @@ const Pricing = () => {
 
         <div className="pt-16 px-5 lg:px-28 pb-24">
           <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]">
-            {services.map((service) => (
+            {isLoadingServices ? Array(3).fill(null).map((_, index) => (
+              <GSTServiceCardSkeleton key={index} />
+            )) : services.map((service) => (
               <GSTServiceCard key={service._id} title={service.title} description={service.description} icon={service.icon} _id={service._id} />
             ))}
           </div>
