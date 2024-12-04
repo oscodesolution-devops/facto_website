@@ -192,52 +192,90 @@ const LandingPage = () => {
 
 
 
-      <div className="flex justify-center mt-[50px]">
+      <div className="flex justify-center mx-[auto] mt-[50px]">
         <Phone />
       </div>
 
       <section className="h-auto bg-[#E9FFE9] py-[78px] px-[10px] md:px-[208px] overflow-hidden">
-        <div className="flex flex-col md:flex-row justify-center items-center gap-[20px]">
-          <img data-aos="fade-up" src={Logo} alt="Facto Logo" className="w-[120px] h-[60px] md:w-[141px] md:h-[75px]" />
-          <h3 data-aos="fade-up" className="font-[poppins] font-[500] text-[24px] md:text-[28px] text-center md:text-left pl-[0] md:pl-[20px]">
-            Simplify your tax life with our comprehensive services
-          </h3>
-        </div>
+  <div className="flex flex-col md:flex-row justify-center items-center gap-[20px]">
+    <img data-aos="fade-up" src={Logo} alt="Facto Logo" className="w-[120px] h-[60px] md:w-[141px] md:h-[75px]" />
+    <h3 data-aos="fade-up" className="font-[poppins] font-[500] text-[24px] md:text-[28px] text-center md:text-left pl-[0] md:pl-[20px]">
+      Simplify your tax life with our comprehensive services
+    </h3>
+  </div>
 
-        <div>
-          <p data-aos="fade-up" className="flex justify-center text-primary font-[poppins] font-[600] text-[16px] md:text-[20px]">
-            Your ideal partner for assisted Tax E-Filing as we offer
-          </p>
-        </div>
+  <div>
+    <p data-aos="fade-up" className="flex justify-center text-primary font-[poppins] font-[600] text-[16px] md:text-[20px]">
+      Your ideal partner for assisted Tax E-Filing as we offer
+    </p>
+  </div>
 
-        <div>
-          <div data-aos="fade-up" className="grid grid-cols-1 gap-[15px] mt-[20px] md:gap-[30px] md:ml-0 pt-[120px]">
-            <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Timely E-filing for Prompt Refunds" description="Timely e-filing expedites verification, ensuring prompt refunds." />
-            <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Penalty-Free Tax Filing" description="Stay clear of penalties by filing your taxes accurately and on time." />
-            <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Defective Return Notice Prevention" description="Avoid receiving a Defective Return Notice through accurate tax filing." />
-            <VideoCard width="380px" videoSrc="/assets/bulb.mp4" descriptionHeading="Escape the Last-Minute Filing Rush" description="Say goodbye to the commotion of the last-minute tax filing rush." />
-          </div>
+  <div className="mt-[20px] pt-[120px]">
+  <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-x-[20px] lg:gap-x-[40px] gap-y-[20px] lg:gap-y-[40px] mt-auto lg:ml-[90px] mb-auto font-[inter]">
+  
 
-        </div>
+  <div className="flex justify-center">
+    <VideoCard 
+      width="100%" 
+      videoSrc="/assets/bulb.mp4" 
+      descriptionHeading="Timely E-filing for Prompt Refunds" 
+      description="Timely e-filing expedites verification, ensuring prompt refunds." 
+    />
+  </div>
 
-        <div>
-          <h3 data-aos="fade-up" className="flex justify-center font-[poppins] font-[600] text-[18px] md:text-[20px] pt-[50px]">
-            Take control of your taxes today and experience the convenience of E-Tax filing with TaxBuddy.
-          </h3>
-        </div>
+ 
+  <div className="flex justify-center">
+    <VideoCard 
+      width="100%" 
+      videoSrc="/assets/bulb.mp4" 
+      descriptionHeading="Penalty-Free Tax Filing" 
+      description="Stay clear of penalties by filing your taxes accurately and on time." 
+    />
+  </div>
 
-        <div data-aos="fade-up" className="mt-[32px] flex justify-center gap-[24px] flex-col md:flex-row items-center">
-          <Input
-            type="text"
-            placeholder="Enter your Phone number"
-            className="w-[280px] h-[49px] md:w-[321px] text-black"
-            style={{ padding: "0 16px", boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
-          />
-          <button data-aos="fade-up" className="bg-secondary text-white font-[poppins] font-[300] text-[14px] md:text-[16px] rounded-[7.17px] w-[267px] h-[48.51px] flex items-center justify-center">
-            Signup now and Get started!
-          </button>
-        </div>
-      </section>
+  <div className="flex justify-center">
+    <VideoCard 
+      width="100%" 
+      videoSrc="/assets/bulb.mp4" 
+      descriptionHeading="Defective Return Notice Prevention" 
+      description="Avoid receiving a Defective Return Notice through accurate tax filing." 
+    />
+  </div>
+
+
+  <div className="flex justify-center">
+    <VideoCard 
+      width="100%" 
+      videoSrc="/assets/bulb.mp4" 
+      descriptionHeading="Escape the Last-Minute Filing Rush" 
+      description="Say goodbye to the commotion of the last-minute tax filing rush." 
+    />
+  </div>
+
+</div>
+
+
+  </div>
+
+  <div>
+    <h3 data-aos="fade-up" className="flex justify-center font-[poppins] font-[600] text-[18px] md:text-[20px] pt-[50px]">
+      Take control of your taxes today and experience the convenience of E-Tax filing with TaxBuddy.
+    </h3>
+  </div>
+
+  <div data-aos="fade-up" className="mt-[32px] flex justify-center gap-[24px] flex-col md:flex-row items-center">
+    <Input
+      type="text"
+      placeholder="Enter your Phone number"
+      className="w-[280px] h-[49px] md:w-[321px] text-black"
+      style={{ padding: "0 16px", boxShadow: "0px 0.94px 6.57px 0px #00000040" }}
+    />
+    <button data-aos="fade-up" className="bg-secondary text-white font-[poppins] font-[300] text-[14px] md:text-[16px] rounded-[7.17px] w-[267px] h-[48.51px] flex items-center justify-center">
+      Signup now and Get started!
+    </button>
+  </div>
+</section>
+
 
       <section className="py-10 pt-[110px] pb-[170px] overflow-hidden">
         <div className="container mx-auto flex justify-center gap-8">
