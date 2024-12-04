@@ -14,9 +14,10 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
 import { Notifications, Services } from "@/api";
+import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
 
 
-type Service = {
+export interface Service {
   _id: string;
   title: string;
   description: string;
@@ -29,7 +30,7 @@ type Service = {
 
 
 
-type Notification = {
+interface Notification {
   _id: string;
   title: string;
   content: string;
@@ -42,6 +43,8 @@ type Notification = {
 const LandingPage = () => {
   const [services, setServices] = useState<Service[]>([])
   const [notifications, setNotifications] = useState<Notification[]>([])
+  const [isLoadingCards, setIsLoadingCards] = useState(true);
+  const [isLoadingNotifications, setIsLoadingNotifications] = useState(true);
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -50,8 +53,8 @@ const LandingPage = () => {
     async function fetchServices() {
       try {
         const res = await Services.getServices()
-        console.log("services", res);
         setServices(res.data.services)
+        setIsLoadingCards(false);
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -61,6 +64,7 @@ const LandingPage = () => {
       try {
         const res = await Notifications.getNotifications()
         setNotifications(res.data.notifications)
+        setIsLoadingNotifications(false);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }
@@ -72,7 +76,7 @@ const LandingPage = () => {
 
 
   return (
-<div className="overflow-hidden">
+    <div className="overflow-hidden">
       <Navbar />
       <div >
         <Header />
@@ -126,10 +130,18 @@ const LandingPage = () => {
 
             <div className="mt-[30px] pl-[20px] pr-[20px] md:pl-[52px] md:pr-[80px]">
               <ul data-aos="fade-up" className="list-disc pl-5 text-lg text-black text-[19px] font-[poppins] font-[300]">
+
                 {
-                  notifications.map((notification) => (
-                    <li className="mb-[18px]" key={notification._id}>{notification.title}</li>
-                  ))
+                  isLoadingNotifications ? Array(3)
+                    .fill(null)
+                    .map((_, index) => (
+                      <li
+                        className="mb-[18px] h-5 bg-gray-200 animate-pulse rounded-md"
+                        key={index}
+                      />
+                    )) : notifications.map((notification) => (
+                      <li className="mb-[18px]" key={notification._id}>{notification.title}</li>
+                    ))
                 }
               </ul>
             </div>
@@ -182,7 +194,9 @@ const LandingPage = () => {
             data-aos="fade-up"
             data-aos-duration="700"
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[30px] md:gap-[40px] lg:gap-[50px] justify-center">
-            {services.map((service) => (
+            {isLoadingCards ? Array.from({ length: 3 }).map((_, index) => (
+              <GSTServiceCardSkeleton key={index} />
+            )) : services.map((service) => (
               <GSTServiceCard key={service._id} title={service.title} description={service.description} icon={service.icon} _id={service._id} />
             ))}
           </div>
