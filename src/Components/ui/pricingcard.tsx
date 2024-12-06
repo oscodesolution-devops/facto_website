@@ -13,7 +13,8 @@ export default function PricingCard({
   startingText = "Starting from",
   price = "1001",
   currency = "Rs",
-  period = "/Month"
+  period = "/Month",
+  serviceId = ""
 }: {
   title?: string
   description?: string
@@ -23,6 +24,7 @@ export default function PricingCard({
   price?: string
   currency?: string
   period?: string
+  serviceId?: string
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -39,11 +41,14 @@ export default function PricingCard({
         ))}
       </ul>
       <div className="mt-6 flex items-center justify-between">
-        <button 
-          onClick={() => setIsDialogOpen(true)} 
+        <button
+          onClick={() => setIsDialogOpen(true)}
           className="rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90"
         >
           {buttonText}
+        </button>
+        <button className="rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90" onClick={() => window.location.href = `/upload-page?serviceId=${serviceId}`}>
+          Documents
         </button>
         <div className="text-right">
           <span className="text-sm text-muted-foreground">{startingText}</span>
@@ -57,12 +62,12 @@ export default function PricingCard({
       </div>
 
       {isDialogOpen && (
-        <PricingDialog 
-          title={title} 
-          price={price} 
+        <PricingDialog
+          title={title}
+          price={price}
           currency={currency}
           period={period}
-          isOpen={isDialogOpen} 
+          isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
         />
       )}

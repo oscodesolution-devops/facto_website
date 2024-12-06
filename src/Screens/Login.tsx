@@ -103,8 +103,8 @@ const Login = () => {
 
     try {
       const response = await AUTH.PostLogin(data);
-      console.log("Login Successful:", response);
-      saveUser(response.data.user); // Save user to context
+      console.log("Login Successful:", response.data);
+      saveUser(response.data); // Save user to context
       navigate("/");
     } catch (error) {
       console.error("Login Failed:", error);

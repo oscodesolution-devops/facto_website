@@ -2,19 +2,23 @@ import React, { createContext, useState, useContext, useEffect, ReactNode, Dispa
 import { useNavigate } from 'react-router-dom';
 
 interface IAuth {
-  email: string;
-  id: string;
-  name: string;
-  avatar: string;
-  hasUploadedAadhar: boolean;
-  hasUploadedPan: boolean;
+  user: {
+    _id: string;
+    email: string;
+    fullName: string;
+    phoneNumber: number;
+    role: string;
+    lastLogin: string;
+    registrationDate: string;
+  }
   token: string;
 }
+
 
 interface IGlobalContext {
   user: IAuth | null;
   saveUser: (data: IAuth) => void;
-  isAuthenticated: boolean; 
+  isAuthenticated: boolean;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   logout: () => void;
   updateUserProfile: (userData: Partial<IAuth>) => void;
@@ -36,13 +40,14 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => !!localStorage.getItem('token'));
 
-  const privateRoutes = ['/profile', '/update', '/active-plans', '/payment']; 
+  const privateRoutes = ['/profile', '/update', '/active-plans', '/payment'];
 
   const saveUser = (data: IAuth) => {
     console.log('Saving user data:', data);  // Log the data
     setUser(data);
+    console.log(data, "This is the user data");
     localStorage.setItem('user', JSON.stringify(data));
-    localStorage.setItem('token', data.token); 
+    localStorage.setItem('token', data.token);
     setIsAuthenticated(true);
   };
 

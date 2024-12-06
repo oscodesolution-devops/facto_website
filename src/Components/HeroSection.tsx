@@ -142,6 +142,7 @@ const HeroSection = () => {
             subServices.map((subService) => (
               <PricingCard
                 key={subService._id}
+                serviceId={subService._id}
                 title={subService.title}
                 description={subService.description}
                 features={subService.features}

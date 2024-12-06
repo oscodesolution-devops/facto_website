@@ -171,3 +171,71 @@ export const Updates = {
   },
 };
 
+
+export const VideoCourses = {
+  getCourses: async (cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/course",
+      method: "GET",
+      signal: cancel ? cancelApiObject.getCourses.handleRequestCancellation().signal : undefined,
+    });
+    return response.data;
+  },
+};
+
+export const Upload = {
+  getUpload: async (serviceId: string, cancel = false) => {
+    const response = await api.request({
+      url: `https://facto-backend-8spm.onrender.com/api/v1/requirements/${serviceId}`,
+      method: "GET",
+      signal: cancel ? cancelApiObject.getUpload.handleRequestCancellation().signal : undefined,
+    });
+    return response.data;
+  },
+  uploadFile: async (formData: FormData, id: string) => {
+
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${localStorage.getItem("token")}`);
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formData,
+      redirect: "follow"
+    };
+
+
+    try {
+      const response = await fetch(`https://facto-backend-8spm.onrender.com/api/v1/document/upload/${id}`, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: requestOptions.body,
+        redirect: requestOptions.redirect as RequestRedirect,
+      });
+      return response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+// const myHeaders = new Headers();
+// myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ0NDIwODIzMDJhMmVhNjYzYWRkNzgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3MzI1MjcwNzYsImV4cCI6MTczMjYxMzQ3Nn0.yxClp90Nd-ERVfj5Q2BvQmtYTQIAV-KprbIw_jLnris");
+
+// const formdata = new FormData();
+// formdata.append("documentType", "required");
+// formdata.append("title", "Driving Liciense");
+// formdata.append("description", "");
+// formdata.append("document", fileInput.files[0], "[PROXY]");
+
+// const requestOptions = {
+//   method: "POST",
+//   headers: myHeaders,
+//   body: formdata,
+//   redirect: "follow"
+// };
+
+// fetch("{{baseUrl}}/document/upload/674424c96d798a128c3294de/", requestOptions)
+//   .then((response) => response.text())
+//   .then((result) => console.log(result))
+//   .catch((error) => console.error(error));
