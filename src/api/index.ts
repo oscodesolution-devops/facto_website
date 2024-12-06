@@ -193,7 +193,6 @@ export const Upload = {
     return response.data;
   },
   uploadFile: async (formData: FormData, id: string) => {
-
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${localStorage.getItem("token")}`);
 
@@ -204,7 +203,7 @@ export const Upload = {
       redirect: "follow"
     };
 
-
+    console.log(id,"id");
     try {
       const response = await fetch(`https://facto-backend-8spm.onrender.com/api/v1/document/upload/${id}`, {
         method: requestOptions.method,

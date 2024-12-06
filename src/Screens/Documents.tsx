@@ -15,6 +15,22 @@ type UploadDetails = {
   __v: number;
 };
 
+type OtherUploads = {
+  title: string;
+  description: string;
+  localFile: File | null;
+  uploading: boolean;
+  uploadFilesData: boolean;
+}
+
+const temp: OtherUploads = {
+  title: "",
+  description: "",
+  localFile: null,
+  uploading: false,
+  uploadFilesData: false,
+}
+
 const UploadPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -25,6 +41,7 @@ const UploadPage: React.FC = () => {
   const [localFiles, setLocalFiles] = useState<{ [key: string]: File | null }>({});
   const [uploadFilesData, setUploadFilesData] = useState<{ [key: string]: boolean }>({});
   const [uploading, setUploading] = useState<{ [key: string]: boolean }>({}); // Track uploading state
+  const [otherUploads, setOtherUploads] = useState<OtherUploads[]>([{ ...temp }]);
 
   // Get Sub Service Id from URL
   useEffect(() => {
@@ -61,6 +78,7 @@ const UploadPage: React.FC = () => {
       formData.append('documentType', documentType);
       formData.append('title', title);
       formData.append('description', description);
+      
       formData.append('document', localFiles[id], '[PROXY]');
       try {
         const res = await Upload.uploadFile(formData, serviceId);
@@ -71,6 +89,39 @@ const UploadPage: React.FC = () => {
         console.error(error);
       } finally {
         setUploading((prev) => ({ ...prev, [id]: false })); // Reset loading state
+      }
+    }
+  }
+
+
+  function validateOtherUploads(index: number) {
+    const item = otherUploads[index];
+    if (item.localFile == null || item.uploading || item.uploadFilesData) {
+      return false;
+    }
+    return true;
+  }
+
+  async function uploadOtherFile(documentType: string, index: number, description: string, title: string, localFile: File | null) {
+    if (validateOtherUploads(index)) {
+      setOtherUploads((prev:OtherUploads[]) => prev.map((item, idx) => idx === index ? { ...item, uploading: true } : item))
+      const formData = new FormData();
+      formData.append('documentType', "required");
+      formData.append('title', title);
+      formData.append('description', description);
+      if (localFile) {
+        formData.append('document', localFile, '[PROXY]');
+      }
+
+      try {
+        const res = await Upload.uploadFile(formData, serviceId);
+        if (res.status.code === 200) {
+          setOtherUploads((prev:OtherUploads[]) => prev.map((item, idx) => idx === index ? { ...item, uploadFilesData: true } : item));
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setOtherUploads((prev:OtherUploads[]) => prev.map((item, idx) => idx === index ? { ...item, uploading: false } : item))
       }
     }
   }
@@ -110,9 +161,9 @@ const UploadPage: React.FC = () => {
                       onClick={() =>
                         uploadFile(item.isMandatory ? 'required' : 'optional', item._id, item.description, item.title,)
                       }
-                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${localFiles[item._id] == null || uploading[item._id]
-                          ? 'bg-red-500 cursor-not-allowed disabled:opacity-50'
-                          : 'bg-primary text-white'
+                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${localFiles[item._id] == null || uploading[item._id] || uploadFilesData[item._id]
+                        ? 'bg-red-500 cursor-not-allowed disabled:opacity-50'
+                        : 'bg-primary text-white'
                         }`}
                     >
                       {uploading[item._id] ? (
@@ -131,12 +182,84 @@ const UploadPage: React.FC = () => {
                       const file = e.target.files?.[0] || null;
                       setLocalFiles((prev) => ({ ...prev, [item._id]: file }));
                       if (file) {
+                        // making an entry in uploadedFilesData as false for the current file
                         setUploadFilesData((prev) => ({ ...prev, [item._id]: false }));
                       }
                     }}
                   />
                   {uploadFilesData[item._id] && (
                     <p className="text-sm mt-2 text-green-500">File uploaded: {localFiles[item._id]?.name}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+            {otherUploads?.map((item: OtherUploads, index: number) => (
+              <div key={index} className="flex items-start space-x-3">
+                <div className="w-4 h-4 bg-primary rounded-full flex-shrink-0"></div>
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="font-medium font-[poppins]">Other Document</label>
+                    {/* Upload button with loading spinner and arrow */}
+                    <button
+                      disabled={item.localFile == null || item.uploading || item.uploadFilesData || item.title.length == 0 || item.description.length == 0}
+                      onClick={() =>
+                        uploadOtherFile('optional', index, item.description, item.title, item.localFile)
+                      }
+                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${item.localFile == null || item.uploading || item.uploadFilesData || item.title.length == 0 || item.description.length == 0
+                        ? 'bg-red-500 cursor-not-allowed disabled:opacity-50'
+                        : 'bg-primary text-white'
+                        }`}
+                    >
+                      {item.uploading ? (
+                        <div className="animate-spin w-4 h-4 border-2 border-t-transparent border-white rounded-full"></div>
+                      ) : item.uploadFilesData ? (
+                        <FaArrowRight />
+                      ) : (
+                        'Upload'
+                      )}
+                    </button>
+                  </div>
+                  <input
+                    type="file"
+                    className="block w-full px-4 py-2 text-sm font-[poppins] font-[300] border rounded-lg shadow-sm bg-gray-50"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      setOtherUploads((prev) =>
+                        prev.map((item, idx) =>
+                          idx === index ? { ...item, localFile: file } : item
+                        )
+                      );
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Title"
+                    value={item.title}
+                    onChange={(e) => {
+                      const title = e.target.value;
+                      setOtherUploads((prev) =>
+                        prev.map((item, idx) =>
+                          idx === index ? { ...item, title: title } : item
+                        )
+                      );
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Description"
+                    value={item.description}
+                    onChange={(e) => {
+                      const description = e.target.value;
+                      setOtherUploads((prev) =>
+                        prev.map((item, idx) =>
+                          idx === index ? { ...item, description: description } : item
+                        )
+                      );
+                    }}
+                  />
+
+                  {item.uploadFilesData && (
+                    <p className="text-sm mt-2 text-green-500">File uploaded: {item.localFile?.name}</p>
                   )}
                 </div>
               </div>
