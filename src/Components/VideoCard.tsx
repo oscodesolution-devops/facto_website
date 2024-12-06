@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 const VideoCard = ({
+  width = "",
   videoSrc = "/assets/bulb.mp4",
   descriptionHeading = "Default Heading",
   description = "Default Description",
@@ -24,8 +25,8 @@ const VideoCard = ({
   };
 
   return (
-    <div
-      className="w-full sm:w-[320px] md:w-[380px] lg:w-[450px] xl:w-[500px] h-auto rounded-[8.47px] shadow-[0px_5.64px_5.64px_-2.82px_#1018280A,0px_14.11px_16.93px_-2.82px_#1018281A] bg-white p-[17px] flex flex-col items-center"
+<div
+      className={`${width} h-auto rounded-[8.47px] shadow-[0px_5.64px_5.64px_-2.82px_#1018280A,0px_14.11px_16.93px_-2.82px_#1018281A] bg-white p-[17px] flex flex-col items-center`}
     >
       <video
         ref={videoRef}
@@ -45,6 +46,8 @@ const VideoCard = ({
         </p>
       </div>
     </div>
+
+  
   );
   
 };

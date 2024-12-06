@@ -55,28 +55,30 @@ const ActivePlans = () => {
   const activeCards = cardData.filter((card) => !card.showRevalidateButton);
   const expiredCards = cardData.filter((card) => card.showRevalidateButton);
 
-  return (
-    <div className="overflow-hidden">
-      <div>
-        <Navbar />
-      </div>
-      <div className="bg-[#DFFFE3] pt-[87px] pb-[127px] px-10">
-        <div data-aos="fade-up" className="flex flex-col sm:flex-row gap-5 justify-center">
-          <button
-            onClick={() => setActiveButton("active")}
-            className={`w-full sm:w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${activeButton === "active" ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary"
-              }`}
-          >
-            Active Subscription
-          </button>
-          <button
-            onClick={() => setActiveButton("expired")}
-            className={`w-full sm:w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${activeButton === "expired" ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary"
-              }`}
-          >
-            Expired Subscription
-          </button>
-        </div>
+    return (
+        <div className="overflow-hidden">
+            <div>
+                <Navbar />
+            </div>
+            <div className="bg-[#DFFFE3] pt-[87px] pb-[127px] px-10">
+            <div data-aos="fade-up" className="flex flex-col sm:flex-row gap-5 justify-center">
+  <button
+    onClick={() => setActiveButton("active")}
+    className={`w-full sm:w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${
+      activeButton === "active" ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary"
+    }`}
+  >
+    Active Subscription
+  </button>
+  <button
+    onClick={() => setActiveButton("expired")}
+    className={`w-full sm:w-[214px] border-[2px] rounded-full p-3 font-[poppins] font-[500] transition-all duration-300 ${
+      activeButton === "expired" ? "bg-primary text-white border-primary" : "bg-white text-primary border-primary"
+    }`}
+  >
+    Expired Subscription
+  </button>
+</div>
 
         <div className="mt-5 flex items-center justify-center px-4 md:pl-[78px] md:pt-[20px]">
           <div
