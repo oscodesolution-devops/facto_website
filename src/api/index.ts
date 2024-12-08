@@ -127,7 +127,9 @@ export const Services = {
     const response = await api.request({
       url: "https://facto-backend-8spm.onrender.com/api/v1/services",
       method: "GET",
-      signal: cancel ? cancelApiObject.getServices.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getServices.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
@@ -135,7 +137,9 @@ export const Services = {
     const response = await api.request({
       url: `https://facto-backend-8spm.onrender.com/api/v1/sub-services/${id}`,
       method: "GET",
-      signal: cancel ? cancelApiObject.getSubServices.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getSubServices.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
@@ -146,7 +150,9 @@ export const Notifications = {
     const response = await api.request({
       url: "https://facto-backend-8spm.onrender.com/api/v1/notification",
       method: "GET",
-      signal: cancel ? cancelApiObject.getNotifications.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getNotifications.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
@@ -157,7 +163,9 @@ export const Updates = {
     const response = await api.request({
       url: "https://facto-backend-8spm.onrender.com/api/v1/blogs",
       method: "GET",
-      signal: cancel ? cancelApiObject.getBlogs.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getBlogs.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
@@ -165,19 +173,22 @@ export const Updates = {
     const response = await api.request({
       url: `https://facto-backend-8spm.onrender.com/api/v1/blogs/${id}`,
       method: "GET",
-      signal: cancel ? cancelApiObject.getBlogById.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getBlogById.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
 };
-
 
 export const VideoCourses = {
   getCourses: async (cancel = false) => {
     const response = await api.request({
       url: "https://facto-backend-8spm.onrender.com/api/v1/course",
       method: "GET",
-      signal: cancel ? cancelApiObject.getCourses.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getCourses.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
@@ -188,35 +199,43 @@ export const Upload = {
     const response = await api.request({
       url: `https://facto-backend-8spm.onrender.com/api/v1/requirements/${serviceId}`,
       method: "GET",
-      signal: cancel ? cancelApiObject.getUpload.handleRequestCancellation().signal : undefined,
+      signal: cancel
+        ? cancelApiObject.getUpload.handleRequestCancellation().signal
+        : undefined,
     });
     return response.data;
   },
   uploadFile: async (formData: FormData, id: string) => {
     const myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${localStorage.getItem("token")}`);
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")}`
+    );
 
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: formData,
-      redirect: "follow"
+      redirect: "follow",
     };
 
-    console.log(id,"id");
+    console.log(id, "id");
     try {
-      const response = await fetch(`https://facto-backend-8spm.onrender.com/api/v1/document/upload/${id}`, {
-        method: requestOptions.method,
-        headers: requestOptions.headers,
-        body: requestOptions.body,
-        redirect: requestOptions.redirect as RequestRedirect,
-      });
+      const response = await fetch(
+        `https://facto-backend-8spm.onrender.com/api/v1/document/upload/${id}`,
+        {
+          method: requestOptions.method,
+          headers: requestOptions.headers,
+          body: requestOptions.body,
+          redirect: requestOptions.redirect as RequestRedirect,
+        }
+      );
       return response.json();
     } catch (error) {
       console.error(error);
     }
-  }
-}
+  },
+};
 
 // const myHeaders = new Headers();
 // myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ0NDIwODIzMDJhMmVhNjYzYWRkNzgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3MzI1MjcwNzYsImV4cCI6MTczMjYxMzQ3Nn0.yxClp90Nd-ERVfj5Q2BvQmtYTQIAV-KprbIw_jLnris");

@@ -8,11 +8,14 @@ import Navbar from "@/Components/Navbar";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState("signup");
-  const [signupError, setSignupError] = useState({ fullName: "", email: "", password: "" });
+  const [signupError, setSignupError] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
   const [loginError, setLoginError] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const { saveUser } = useGlobalContext();
-
 
   function checkSignupData(data: any) {
     if (data.fullName === "") {
@@ -20,7 +23,10 @@ const Login = () => {
       return false;
     }
     if (data.fullName.length < 3) {
-      setSignupError({ ...signupError, fullName: "Full name must be at least 3 characters long" });
+      setSignupError({
+        ...signupError,
+        fullName: "Full name must be at least 3 characters long",
+      });
       return false;
     }
     if (data.email === "") {
@@ -36,7 +42,10 @@ const Login = () => {
       return false;
     }
     if (data.password.length < 6) {
-      setSignupError({ ...signupError, password: "Password must be at least 6 characters long" });
+      setSignupError({
+        ...signupError,
+        password: "Password must be at least 6 characters long",
+      });
       return false;
     }
     return true;
@@ -56,7 +65,10 @@ const Login = () => {
       return false;
     }
     if (data.password.length < 6) {
-      setLoginError({ ...loginError, password: "Password must be at least 6 characters long" });
+      setLoginError({
+        ...loginError,
+        password: "Password must be at least 6 characters long",
+      });
       return false;
     }
     return true;
@@ -124,19 +136,21 @@ const Login = () => {
           <div className="w-full flex items-center justify-center border border-[#0033A1] rounded-full overflow-hidden">
             <button
               onClick={() => setActiveTab("signup")}
-              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${activeTab === "signup"
-                ? "bg-[#0033A1] text-white"
-                : "bg-transparent text-[#0033A1]"
-                }`}
+              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${
+                activeTab === "signup"
+                  ? "bg-[#0033A1] text-white"
+                  : "bg-transparent text-[#0033A1]"
+              }`}
             >
               Sign up
             </button>
             <button
               onClick={() => setActiveTab("login")}
-              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${activeTab === "login"
-                ? "bg-[#0033A1] text-white"
-                : "bg-transparent text-[#0033A1]"
-                }`}
+              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${
+                activeTab === "login"
+                  ? "bg-[#0033A1] text-white"
+                  : "bg-transparent text-[#0033A1]"
+              }`}
             >
               Log in
             </button>
@@ -148,7 +162,11 @@ const Login = () => {
               <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">
                 Sign up
               </h2>
-              <form className="mt-6 space-y-6" onSubmit={handleSignup} noValidate>
+              <form
+                className="mt-6 space-y-6"
+                onSubmit={handleSignup}
+                noValidate
+              >
                 <div className="w-full">
                   <label
                     htmlFor="full-name"
@@ -162,7 +180,11 @@ const Login = () => {
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
                   />
-                  {signupError.fullName && <p className="text-red-500 text-sm font-light">{signupError.fullName}</p>}
+                  {signupError.fullName && (
+                    <p className="text-red-500 text-sm font-light">
+                      {signupError.fullName}
+                    </p>
+                  )}
                 </div>
                 <div className="w-full">
                   <label
@@ -177,7 +199,11 @@ const Login = () => {
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
                   />
-                  {signupError.email && <p className="text-red-500 text-sm font-light">{signupError.email}</p>}
+                  {signupError.email && (
+                    <p className="text-red-500 text-sm font-light">
+                      {signupError.email}
+                    </p>
+                  )}
                 </div>
                 <div className="w-full">
                   <label
@@ -193,7 +219,11 @@ const Login = () => {
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
                   />
-                  {signupError.password && <p className="text-red-500 text-sm font-light">{signupError.password}</p>}
+                  {signupError.password && (
+                    <p className="text-red-500 text-sm font-light">
+                      {signupError.password}
+                    </p>
+                  )}
                 </div>
 
                 <button
@@ -212,7 +242,11 @@ const Login = () => {
               <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">
                 Log in
               </h2>
-              <form className="mt-6 space-y-6" onSubmit={handleLogin} noValidate>
+              <form
+                className="mt-6 space-y-6"
+                onSubmit={handleLogin}
+                noValidate
+              >
                 <div className="w-full">
                   <label
                     htmlFor="login-email"
@@ -226,7 +260,11 @@ const Login = () => {
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
                   />
-                  {loginError.email && <p className="text-red-500 text-sm font-light">{loginError.email}</p>}
+                  {loginError.email && (
+                    <p className="text-red-500 text-sm font-light">
+                      {loginError.email}
+                    </p>
+                  )}
                 </div>
                 <div className="w-full">
                   <label
@@ -241,7 +279,11 @@ const Login = () => {
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
                   />
-                  {loginError.password && <p className="text-red-500 text-sm font-light">{loginError.password}</p>}
+                  {loginError.password && (
+                    <p className="text-red-500 text-sm font-light">
+                      {loginError.password}
+                    </p>
+                  )}
                 </div>
                 <button
                   type="submit"
