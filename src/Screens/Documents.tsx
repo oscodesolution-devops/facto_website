@@ -220,13 +220,12 @@ const UploadPage: React.FC = () => {
                           item.title
                         )
                       }
-                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${
-                        localFiles[item._id] == null ||
-                        uploading[item._id] ||
-                        uploadFilesData[item._id]
+                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${localFiles[item._id] == null ||
+                          uploading[item._id] ||
+                          uploadFilesData[item._id]
                           ? "bg-red-500 cursor-not-allowed disabled:opacity-50"
                           : "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       {uploading[item._id] ? (
                         <div className="animate-spin w-4 h-4 border-2 border-t-transparent border-white rounded-full"></div>
@@ -260,8 +259,8 @@ const UploadPage: React.FC = () => {
                 </div>
               </div>
             ))}
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-[20px]">
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-[20px]">
             {otherUploads?.map((item: OtherUploads, index: number) => (
               <div key={index} className="flex items-start space-x-3">
                 <div className="w-4 h-4 bg-primary rounded-full flex-shrink-0"></div>
@@ -288,15 +287,14 @@ const UploadPage: React.FC = () => {
                           item.localFile
                         )
                       }
-                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${
-                        item.localFile == null ||
-                        item.uploading ||
-                        item.uploadFilesData ||
-                        item.title.length == 0 ||
-                        item.description.length == 0
+                      className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${item.localFile == null ||
+                          item.uploading ||
+                          item.uploadFilesData ||
+                          item.title.length == 0 ||
+                          item.description.length == 0
                           ? "bg-red-500 cursor-not-allowed disabled:opacity-50"
                           : "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       {item.uploading ? (
                         <div className="animate-spin w-4 h-4 border-2 border-t-transparent border-white rounded-full"></div>
@@ -335,7 +333,7 @@ const UploadPage: React.FC = () => {
                   />
                   <textarea
                     className="block w-full px-4 py-2 mt-2 text-sm font-[poppins] font-[300] border rounded-lg shadow-sm bg-gray-50 resize-none"
-                    placeholder="Description" 
+                    placeholder="Description"
                     value={item.description}
                     onChange={(e) => {
                       const description = e.target.value;
@@ -360,10 +358,12 @@ const UploadPage: React.FC = () => {
             ))}
 
             {/* Add Other Uploads */}
-            <div className="flex flex-col justify-center gap-2 cursor-pointer h-[250px] w-full items-center border rounded-lg p-2" onClick={() => setOtherUploads([...otherUploads, { ...temp }])}>
-              <div className="font-[poppins] font-[500]">Add Other Uploads</div>
-              <div className="flex justify-center items-center border-dotted border-2 border-primary rounded-lg p-4 ">
-                <FaPlus />
+            <div className="flex flex-col justify-center gap-2 cursor-pointer h-[250px] p-5 w-full items-center " onClick={() => setOtherUploads([...otherUploads, { ...temp }])}>
+              <div className="flex flex-col justify-center gap-2 items-center border rounded-lg p-2 w-full h-full">
+                <div className="font-[poppins] font-[500]">Add Other Uploads</div>
+                <div className="flex justify-center items-center border-dotted border-2 border-primary rounded-lg p-4 ">
+                  <FaPlus />
+                </div>
               </div>
             </div>
           </div>
