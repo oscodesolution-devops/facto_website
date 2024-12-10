@@ -1,3 +1,4 @@
+import PaymentForm from "@/Components/PaymentForm"
 import { Button } from "@/Components/ui/button"
 import { Input } from "@/Components/ui/input"
 import { Separator } from "@/Components/ui/separator"
@@ -68,6 +69,7 @@ export default function Component() {
         </div>
         <p className="text-xl sm:text-2xl font-bold">Rs {total}</p>
       </div>
+      <PaymentForm amount={total} />
     </section>
   )
 }

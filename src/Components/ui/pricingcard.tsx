@@ -1,6 +1,11 @@
 import { useState } from "react"
 import PricingDialog from "./pricing-dialog"
-
+interface Request {
+  name: string;
+  needsQuotation: boolean;
+  priceModifier: number;
+  _id: string;
+}
 export default function PricingCard({
   title = "GSTR-1 & 3B Monthly",
   description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,",
@@ -9,6 +14,7 @@ export default function PricingCard({
     "More than one house property",
     "Foreign Income/Foreign Asset"
   ],
+  requests=[],
   buttonText = "GET QUOTATION",
   startingText = "Starting from",
   price = "1001",
@@ -19,6 +25,7 @@ export default function PricingCard({
   title?: string
   description?: string
   features?: string[]
+  requests?: Request[]
   buttonText?: string
   startingText?: string
   price?: string
@@ -64,9 +71,11 @@ export default function PricingCard({
       {isDialogOpen && (
         <PricingDialog
           title={title}
-          price={price}
+          basePrice={Number(price)}
           currency={currency}
           period={period}
+          requests={requests}
+          subServiceId={serviceId} 
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
         />

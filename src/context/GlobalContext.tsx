@@ -7,7 +7,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface IAuth {
   user: {
@@ -15,6 +15,8 @@ interface IAuth {
     email: string;
     fullName: string;
     phoneNumber: number;
+    aadharNumber: number;
+    panNumber: number;
     role: string;
     lastLogin: string;
     registrationDate: string;
@@ -28,42 +30,48 @@ interface IGlobalContext {
   isAuthenticated: boolean;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   logout: () => void;
-  updateUserProfile: (userData: Partial<IAuth>) => void;
+  updateUserProfile: (userData: Partial<IAuth['user']>) => void;
 }
 
 export const GlobalContext = createContext<IGlobalContext | null>(null);
 
 const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [user, setUser] = useState<IAuth | null>(() => {
     const userData = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
     try {
-      return userData ? JSON.parse(userData) : null;
+      return userData && token ? JSON.parse(userData) : null;
     } catch (error) {
       console.error("Error parsing user data from localStorage", error);
-      localStorage.removeItem("user"); // Remove corrupted data
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       return null;
     }
   });
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+
+  const [isAuthenticated, setIsAuthenticated] = useState(
     () => !!localStorage.getItem("token")
   );
 
   const privateRoutes = ["/profile", "/update", "/active-plans", "/payment", "/upload-page"];
 
   const saveUser = (data: IAuth) => {
-    console.log("Saving user data:", data); // Log the data
     setUser(data);
-    console.log(data, "This is the user data");
     localStorage.setItem("user", JSON.stringify(data));
     localStorage.setItem("token", data.token);
     setIsAuthenticated(true);
   };
 
-  const updateUserProfile = (userData: Partial<IAuth>) => {
+  const updateUserProfile = (userData: Partial<IAuth['user']>) => {
     setUser((prev) => {
       if (prev) {
-        const updatedUser = { ...prev, ...userData };
+        const updatedUser = { 
+          ...prev, 
+          user: { ...prev.user, ...userData } 
+        };
         localStorage.setItem("user", JSON.stringify(updatedUser));
         return updatedUser;
       }
@@ -76,24 +84,30 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setIsAuthenticated(false);
-    navigate("/");
+    navigate("/login");
   };
 
   useEffect(() => {
-    if (!isAuthenticated && privateRoutes.includes(window.location.pathname)) {
+    // Check if the current route is a private route
+    const isPrivateRoute = privateRoutes.some(route => 
+      location.pathname.startsWith(route)
+    );
+
+    // Redirect logic
+    if (isPrivateRoute && !isAuthenticated) {
       navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [location.pathname, isAuthenticated, navigate]);
 
   return (
-    <GlobalContext.Provider
-      value={{
-        user,
-        saveUser,
-        isAuthenticated,
-        setIsAuthenticated,
-        logout,
-        updateUserProfile,
+    <GlobalContext.Provider 
+      value={{ 
+        user, 
+        saveUser, 
+        isAuthenticated, 
+        setIsAuthenticated, 
+        logout, 
+        updateUserProfile 
       }}
     >
       {children}

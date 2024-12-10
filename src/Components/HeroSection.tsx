@@ -23,6 +23,7 @@ type SubService = {
   _id: string;
   serviceId: string;
   title: string;
+  requests:any[];
   description: string;
   features: string[];
   price: string;
@@ -148,6 +149,7 @@ const HeroSection = () => {
                 features={subService.features}
                 price={subService.price}
                 period={subService.period}
+                requests={subService.requests}
               />
             ))
           )

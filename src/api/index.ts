@@ -257,3 +257,39 @@ export const Upload = {
 //   .then((response) => response.text())
 //   .then((result) => console.log(result))
 //   .catch((error) => console.error(error));
+
+
+export const Quotation = {
+  postQuotation:async (data: any, cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/quotation/",
+      method: "POST",
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem("token")}`
+      },
+      data: {
+        subServiceId: data.subServiceId,
+        selectedFeatures: data.selectedFeatures,
+      },
+      signal: cancel
+        ? cancelApiObject.PostSignup.handleRequestCancellation().signal
+        : undefined,
+    });
+    console.log(response);
+    return response.data;
+  },
+  getQuotation:async (cancel = false) => {
+    const response = await api.request({
+      url: "https://facto-backend-8spm.onrender.com/api/v1/quotation/",
+      method: "POST",
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem("token")}`
+      },
+      signal: cancel
+        ? cancelApiObject.PostSignup.handleRequestCancellation().signal
+        : undefined,
+    });
+    console.log(response);
+    return response.data;
+  },
+}
