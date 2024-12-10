@@ -12,6 +12,7 @@ const Login = () => {
     fullName: "",
     email: "",
     password: "",
+    phoneNumber: "",
   });
   const [loginError, setLoginError] = useState({ email: "", password: "" });
   const navigate = useNavigate();
@@ -45,6 +46,17 @@ const Login = () => {
       setSignupError({
         ...signupError,
         password: "Password must be at least 6 characters long",
+      });
+      return false;
+    }
+    if (data.phoneNumber === "") {
+      setSignupError({ ...signupError, phoneNumber: "Phone number is required" });
+      return false;
+    }
+    if (data.phoneNumber.length < 10) {
+      setSignupError({
+        ...signupError,
+        phoneNumber: "Phone number must be at least 10 characters long",
       });
       return false;
     }
@@ -83,6 +95,7 @@ const Login = () => {
       // lastName: (e.target as HTMLFormElement)["last-name"].value,
       email: (e.target as HTMLFormElement)["email"].value,
       password: (e.target as HTMLFormElement)["signup-password"].value,
+      phoneNumber: (e.target as HTMLFormElement)["signup-phoneNumber"].value,
     };
 
     if (!checkSignupData(data)) {
@@ -136,21 +149,19 @@ const Login = () => {
           <div className="w-full flex items-center justify-center border border-[#0033A1] rounded-full overflow-hidden">
             <button
               onClick={() => setActiveTab("signup")}
-              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${
-                activeTab === "signup"
+              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${activeTab === "signup"
                   ? "bg-[#0033A1] text-white"
                   : "bg-transparent text-[#0033A1]"
-              }`}
+                }`}
             >
               Sign up
             </button>
             <button
               onClick={() => setActiveTab("login")}
-              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${
-                activeTab === "login"
+              className={`w-1/2 py-3 text-lg font-medium transition-all duration-500 ${activeTab === "login"
                   ? "bg-[#0033A1] text-white"
                   : "bg-transparent text-[#0033A1]"
-              }`}
+                }`}
             >
               Log in
             </button>
@@ -179,6 +190,12 @@ const Login = () => {
                     type="text"
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if(value){
+                        setSignupError({...signupError, fullName: ""})
+                      }
+                    }}
                   />
                   {signupError.fullName && (
                     <p className="text-red-500 text-sm font-light">
@@ -198,6 +215,12 @@ const Login = () => {
                     type="email"
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if(value){
+                        setSignupError({...signupError, email: ""})
+                      }
+                    }}
                   />
                   {signupError.email && (
                     <p className="text-red-500 text-sm font-light">
@@ -218,10 +241,42 @@ const Login = () => {
                     name="password"
                     className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
                     required
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if(value){
+                        setSignupError({...signupError, password: ""})
+                      }
+                    }}
                   />
                   {signupError.password && (
                     <p className="text-red-500 text-sm font-light">
                       {signupError.password}
+                    </p>
+                  )}
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor="signup-phoneNumber"
+                    className="text-sm text-gray-700 font-light"
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    id="signup-phoneNumber"
+                    type="number"
+                    name="phoneNumber"
+                    className="w-full border border-gray-300 px-4 py-3 rounded-lg text-base"
+                    required
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if(value){
+                        setSignupError({...signupError, phoneNumber: ""})
+                      }
+                    }}
+                  />
+                  {signupError.phoneNumber && (
+                    <p className="text-red-500 text-sm font-light">
+                      {signupError.phoneNumber}
                     </p>
                   )}
                 </div>

@@ -86,7 +86,8 @@ const UploadPage: React.FC = () => {
     documentType: string,
     id: string,
     description: string,
-    title: string
+    title: string,
+    subServiceId: string
   ) {
     if (localFiles[id]) {
       setUploading((prev) => ({ ...prev, [id]: true })); // Set loading state
@@ -97,7 +98,7 @@ const UploadPage: React.FC = () => {
 
       formData.append("document", localFiles[id], "[PROXY]");
       try {
-        const res = await Upload.uploadFile(formData, serviceId);
+        const res = await Upload.uploadFile(formData, subServiceId);
         if (res.status.code === 200) {
           setUploadFilesData((prev) => ({ ...prev, [id]: true }));
         }
@@ -111,7 +112,7 @@ const UploadPage: React.FC = () => {
 
   function validateOtherUploads(index: number) {
     const item = otherUploads[index];
-    if (item.localFile == null || item.uploading || item.uploadFilesData) {
+    if (item.localFile == null || item.uploading || item.uploadFilesData || item.title.length == 0 || item.description.length == 0) {
       return false;
     }
     return true;
@@ -217,7 +218,8 @@ const UploadPage: React.FC = () => {
                           item.isMandatory ? "required" : "optional",
                           item._id,
                           item.description,
-                          item.title
+                          item.title,
+                          item.subServiceId,
                         )
                       }
                       className={`text-sm font-[poppins] font-[500] px-3 py-1 rounded-lg hover:shadow-xl ${localFiles[item._id] == null ||
