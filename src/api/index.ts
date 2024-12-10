@@ -70,6 +70,7 @@ export const AUTH = {
         fullName: data.fullName,
         email: data.email,
         password: data.password,
+        phoneNumber: data.phoneNumber,
       },
       signal: cancel
         ? cancelApiObject.PostSignup.handleRequestCancellation().signal
