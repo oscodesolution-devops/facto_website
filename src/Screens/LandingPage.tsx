@@ -83,80 +83,98 @@ const LandingPage = () => {
         <Header />
       </div>
 
-      <main className="flex flex-col md:flex-row gap-[5%] z-20 overflow-hidden">
-        {/* Left Section */}
-        <div className="w-full md:w-[50%] pt-[100px] pl-[10px] md:pl-[66px]">
-          <div className="w-full md:w-[554px]">
-            <div className="flex items-center gap-4">
-              <img
-                src="./assets/play-button 1.svg"
-                alt="Play Button"
-                className="w-[25px] h-[25px]"
-              />
-              <p data-aos="fade-up"
-                className="text-black text-lg font-[500] font-[erode] text-center md:text-left"
-                style={{ fontFamily: "Erode", fontSize: "18px" }}
-              >
-                Watch Video: Learn to use our platform
-              </p>
-            </div>
+      <main className="flex flex-col md:flex-row gap-6 z-20 overflow-hidden">
 
-            <div data-aos="fade-up" className="mt-[23px]">
-              <video className="w-full md:w-[552px] h-auto" controls autoPlay loop>
-                <source src="/assets/bulb.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
-        </div>
+<div className="w-full md:w-1/2 pt-10 md:pt-20 px-4 md:pl-16 lg:pl-20">
+  <div className="w-full md:max-w-[554px] mx-auto">
+    <div className="flex items-center gap-4 mb-4">
+      <img
+        src="./assets/play-button 1.svg"
+        alt="Play Button"
+        className="w-6 h-6"
+      />
+      <p
+        data-aos="fade-up"
+        className="text-black text-lg font-medium text-center md:text-left"
+        style={{ fontFamily: "Erode", fontSize: "18px" }}
+      >
+        Watch Video: Learn to use our platform
+      </p>
+    </div>
 
-        {/* Right Section */}
-        <div className="w-full md:w-[855px] bg-[#E9FFE9] p-[20px] flex flex-col justify-between"
-          style={{ height: "calc(100vh - 100px)" }}
+    <div data-aos="fade-up" className="mt-6">
+      <div className="relative w-full h-0 pb-[56.25%] overflow-hidden">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          controls
+          autoPlay
+          loop
         >
-          <div>
-            <div className="flex items-center gap-[12px] pt-[100px] pl-[20px] md:pl-[55px]">
-              <img
-                src={playButton}
-                alt="Play Button"
-                className="w-[25px] h-[25px]"
-              />
-              <span data-aos="fade-up"
-                className="text-black text-xl font-medium font-[erode] text-center md:text-left"
-                style={{ fontFamily: "Erode", fontSize: "18px" }}
-              >
-                Latest Update
-              </span>
-            </div>
+          <source src="/assets/bulb.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
 
-            <div className="mt-[30px] pl-[20px] pr-[20px] md:pl-[52px] md:pr-[80px]">
-              <ul data-aos="fade-up" className="list-disc pl-5 text-lg text-black text-[19px] font-[poppins] font-[300]">
+<div
+  className="w-full md:w-1/2 bg-[#E9FFE9] p-6 md:pr-16 lg:pr-20 flex md:pl-16 lg:pl-20 pt-10 md:pt-20 flex-col justify-between"
+  style={{ minHeight: "calc(100vh - 200px)" }}
+>
+  <div>
+    <div className="flex items-center gap-3 mb-6">
+      <img
+        src="./assets/play-button 1.svg"
+        alt="Play Button"
+        className="w-6 h-6"
+      />
+      <span
+        data-aos="fade-up"
+        className="text-black text-xl font-medium"
+        style={{ fontFamily: "Erode", fontSize: "18px" }}
+      >
+        Latest Update
+      </span>
+    </div>
 
-                {
-                  isLoadingNotifications ? Array(3)
-                    .fill(null)
-                    .map((_, index) => (
-                      <li
-                        className="mb-[18px] h-5 bg-gray-200 animate-pulse rounded-md"
-                        key={index}
-                      />
-                    )) : notifications.map((notification) => (
-                      <li className="mb-[18px]" key={notification._id}>{notification.title}</li>
-                    ))
-                }
-              </ul>
-            </div>
+    <div className="mt-4 md:mt-6">
+      <ul
+        data-aos="fade-up"
+        className="list-disc pl-5 text-lg text-black font-light space-y-4"
+      >
+        {isLoadingNotifications
+          ? Array(3)
+              .fill(null)
+              .map((_, index) => (
+                <li
+                  className="mb-4 h-5 bg-gray-200 animate-pulse rounded-md"
+                  key={index}
+                />
+              ))
+          : notifications.map((notification) => (
+              <li className="mb-4" key={notification._id}>
+                {notification.title}
+              </li>
+            ))}
+      </ul>
+    </div>
 
-            <div className="mt-[30px] pl-[20px] md:pl-[52px]">
-              <Link to="/update">
-                <button data-aos="fade-up" className="bg-[#253483] text-white font-[poppins] font-medium text-[16px] rounded-[7.17px] w-[188px] h-[48px] px-[20px] py-[10px]">
-                  Check Updates
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </main>
+    <div className="mt-6">
+      <Link to="/update">
+        <button
+          data-aos="fade-up"
+          className="bg-[#253483] text-white text-sm md:text-base font-medium rounded-md w-48 h-12 px-6 py-3 hover:bg-[#1e2c6b] transition"
+        >
+          Check Updates
+        </button>
+      </Link>
+    </div>
+  </div>
+</div>
+</main>
+
+
 
 
       <section id="GstService" className="bg-[#DDE2FF] pt-[57px] pb-[80px] px-[10px] md:px-[111px] h-auto overflow-hidden">
@@ -211,7 +229,7 @@ const LandingPage = () => {
         <Phone />
       </div>
 
-      <section className="h-auto bg-[#E9FFE9] py-[78px] px-[10px] md:px-[208px] overflow-hidden">
+      <section className="h-auto bg-[#E9FFE9] py-[78px] px-[10px] md:px-[108px] overflow-hidden">
   <div className="flex flex-col md:flex-row justify-center items-center gap-[20px]">
     <img data-aos="fade-up" src={Logo} alt="Facto Logo" className="w-[120px] h-[60px] md:w-[141px] md:h-[75px]" />
     <h3 data-aos="fade-up" className="font-[poppins] font-[500] text-[24px] md:text-[28px] text-center md:text-left pl-[0] md:pl-[20px]">

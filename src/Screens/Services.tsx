@@ -9,9 +9,9 @@ const ServicesPage = () => {
 
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls to top on component mount
+    window.scrollTo(0, 0); 
     
-  }, []); // Re-run effect whenever the location changes
+  }, []); 
 
   return (
     <div className='overflow-hidden'>

@@ -18,13 +18,12 @@ const Payment = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row h-auto lg:h-[calc(100vh-108px)]">
-        {/* Left side: Payment Form */}
+     
         
 
-        {/* Right side: Order Summary */}
         <div className="w-full lg:w-1/2 bg-[#E9FFE9] border border-[#D9D9D9] flex flex-col p-6 lg:p-[48px]">
           <div className="flex justify-center">
-            <OrderSummary /> {/* Use the imported OrderSummary component */}
+            <OrderSummary /> 
           </div>
         </div>
       </div>

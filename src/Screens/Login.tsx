@@ -126,13 +126,12 @@ const Login = () => {
 
   return (
     <div className="font-[poppins] min-h-screen m-0 bg-[#DDE2FF] flex flex-col overflow-hidden">
-      {/* Navbar */}
+     
       <Navbar />
 
-      {/* Main Container */}
       <div className="flex-grow flex justify-center items-center py-8 px-4">
         <div className="bg-white w-full max-w-screen-sm md:max-w-screen-md lg:max-w-lg xl:max-w-xl rounded-[21px] shadow-md p-6 md:p-12 flex flex-col items-center">
-          {/* Tab Buttons */}
+        
           <div className="w-full flex items-center justify-center border border-[#0033A1] rounded-full overflow-hidden">
             <button
               onClick={() => setActiveTab("signup")}
@@ -156,7 +155,7 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Sign Up Form */}
+        
           {activeTab === "signup" && (
             <div className="w-full mt-6">
               <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">
@@ -236,7 +235,6 @@ const Login = () => {
             </div>
           )}
 
-          {/* Login Form */}
           {activeTab === "login" && (
             <div className="w-full mt-6">
               <h2 className="text-[#3AB54A] text-2xl font-semibold text-center">

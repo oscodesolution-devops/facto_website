@@ -60,15 +60,33 @@ const Pricing = () => {
           </div>
         </div>
 
-        <div className="pt-16 px-5 lg:px-28 pb-24">
-          <div data-aos="fade-up" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]">
-            {isLoadingServices ? Array(3).fill(null).map((_, index) => (
-              <GSTServiceCardSkeleton key={index} />
-            )) : services.map((service) => (
-              <GSTServiceCard key={service._id} title={service.title} description={service.description} icon={service.icon} _id={service._id} />
-            ))}
-          </div>
-        </div>
+        <div
+  className="pt-16 pb-24"
+  style={{
+    paddingLeft: 'clamp(16px, 5%, 36px)',
+    paddingRight: 'clamp(16px, 5%, 36px)',
+  }}
+>
+  <div
+    data-aos="fade-up"
+    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]"
+  >
+    {isLoadingServices
+      ? Array(3)
+          .fill(null)
+          .map((_, index) => <GSTServiceCardSkeleton key={index} />)
+      : services.map((service) => (
+          <GSTServiceCard
+            key={service._id}
+            title={service.title}
+            description={service.description}
+            icon={service.icon}
+            _id={service._id}
+          />
+        ))}
+  </div>
+</div>
+
 
       </div>
 

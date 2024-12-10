@@ -333,7 +333,6 @@ export default function Courses() {
     <div className="overflow-hidden">
       <Navbar />
 
-      {/* categories */}
       <div className="w-full flex justify-start pt-6 md:pt-[90px] px-4 md:px-[78px]">
         <div data-aos="fade-up" className="flex flex-wrap gap-3 md:gap-5">
           {loading
@@ -363,7 +362,6 @@ export default function Courses() {
       </div>
 
 
-      {/* search bar */}
       <div className="mt-5 flex items-center justify-start px-4 md:pl-[78px] md:pt-[20px]">
         <div
           data-aos="fade-up"

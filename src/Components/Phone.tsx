@@ -14,10 +14,9 @@ const Phone = () => {
   }, []);
   
   return (
-    <div className="w-full h-auto bg- pt-[60px] px-[10px] sm:px-[20px] md:px-[20px] pb-0 flex items-center overflow-hidden">
+    <div className="w-full h-auto bg- pt-[60px] px-[10px] sm:px-[20px] md:px-[20px] pb-5 flex justify-center items-center overflow-hidden">
       <div className="flex flex-col md:flex-col lg:flex-row items-center lg:items-start gap-[20px] sm:gap-[30px]">
         
-        {/* Image Section */}
         <img
           data-aos="fade-up"
           src={iPhoneImage}
@@ -25,17 +24,14 @@ const Phone = () => {
           className="w-[180px] sm:w-[250px] md:w-[250px] lg:w-[280px] xl:w-[350px] h-auto"
         />
   
-        {/* Text Section */}
         <div data-aos="fade-up" className="text-center lg:text-left w-full">
   
-          {/* Heading in Separate Div */}
           <div className="w-full lg:w-[450px] xl:w-[520px] mx-auto">
             <h2 className="text-[22px] sm:text-[28px] lg:text-[32px] xl:text-[36px] font-[poppins] font-semibold leading-[30px] sm:leading-[36px] lg:leading-[42px] xl:leading-[46px]">
               Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Tax Solutions</span>
             </h2>
           </div>
   
-          {/* Paragraph in Separate Div */}
           <div className="w-full lg:w-[450px] xl:w-[520px] mx-auto mt-[17px]">
             <p className="text-[12px] sm:text-[14px] font-[300] leading-[20px] sm:leading-[22px] tracking-[-0.02em] text-[#4F4F4F]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -43,7 +39,6 @@ const Phone = () => {
             </p>
           </div>
   
-          {/* QR Code and Buttons */}
           <div className="mt-[17px] flex flex-col lg:flex-row gap-[16px] sm:gap-[20px] justify-center items-center lg:items-start">
             <img
               src={QRCodeImage}
@@ -52,13 +47,12 @@ const Phone = () => {
             />
   
             <div className="flex flex-col gap-[10px]">
-              {/* Google Play Button */}
+             
               <button className="p-3 bg-black text-white w-full lg:w-[200px] xl:w-[220px] h-[45px] lg:h-[55px] xl:h-[60px] flex items-center justify-center gap-2 rounded-md">
                 <FaGooglePlay size={20} />
                 <span className="text-[12px] sm:text-[14px] xl:text-[16px]">Get on Google Play Store</span>
               </button>
   
-              {/* App Store Button */}
               <button className="p-3 bg-black text-white w-full lg:w-[200px] xl:w-[220px] h-[45px] lg:h-[55px] xl:h-[60px] flex items-center justify-center gap-2 rounded-md">
                 <Apple size={20} />
                 <span className="text-[12px] sm:text-[14px] xl:text-[16px]">Get from App Store</span>

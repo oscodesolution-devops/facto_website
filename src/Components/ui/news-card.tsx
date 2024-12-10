@@ -24,7 +24,7 @@ export default function NewsCard({
   onButtonClick,
 }: NewsCardProps) {
   return (
-    <Card className="w-[355px] h-[434px] overflow-hidden shadow-lg border-none flex flex-col">
+    <Card className="w-full max-w-[344px] min-w-[] h-[434px] overflow-hidden shadow-lg border-none flex flex-col">
       <CardHeader className="p-0">
         <div className="relative w-full h-48">
           <img

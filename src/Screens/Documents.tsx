@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "@/Components/Navbar";
 import { Upload } from "@/api";
-import { FaArrowRight, FaPlus } from "react-icons/fa"; // Import arrow icon
+import { FaArrowRight, FaPlus } from "react-icons/fa"; 
 
 type UploadDetails = {
   _id: string;
@@ -357,7 +357,6 @@ const UploadPage: React.FC = () => {
               </div>
             ))}
 
-            {/* Add Other Uploads */}
             <div className="flex flex-col justify-center gap-2 cursor-pointer h-[250px] p-5 w-full items-center " onClick={() => setOtherUploads([...otherUploads, { ...temp }])}>
               <div className="flex flex-col justify-center gap-2 items-center border rounded-lg p-2 w-full h-full">
                 <div className="font-[poppins] font-[500]">Add Other Uploads</div>
