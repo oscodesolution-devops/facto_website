@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Navbar from "@/Components/Navbar";
-import PaymentForm from "@/Components/payment-form";
+import PaymentForm from "@/Components/PaymentForm";
 import OrderSummary from "@/Components/order-summary";  
 
 const Payment = () => {
@@ -19,9 +19,7 @@ const Payment = () => {
 
       <div className="flex flex-col lg:flex-row h-auto lg:h-[calc(100vh-108px)]">
         {/* Left side: Payment Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
-          <PaymentForm amount={selectedCourse.amount} />
-        </div>
+        
 
         {/* Right side: Order Summary */}
         <div className="w-full lg:w-1/2 bg-[#E9FFE9] border border-[#D9D9D9] flex flex-col p-6 lg:p-[48px]">

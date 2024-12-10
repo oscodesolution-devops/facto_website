@@ -53,6 +53,7 @@ const LandingPage = () => {
     async function fetchServices() {
       try {
         const res = await Services.getServices()
+        console.log(res.data.services);
         setServices(res.data.services)
         setIsLoadingCards(false);
       } catch (error) {

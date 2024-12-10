@@ -43,7 +43,7 @@ export default function GSTServiceCard({
       <CardHeader className="space-y-4 pb-4">
         <div className="flex items-center justify-start">
           <div className="rounded-full bg-[#E6F7EC] p-3">
-            <CircleDollarSign className="h-6 w-6 text-[#00A651]" />
+          <img src={icon} alt="service-icon" className='h-6 w-6' />
           </div>
         </div>
         <div className="space-y-1">
