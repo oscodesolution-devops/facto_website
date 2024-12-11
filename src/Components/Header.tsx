@@ -77,7 +77,7 @@ const Header = () => {
         data-aos="fade-left"
       >
         <div className="relative h-full w-full overflow-hidden ml-[60px]">
-          <div className="absolute bottom-[1px] right-[10px] flex flex-col z-20">
+          {/* <div className="absolute bottom-[1px] right-[10px] flex flex-col z-20">
             <div className="mb-[-10px]" data-aos="fade-up">
               <img
                 src={WhatsAppIcon}
@@ -92,7 +92,7 @@ const Header = () => {
                 className="w-[220px] h-[auto] cursor-pointer"
               />
             </div>
-          </div>
+          </div> */}
           <img
             src={iPhoneImage}
             alt="iPhone 15 Pro"

@@ -15,6 +15,8 @@ import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
 import { Notifications, Services } from "@/api";
 import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
+import WhatsAppIcon from "../assets/whatsapp.svg";
+import PhoneButtonIcon from "../assets/Phonebutton.svg";
 
 
 export interface Service {
@@ -82,6 +84,20 @@ const LandingPage = () => {
       <div >
         <Header />
       </div>
+      <div className="fixed bottom-1 right-1 flex justify-end flex-col items-center gap-4">
+  <img
+    src={WhatsAppIcon}
+    alt="WhatsApp"
+    className="w-[90px] h-[auto] cursor-pointer ml-auto"
+    onClick={() => window.open("https://wa.me/1234567890", "_blank")}
+  />
+  <img
+    src={PhoneButtonIcon}
+    alt="Phone Button"
+    className="w-[220px] h-[auto] cursor-pointer"
+    onClick={() => (window.location.href = "tel:+1234567890")}
+  />
+</div>
 
       <main className="flex flex-col md:flex-row gap-6 z-20 overflow-hidden">
 
@@ -325,7 +341,7 @@ const LandingPage = () => {
       </section>
 
 
-      <div data-aos="fade-up">
+      <div data-aos="fade-up" className="z-99">
         <Footer />
       </div>
 
