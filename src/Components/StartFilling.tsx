@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PhoneNum from "./PhoneNum";
 import VideoCard from "./VideoCard";
-import AOS from "aos";
+// import AOS from "aos";
 import "aos/dist/aos.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
