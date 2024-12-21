@@ -4,17 +4,30 @@ import { Input } from "@/Components/ui/input"
 import { Separator } from "@/Components/ui/separator"
 import { Receipt } from 'lucide-react'
 
-// Dummy data (this would typically come from a backend)
-const orderDetails = {
-  serviceName: "GST service",
-  serviceDescription: "GSTR-1 & 3B",
-  price: 999,
-  platformCharge: 10,
-  taxAmount: 2.24,
+// Updated interface for component props
+interface OrderSummaryProps {
+  courseTitle: string;
+  amount: number;
+  subServiceId?: string;
+  selectedFeatures?: string[];
+  itemType: string;
 }
 
-export default function Component() {
-  const total = orderDetails.price + orderDetails.platformCharge;
+export default function OrderSummary({ 
+  courseTitle, 
+  amount, 
+  subServiceId, 
+  selectedFeatures,
+  itemType, 
+}: OrderSummaryProps) {
+  // Platform charge as a fixed percentage (e.g., 2% of the amount)
+  const platformCharge = Math.round(amount * 0.02);
+  
+  // Calculate total including platform charge
+  const total = amount + platformCharge;
+
+  // Calculate tax (assuming a simple tax calculation)
+  const taxAmount = Math.round(amount * 0.01);
 
   return (
     <section className="w-full max-w-3xl mx-auto px-6 py-8 sm:p-12 bg-transparent">
@@ -30,11 +43,15 @@ export default function Component() {
               <Receipt className="w-6 h-6 sm:w-8 sm:h-8 text-grey-700" />
             </div>
             <div>
-              <p className="font-medium text-base sm:text-lg">{orderDetails.serviceName}</p>
-              <p className="text-sm text-muted-foreground">{orderDetails.serviceDescription}</p>
+              <p className="font-medium text-base sm:text-lg">{courseTitle}</p>
+              {selectedFeatures && selectedFeatures.length > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  Features: {selectedFeatures.join(", ")}
+                </p>
+              )}
             </div>
           </div>
-          <p className="font-medium text-lg">Rs {orderDetails.price}</p>
+          <p className="font-medium text-lg">Rs {amount}</p>
         </div>
 
         <Separator className="bg-gray-300" />
@@ -49,11 +66,11 @@ export default function Component() {
         <div className="pt-6 space-y-4">
           <div className="flex justify-between text-base sm:text-lg">
             <p>Subtotal</p>
-            <p>Rs {orderDetails.price}</p>
+            <p>Rs {amount}</p>
           </div>
           <div className="flex justify-between text-base sm:text-lg">
             <p>Platform charge</p>
-            <p>Rs {orderDetails.platformCharge}</p>
+            <p>Rs {platformCharge}</p>
           </div>
         </div>
       </div>
@@ -64,12 +81,17 @@ export default function Component() {
         <div>
           <p className="text-lg sm:text-xl font-bold">Total</p>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Including Rs {orderDetails.taxAmount.toFixed(2)} in taxes
+            Including Rs {taxAmount.toFixed(2)} in taxes
           </p>
         </div>
         <p className="text-xl sm:text-2xl font-bold">Rs {total}</p>
       </div>
-      <PaymentForm amount={total} />
+      <PaymentForm
+        itemType={itemType} 
+        amount={total}
+        selectedFeatures={selectedFeatures} 
+        subServiceId={subServiceId}
+      />
     </section>
   )
 }

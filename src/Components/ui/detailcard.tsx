@@ -1,4 +1,3 @@
-import { CircleDollarSign } from 'lucide-react'
 import { Button } from "@/Components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
 import { useNavigate } from "react-router-dom"

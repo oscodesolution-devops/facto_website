@@ -56,7 +56,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     () => !!localStorage.getItem("token")
   );
 
-  const privateRoutes = ["/profile", "/update", "/active-plans", "/payment", "/upload-page"];
+  const privateRoutes = ["/profile", "/update", "/active-plans", "/payment", "/upload-page","/pricing"];
 
   const saveUser = (data: IAuth) => {
     setUser(data);

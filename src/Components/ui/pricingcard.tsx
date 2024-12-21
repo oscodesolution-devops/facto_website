@@ -1,11 +1,13 @@
 import { useState } from "react"
 import PricingDialog from "./pricing-dialog"
+
 interface Request {
   name: string;
   needsQuotation: boolean;
   priceModifier: number;
   _id: string;
 }
+
 export default function PricingCard({
   title = "GSTR-1 & 3B Monthly",
   description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,",
@@ -36,9 +38,10 @@ export default function PricingCard({
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
-<div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105">
+    <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105">
       <h3 className="text-lg font-semibold text-primary">{title}</h3>
       <p className="mt-2 text-sm text-muted-foreground font-poppins text-[#4A4A4A]">{description}</p>
+      
       <ul className="mt-4 space-y-2">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center gap-2 text-sm">
@@ -47,18 +50,23 @@ export default function PricingCard({
           </li>
         ))}
       </ul>
-      <div className="mt-6 flex flex-col lg:flex-row items-center justify-between">
+      
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <button
           onClick={() => setIsDialogOpen(true)}
-          className="w-full lg:w-auto rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90"
+          className="w-full rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90 transition-colors"
         >
           {buttonText}
         </button>
-        <button className="w-full lg:w-auto mt-2 lg:mt-0 lg:ml-4 rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90" onClick={() => window.location.href = `/upload-page?serviceId=${serviceId}`}>
+        <button 
+          onClick={() => window.location.href = `/upload-page?serviceId=${serviceId}`}
+          className="w-full rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90 transition-colors"
+        >
           Documents
         </button>
-        <div className="text-right mt-4 lg:mt-0">
-          <span className="text-sm text-muted-foreground">{startingText}</span>
+        
+        <div className="sm:col-span-2 text-right mt-4">
+          <span className="block text-sm text-muted-foreground">{startingText}</span>
           <div>
             <span className="font-semibold text-red-500">
               {currency} {price}

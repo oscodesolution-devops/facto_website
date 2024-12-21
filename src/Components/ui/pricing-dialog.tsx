@@ -1,6 +1,6 @@
 "use client"
 import * as React from "react"
-import { ChevronDown, ChevronUp, FileText } from 'lucide-react'
+import {  FileText } from 'lucide-react'
 import { Button } from "@/Components/ui/button"
 import {
   Card,
@@ -11,7 +11,6 @@ import {
 } from "@/Components/ui/card"
 import { Checkbox } from "@/Components/ui/checkbox"
 import { Label } from "@/Components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group"
 import { Dialog, DialogContent } from "@/Components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { useNavigate } from 'react-router-dom'
@@ -106,8 +105,20 @@ export default function PricingDialog({
           } 
         });
       } else {
-        // If profile is complete, navigate to payment
-        navigate("/payment");
+        const selectedFeatures = requests
+          .filter(request => checkedItems[request._id])
+          .map(request => request.name);
+
+        // Navigate to payment with additional details
+        navigate("/payment", { 
+          state: { 
+            title,
+            subServiceId,
+            finalPrice: totalPrice,
+            selectedFeatures,
+            itemType: "service"
+          } 
+        });
       }
     } catch (error) {
       // Handle any unexpected errors
@@ -123,14 +134,20 @@ export default function PricingDialog({
 
   const handleGetQuotation=async()=>{
     try{
-      const response = await Quotation.postQuotation({subServiceId,selectedFeature:requests.map(request => {
-        if (checkedItems[request._id]){
-         return request.name; 
-        }})})
-      console.log(response)
+      const selectedFeatures = requests
+        .filter(request => checkedItems[request._id])
+        .map(request => request.name);
+      console.log(selectedFeatures);
+
+      const response = await Quotation.postQuotation({subServiceId,selectedFeatures})
+      // console.log(response)
+      if(response.success){
+        navigate("/");
+      }else{
+        console.log("error",response.status)
+      }
     }catch(error){
       console.log(error)
-
     }
   }
 

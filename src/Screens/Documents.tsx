@@ -138,7 +138,7 @@ const UploadPage: React.FC = () => {
       if (localFile) {
         formData.append("document", localFile, "[PROXY]");
       }
-
+      console.log(documentType);
       try {
         const res = await Upload.uploadFile(formData, serviceId);
         if (res.status.code === 200) {

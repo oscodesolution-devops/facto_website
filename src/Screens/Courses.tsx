@@ -4,18 +4,15 @@ import Navbar from "@/Components/Navbar";
 import { Input } from "@/Components/ui/input";
 import CourseContent from "@/Components/CourseContent";
 import Footer from "@/Components/Footer";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect } from 'react';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 import { VideoCourses } from "@/api";
-
 
 type TotalCourseDetails = {
   value: number;
   unit: string;
-}
-
-
+};
 
 type LectureDetails = {
   duration: TotalCourseDetails;
@@ -32,7 +29,7 @@ type LectureDetails = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-}
+};
 
 type MainCourse = {
   duration: TotalCourseDetails;
@@ -48,8 +45,7 @@ type MainCourse = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-}
-
+};
 
 // const Courses1 = () => {
 //   const [courses, setCourses] = useState<MainCourse[]>([]);
@@ -83,14 +79,8 @@ type MainCourse = {
 //     setActiveCategory(uniqueCategories[0] || ""); // Set the first category as active
 //   }
 
-
-
 //   const [activeCategory, setActiveCategory] = useState<string>("");
-//   // const [videoProgress, setVideoProgress] = useState<{ [key: number]: number }>({}); 
-
-
-
-
+//   // const [videoProgress, setVideoProgress] = useState<{ [key: number]: number }>({});
 
 //   //  "data": [
 //   //     {
@@ -218,7 +208,7 @@ type MainCourse = {
 //   // const handleVideoCompletion = (courseId: number, lectureId: number) => {
 //   //   setVideoProgress((prev) => ({
 //   //     ...prev,
-//   //     [courseId]: lectureId + 1, 
+//   //     [courseId]: lectureId + 1,
 //   //   }));
 //   // };
 
@@ -246,8 +236,6 @@ type MainCourse = {
 //           )}
 //         </div>
 //       </div>
-
-
 
 //       {/* <div className="mt-5 flex items-center justify-start px-4 md:pl-[78px] md:pt-[20px]">
 //         <div
@@ -284,19 +272,17 @@ type MainCourse = {
 //   );
 // };
 
-
-
-
 export default function Courses() {
   const [courses, setCourses] = useState<MainCourse[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [myCourses, setMyCourses] = useState<MainCourse[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [filteredCourses, setFilteredCourses] = useState<MainCourse[]>([]);
 
   useEffect(() => {
     AOS.init({ duration: 800 });
-
+    
     async function fetchCourses() {
       try {
         const res = await VideoCourses.getCourses();
@@ -309,18 +295,34 @@ export default function Courses() {
       }
     }
 
+    async function fetchMyCourses() {
+      try {
+        const res = await VideoCourses.getMyCourses();
+        setMyCourses(res.data);
+      } catch (error) {
+        console.error("Error fetching my courses:", error);
+      }
+    }
+
+    fetchMyCourses();
     fetchCourses();
   }, []);
 
   useEffect(() => {
-    setFilteredCourses(filterCourses(courses));
-  }, [activeCategory]);
+    if (activeCategory === "courses") {
+      setFilteredCourses(myCourses);
+    } else {
+      setFilteredCourses(filterCourses(courses));
+    }
+  }, [activeCategory, courses, myCourses]);
 
   function fetchCategories(courses: MainCourse[]) {
     if (!courses || courses.length === 0) return;
     const uniqueCategories = Array.from(
       new Set(courses.map((course) => course.category))
     );
+    // Add 'courses' to the categories
+    uniqueCategories.unshift("courses");
     setCategories(uniqueCategories);
     setActiveCategory(uniqueCategories[0] || "");
   }
@@ -335,32 +337,30 @@ export default function Courses() {
 
       <div className="w-full flex justify-start pt-6 md:pt-[90px] px-4 md:px-[78px]">
         <div data-aos="fade-up" className="flex flex-wrap gap-3 md:gap-5">
-          {loading
-            ? Array(4)
-              .fill(0)
-              .map((_, index) => (
-                <div
-                  key={index}
-                  className="skeleton min-w-[100px] md:min-w-[138px] px-3 md:px-4 py-1 md:py-2 rounded-full"
-                ></div>
-              ))
-            : categories.length > 0
-            && categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`min-w-[100px] md:min-w-[138px] px-3 md:px-4 py-1 md:py-2 rounded-full font-[Poppins] font-[300] text-xs md:text-sm transition-all ${activeCategory === category
-                  ? "bg-primary text-white"
-                  : "bg-[#D1FADF] text-black"
+        {loading
+            ? Array(5)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="skeleton min-w-[100px] md:min-w-[138px] px-3 md:px-4 py-1 md:py-2 rounded-full"
+                  ></div>
+                ))
+            : categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`min-w-[100px] md:min-w-[138px] px-3 md:px-4 py-1 md:py-2 rounded-full font-[Poppins] font-[300] text-xs md:text-sm transition-all ${
+                    activeCategory === category
+                      ? "bg-primary text-white"
+                      : "bg-[#D1FADF] text-black"
                   }`}
-              >
-                {category}
-              </button>
-            ))
-          }
+                >
+                  {category === "courses" ? "Your Courses" : category}
+                </button>
+              ))}
         </div>
       </div>
-
 
       <div className="mt-5 flex items-center justify-start px-4 md:pl-[78px] md:pt-[20px]">
         <div
@@ -380,17 +380,22 @@ export default function Courses() {
         </div>
       </div>
 
-
-      <div >
-        {filteredCourses.map((course) => (
-          <CourseContent
-            key={course._id}
-            {...course}
-          // isYourCourses={activeCategory === "Your Courses"}
-          // videoProgress={videoProgress[course.id] || 1}
-          // onVideoComplete={handleVideoCompletion}
-          />
-        ))}
+      <div>
+      {filteredCourses.length > 0 ? (
+          filteredCourses.map((course) => (
+            <CourseContent
+              key={course._id}
+              {...course}
+              myCourses={activeCategory=='courses'?true:false}
+            />
+          ))
+        ) : (
+          <div className="text-center mt-10 text-gray-500">
+            {activeCategory === "courses" 
+              ? "You haven't purchased any courses yet." 
+              : "No courses available in this category."}
+          </div>
+        )}
       </div>
 
       <Footer />

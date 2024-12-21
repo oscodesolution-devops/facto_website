@@ -15,10 +15,25 @@ import Payment from "./Screens/Payment";
 import UploadPage from "./Screens/Documents";
 import GlobalProvider from "@/context/GlobalContext";
 
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+const ScrollToTop = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  return null; // This component does not render anything
+};
+
+
 const App: React.FC = () => {
   return (
 
     <Router>
+      <ScrollToTop/>
           <GlobalProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />

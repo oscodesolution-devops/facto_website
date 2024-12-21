@@ -1,6 +1,7 @@
 import { Input } from './ui/input'; 
 import StartFillingSvg from '../assets/StartedFilling.svg'; 
 import { Instagram, Twitter, Facebook } from 'lucide-react'; 
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -23,12 +24,12 @@ const Footer = () => {
     </div>
 
     <div className="grid grid-cols-2 gap-[18px] max-w-[478px] pr-[68px] md:grid-cols-3">
-      <p className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Service +</p>
-      <p className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Courses</p>
-      <p className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Pricing</p>
-      <p className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Update</p>
-      <p className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Blog</p>
-      <p className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Contact Us</p>
+      <Link to="/services" className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Service +</Link>
+      <Link to="/courses" className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Courses</Link>
+      <Link to="/pricing" className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Pricing</Link>
+      <Link to="/update" className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Update</Link>
+      {/* <Link to="" className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Blog</Link> */}
+      <Link to="/contact" className="text-white text-left font-[poppins] text-[16px] font-medium leading-[28.05px]">Contact Us</Link>
     </div>
   </div>
 

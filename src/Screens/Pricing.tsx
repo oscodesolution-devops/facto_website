@@ -1,16 +1,38 @@
 import Navbar from "@/Components/Navbar";
 import { Search } from "lucide-react";
 import { Input } from "@/Components/ui/input";
-import GSTServiceCard from "@/Components/ui/detailcard";
 import Phone from "@/Components/Phone";
 import Footer from "@/Components/Footer";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
-import { Service } from "./LandingPage";
-import { Services } from "@/api";
+// import { Service } from "./LandingPage";
 import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
+import axios from "axios";
+import QuotationCard from "@/Components/QuotationCard";
 
+
+interface SubServiceId {
+  createdAt: string;
+  description: string;
+  features: string[];
+  isActive: boolean;
+  period: string;
+  price: number;
+  requests: string[];
+  serviceId: string;
+  title: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
+}
+
+interface Service {
+  selectedFeatures: string[];
+  subServiceId: SubServiceId;
+  userId: string;
+  price: number;
+}
 
 const Pricing = () => {
   const [services, setServices] = useState<Service[]>([])
@@ -22,8 +44,13 @@ const Pricing = () => {
 
     async function fetchServices() {
       try {
-        const res = await Services.getServices()
-        setServices(res.data.services)
+        const res = await axios.get("https://facto.org.in/api/v1/quotation",{
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        console.log(res.data);
+        setServices(res.data.data)
         setIsLoadingServices(false);
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -75,14 +102,24 @@ const Pricing = () => {
       ? Array(3)
           .fill(null)
           .map((_, index) => <GSTServiceCardSkeleton key={index} />)
-      : services.map((service) => (
-          <GSTServiceCard
-            key={service._id}
-            title={service.title}
-            description={service.description}
-            icon={service.icon}
-            _id={service._id}
-          />
+      : services?.map((service) => (
+          // <GSTServiceCard
+          //   key={service._id}
+          //   title={service.title}
+          //   description={service.description}
+          //   icon={service.icon}
+          //   _id={service._id}
+          // />
+          <QuotationCard
+          key={service.subServiceId._id}
+          title={service.subServiceId.title}
+          price={service.price}
+          currency="INR"
+          selectedFeatures={service.selectedFeatures}
+          subServiceId={service.subServiceId._id}
+          status={service.price?"approved":"pending"} 
+          createdAt={service.subServiceId.createdAt}
+        />
         ))}
   </div>
 </div>

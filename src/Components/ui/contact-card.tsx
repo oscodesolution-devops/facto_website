@@ -25,7 +25,7 @@ export default function Component({
   return (
     <Card className="w-[287px] h-[399px] flex flex-col">
       <CardHeader className="flex-grow flex flex-col items-center justify-center pt-6">
-        <img src={imageUrl} alt={name} className="rounded-full w-32 h-32 mb-4 object-cover" />
+        <img src={imageUrl} alt={name} className="w-32 h-32 bg-green-700 rounded-full mb-4 object-cover" />
         <CardTitle className="text-xl font-bold">{name}</CardTitle>
         <p className="text-sm text-muted-foreground">{title}</p>
       </CardHeader>

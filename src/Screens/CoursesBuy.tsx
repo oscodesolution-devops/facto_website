@@ -8,6 +8,7 @@ import { ChevronDown } from 'lucide-react';
 import Footer from '@/Components/Footer';
 
 type Course = {
+  _id:string;
   title: string;
   videoSrc: string;
   price: string;
@@ -25,14 +26,16 @@ const CoursesBuy = () => {
   const [lectureDurations, setLectureDurations] = useState<Map<number, string>>(new Map());
 
   useEffect(() => {
+    console.log(location.state.course)
     if (location.state && (location.state as { course: Course }).course) {
+
       setCourse((location.state as { course: Course }).course);
     }
   }, [location]);
 
   useEffect(() => {
     if (course) {
-      course.lectures.forEach(async (lecture) => {
+      course.lectures?.forEach(async (lecture) => {
         const duration = await getVideoDuration(lecture.videoSrc);
         setLectureDurations((prev) => new Map(prev).set(lecture.id, duration));
       });
@@ -93,11 +96,11 @@ const CoursesBuy = () => {
             <h2 className="text-2xl font-semibold font-[inter]">{course?.title}</h2>
             <div className="flex items-center mt-2 pb-5">
 
-              {Array.from({ length: fullStars }).map((_, index) => (
+              {Array.from({ length: fullStars })?.map((_, index) => (
                 <span key={`full-${index}`} className="text-yellow-500">★</span>
               ))}
               {hasHalfStar && <span className="text-yellow-500">★</span>}
-              {Array.from({ length: emptyStars }).map((_, index) => (
+              {Array.from({ length: emptyStars })?.map((_, index) => (
                 <span key={`empty-${index}`} className="text-gray-300">★</span>
               ))}
               <span className="ml-2 text-sm text-gray-700">{course?.reviews}</span>
@@ -115,7 +118,7 @@ const CoursesBuy = () => {
             <div className="mt-5 w-[870px] pt-[50px] mb-[60px]">
               <h3 className="text-xl font-semibold">Curriculum</h3>
               <ul className="mt-5 ">
-                {course?.lectures.map(lecture => (
+                {course?.lectures?.map(lecture => (
                   <li key={lecture.id} className="py-2 px-4 border border-gray-300">
                     <div className="flex items-center justify-start cursor-pointer" onClick={() => toggleLecture(lecture.id)}>
                       <ChevronDown className={`transition-transform transform mr-3 ${activeLecture === lecture.id ? 'rotate-180' : ''}`} size={20} />
@@ -135,11 +138,9 @@ const CoursesBuy = () => {
             <BuyCard
               title={course?.title || "Course Title"}
               description={courseDescription}
-              currentPrice={1999}
-              originalPrice={2599}
-              discount={56}
-              daysLeft={2}
+              currentPrice={Number(course?.price)}
               totalLectures={6}
+              courseId={course?._id}
               courseLevel="Beginner and Intermediate"
               language="Hindi"
               subtitleLanguage="English"

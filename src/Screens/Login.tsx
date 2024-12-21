@@ -5,6 +5,7 @@ import { useGlobalContext } from "@/context/GlobalContext"; // Adjust the path b
 // import facebookLogo from "../assets/facebook-logo.svg";
 // import googleLogo from "../assets/google-logo.svg";
 import Navbar from "@/Components/Navbar";
+import { toast } from "sonner";
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState("signup");
@@ -104,12 +105,15 @@ const Login = () => {
 
     try {
       const response = await AUTH.PostSignup(data);
+      console.log(response)
       console.log("Signup Successful:", response);
       sessionStorage.setItem("token", response.data.token);
+      localStorage.setItem("token",response.data.token);
       navigate("/user-details");
-    } catch (error) {
+    } catch (error:any) {
       console.error("Signup Failed:", error);
-      alert("Signup failed. Please try again.");
+      toast.error(error?.response?.data?.error?.message);
+      alert(`Signup failed. ${error?.response?.data?.error?.message}`);
     }
   };
 

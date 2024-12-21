@@ -30,17 +30,18 @@ const Header = () => {
         data-aos="fade-right"
       >
 <div className="sm:pt-14 md:pt-20 lg:pt-24 px-4 text-[28px] sm:text-4xl md:text-4xl lg:text-5xl font-[actor] font-light leading-snug sm:leading-tight text-center sm:text-left">
-  Your Trusted Partner <br />
-  for Easy <span className="text-secondary">GST</span> and{" "}
-  <span className="text-secondary">Tax Solutions</span>
+  Your Trusted Partner
+  for Easy <span className="text-secondary">GST</span> ,{" "}
+  <span className="text-secondary">Income tax</span> and{" "}
+  <span className="text-secondary">other tax and financial matters</span>
+
+
 </div>
 <p
   className="mt-3 sm:mt-5 text-xs sm:text-sm md:text-base lg:w-4/5 px-4 mx-auto sm:mx-0 text-center sm:text-left"
   data-aos="fade-up"
 >
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-  quis nostrud exercitation.
+We make GST and Income Tax filing easy, fast, and stress-free for individuals and businesses. Save time, stay compliant, and enjoy hassle-free tax management with FACTO
 </p>
 
         <div className="mt-5">

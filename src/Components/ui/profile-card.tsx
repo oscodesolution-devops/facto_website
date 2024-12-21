@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CalendarIcon, Check } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
@@ -22,19 +22,18 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useGlobalContext } from "@/context/GlobalContext";
 
-
-
 const states = ["Andhra Pradesh", "Maharashtra", "Karnataka", "Tamil Nadu"];
 
 export default function ProfileCard() {
+  const { user, logout, updateUserProfile } = useGlobalContext();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    aadharNumber: "",
-    panNumber: "",
-    dateOfBirth: "",
+    fullName: user?.user.fullName || "",
+    email: user?.user.email || "",
+    phoneNumber: user?.user.phoneNumber?.toString() || "",
+    aadharNumber: user?.user.aadharNumber?.toString() || "",
+    panNumber: user?.user.panNumber?.toString() || "",
+    dateOfBirth: user?.user.lastLogin || "", // Using lastLogin as a placeholder for DOB
     gender: "",
     address: {
       houseNumber: "",
@@ -47,19 +46,6 @@ export default function ProfileCard() {
     avatar: "/assets/user.png",
   });
 
-  const [user, setUser] = useState({
-    fullName: "",
-    email: "",
-    role: "",
-    phoneNumber: "",
-    aadharNumber: "",
-    panNumber: "",
-    gender: "",
-    gstNumber: "",
-    dateOfBirth: "",
-    address: "",
-  });
-
   const [errors, setErrors] = useState({
     phoneNumber: "",
     aadharNumber: "",
@@ -67,32 +53,29 @@ export default function ProfileCard() {
     gstNumber: "",
   });
 
-  // Access the logout function and other context values
-  const { logout } = useGlobalContext();
-
   const validateField = (name: string, value: string) => {
     let error = "";
     if (value?.length > 0) {
       switch (name) {
-        case "phone":
+        case "phoneNumber":
           error =
             value?.length !== 10
               ? "Phone number must be exactly 10 digits"
               : "";
           break;
-        case "aadhar":
+        case "aadharNumber":
           error =
             value?.length !== 12
               ? "Aadhar number must be exactly 12 digits"
               : "";
           break;
-        case "pan":
+        case "panNumber":
           error =
             value?.length !== 10
               ? "PAN number must be exactly 10 characters"
               : "";
           break;
-        case "gst":
+        case "gstNumber":
           error =
             value?.length !== 15
               ? "GST number must be exactly 15 characters"
@@ -128,17 +111,6 @@ export default function ProfileCard() {
     }
   };
 
-  const getData = async () => {
-    try {
-      const response = await User.getDetails();
-      console.log("Login Successful:", response);
-      setUser(response?.data?.user);
-    } catch (error) {
-      console.error("Login Failed:", error);
-      alert("Login failed. Please check your credentials.");
-    }
-  };
-
   const handleSubmit = async () => {
     const isValid = [
       "phoneNumber",
@@ -148,27 +120,35 @@ export default function ProfileCard() {
     ].every((field) =>
       validateField(field, formData[field as keyof typeof formData] as string)
     );
+
     if (isValid) {
-      console.log("Saving data:", formData);
-      setIsEditing(false);
+      try {
+        // Prepare data for update
+        const updateData = {
+          fullName: formData.fullName,
+          email: formData.email,
+          phoneNumber: parseInt(formData.phoneNumber),
+          aadharNumber: parseInt(formData.aadharNumber),
+          panNumber: parseInt(formData.panNumber),
+        };
+
+        // Call API to update user details
+        const response = await User.addDetails(formData);
+        console.log("Your Details are saved Successfully:", response);
+
+        // Update user profile in global context
+        updateUserProfile(updateData);
+
+        // Exit editing mode
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Update Failed:", error);
+        alert("Update failed. Please try again.");
+      }
     } else {
       console.log("Form has errors, please correct them before submitting");
     }
-
-    console.log(formData);
-    try {
-      const response = await User.addDetails(formData);
-      console.log("Your Details are saved Successfully:", response);
-      await getData();
-    } catch (error) {
-      console.error("Signup Failed:", error);
-      alert("Signup failed. Please try again.");
-    }
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <Card className="w-full max-w-[1282px] mx-auto">
@@ -214,7 +194,7 @@ export default function ProfileCard() {
               <Input
                 id="name"
                 name="fullName"
-                value={formData?.fullName || user?.fullName}
+                value={formData.fullName}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="Your Full Name"
@@ -225,7 +205,7 @@ export default function ProfileCard() {
               <Input
                 id="phone"
                 name="phoneNumber"
-                value={formData.phoneNumber || user?.phoneNumber}
+                value={formData.phoneNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="91 xxxxx xxxxx"
@@ -239,7 +219,7 @@ export default function ProfileCard() {
               <Input
                 id="pan"
                 name="panNumber"
-                value={formData.panNumber || user?.panNumber}
+                value={formData.panNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="PAN XXX XXXX"
@@ -252,7 +232,7 @@ export default function ProfileCard() {
               <Label>Gender</Label>
               <Select
                 disabled={!isEditing}
-                value={formData.gender || user?.gender}
+                value={formData.gender}
                 onValueChange={(value) =>
                   setFormData((prev) => ({ ...prev, gender: value }))
                 }
@@ -272,7 +252,7 @@ export default function ProfileCard() {
               <Input
                 id="gst"
                 name="gstNumber"
-                value={formData.gstNumber || user?.gstNumber}
+                value={formData.gstNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="22AAAAA0000A1Z5"
@@ -290,7 +270,7 @@ export default function ProfileCard() {
                 id="email"
                 name="email"
                 type="email"
-                value={formData.email || user?.email}
+                value={formData.email}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="example@gmail.com"
@@ -301,7 +281,7 @@ export default function ProfileCard() {
               <Input
                 id="aadhar"
                 name="aadharNumber"
-                value={formData.aadharNumber || user?.aadharNumber}
+                value={formData.aadharNumber}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder="XXXX XXXX XXXX"
@@ -324,23 +304,20 @@ export default function ProfileCard() {
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {formData.dateOfBirth
-                      ? format(formData.dateOfBirth, "PPP")
-                      : user?.dateOfBirth
-                      ? format(formData.dateOfBirth, "PPP")
+                      ? format(new Date(formData.dateOfBirth), "PPP")
                       : "Select date"}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="start">
-                <Calendar
-                  selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : undefined}
-                  onSelect={(date: Date | undefined) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      dateOfBirth: date ? date.toISOString() : "", 
-                    }))
-                  }
-                />
-
+                  <Calendar
+                    selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : undefined}
+                    onSelect={(date: Date | undefined) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        dateOfBirth: date ? date.toISOString() : "", 
+                      }))
+                    }
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -399,8 +376,6 @@ export default function ProfileCard() {
             </div>
           </div>
         </div>
-
-        {/* Log Out Button */}
 
         <Button variant="destructive" className="mt-4 w-full" onClick={logout}>
           Log Out

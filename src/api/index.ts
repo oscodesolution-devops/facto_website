@@ -6,7 +6,7 @@ const cancelApiObject = defineCancelApiObject(api);
 export const fetchUserProfile = async (cancel = false) => {
   try {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/user/profile",
+      url: "https://facto.org.in/api/v1/user/profile",
       method: "GET",
       signal: cancel
         ? cancelApiObject.fetchUserProfile.handleRequestCancellation().signal
@@ -27,7 +27,7 @@ export const fetchUserProfile = async (cancel = false) => {
 export const updateUserProfile = async (profileData: any, cancel = false) => {
   try {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/user/profile",
+      url: "https://facto.org.in/api/v1/user/profile",
       method: "PUT",
       data: profileData,
       signal: cancel
@@ -49,7 +49,7 @@ export const updateUserProfile = async (profileData: any, cancel = false) => {
 export const AUTH = {
   PostLogin: async (data: any, cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/auth/login",
+      url: "https://facto.org.in/api/v1/auth/login",
       method: "POST",
       data: {
         email: data.email,
@@ -64,7 +64,7 @@ export const AUTH = {
 
   PostSignup: async (data: any, cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/auth/signup",
+      url: "https://facto.org.in/api/v1/auth/signup",
       method: "POST",
       data: {
         fullName: data.fullName,
@@ -84,7 +84,7 @@ export const AUTH = {
 export const User = {
   addDetails: async (data: any, cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/user/profile",
+      url: "https://facto.org.in/api/v1/user/profile",
       method: "PUT",
       data: {
         fullName: data.fullName,
@@ -98,10 +98,10 @@ export const User = {
         dateOfBirth: data?.dateOfBirth,
         address: data?.address,
       },
-      // headers: {
-      //   Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      //   "Content-Type": "application/json",
-      // },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
       signal: cancel
         ? cancelApiObject.PostSignup.handleRequestCancellation().signal
         : undefined,
@@ -112,8 +112,11 @@ export const User = {
 
   getDetails: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/user/profile",
+      url: "https://facto.org.in/api/v1/user/profile",
       method: "GET",
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem("token")}`
+      },
       signal: cancel
         ? cancelApiObject.PostSignup.handleRequestCancellation().signal
         : undefined,
@@ -126,7 +129,7 @@ export const User = {
 export const Services = {
   getServices: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/services",
+      url: "https://facto.org.in/api/v1/services",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getServices.handleRequestCancellation().signal
@@ -136,7 +139,7 @@ export const Services = {
   },
   getSubServices: async (id: string, cancel = false) => {
     const response = await api.request({
-      url: `https://facto-backend-8spm.onrender.com/api/v1/sub-services/${id}`,
+      url: `https://facto.org.in/api/v1/sub-services/service/${id}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject.getSubServices.handleRequestCancellation().signal
@@ -149,7 +152,7 @@ export const Services = {
 export const Notifications = {
   getNotifications: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/notification",
+      url: "https://facto.org.in/api/v1/notification",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getNotifications.handleRequestCancellation().signal
@@ -162,7 +165,7 @@ export const Notifications = {
 export const Updates = {
   getBlogs: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/blogs",
+      url: "https://facto.org.in/api/v1/blogs",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getBlogs.handleRequestCancellation().signal
@@ -172,7 +175,7 @@ export const Updates = {
   },
   getBlogById: async (id: string, cancel = false) => {
     const response = await api.request({
-      url: `https://facto-backend-8spm.onrender.com/api/v1/blogs/${id}`,
+      url: `https://facto.org.in/api/v1/blogs/${id}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject.getBlogById.handleRequestCancellation().signal
@@ -183,9 +186,22 @@ export const Updates = {
 };
 
 export const VideoCourses = {
+  getMyCourses: async (cancel = false) =>{
+    const response = await api.request({
+      url: "https://facto.org.in/api/v1/course/my-courses",
+      method: "GET",
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      signal: cancel
+        ? cancelApiObject.getCourses.handleRequestCancellation().signal
+        : undefined,
+    });
+    return response.data;
+  },
   getCourses: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/course",
+      url: "https://facto.org.in/api/v1/course",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getCourses.handleRequestCancellation().signal
@@ -198,7 +214,7 @@ export const VideoCourses = {
 export const Upload = {
   getUpload: async (serviceId: string, cancel = false) => {
     const response = await api.request({
-      url: `https://facto-backend-8spm.onrender.com/api/v1/requirements/${serviceId}`,
+      url: `https://facto.org.in/api/v1/requirements/${serviceId}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject.getUpload.handleRequestCancellation().signal
@@ -223,7 +239,7 @@ export const Upload = {
     console.log(id, "id");
     try {
       const response = await fetch(
-        `https://facto-backend-8spm.onrender.com/api/v1/document/upload/${id}`,
+        `https://facto.org.in/api/v1/document/upload/${id}`,
         {
           method: requestOptions.method,
           headers: requestOptions.headers,
@@ -262,8 +278,9 @@ export const Upload = {
 
 export const Quotation = {
   postQuotation:async (data: any, cancel = false) => {
+    console.log(data.selectedFeatures)
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/quotation/",
+      url: "https://facto.org.in/api/v1/quotation/",
       method: "POST",
       headers:{
         "Authorization":`Bearer ${localStorage.getItem("token")}`
@@ -281,7 +298,7 @@ export const Quotation = {
   },
   getQuotation:async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto-backend-8spm.onrender.com/api/v1/quotation/",
+      url: "https://facto.org.in/api/v1/quotation/",
       method: "POST",
       headers:{
         "Authorization":`Bearer ${localStorage.getItem("token")}`

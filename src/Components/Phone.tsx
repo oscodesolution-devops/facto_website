@@ -28,14 +28,13 @@ const Phone = () => {
   
           <div className="w-full lg:w-[450px] xl:w-[520px] mx-auto">
             <h2 className="text-[22px] sm:text-[28px] lg:text-[32px] xl:text-[36px] font-[poppins] font-semibold leading-[30px] sm:leading-[36px] lg:leading-[42px] xl:leading-[46px]">
-              Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Tax Solutions</span>
+              Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Income tax Solutions</span> and <span className='text-secondary'>other tax and financial matter</span>
             </h2>
           </div>
   
           <div className="w-full lg:w-[450px] xl:w-[520px] mx-auto mt-[17px]">
             <p className="text-[12px] sm:text-[14px] font-[300] leading-[20px] sm:leading-[22px] tracking-[-0.02em] text-[#4F4F4F]">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation.
+            We make GST and Income Tax filing easy, fast, and stress-free for individuals and businesses. Save time, stay compliant, and enjoy hassle-free tax management with FACTO
             </p>
           </div>
   

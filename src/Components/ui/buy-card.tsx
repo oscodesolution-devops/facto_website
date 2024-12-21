@@ -10,9 +10,7 @@ interface CourseCardProps {
   title: string
   description: string
   currentPrice: number
-  originalPrice: number
-  discount: number
-  daysLeft: number
+  courseId?: string
   totalLectures: number
   courseLevel: string
   language: string
@@ -21,12 +19,10 @@ interface CourseCardProps {
 }
 
 export default function Component({
-  // title = "Tax Certificate Course",
+  title = "Tax Certificate Course",
   // description = "Lorem ipsum dolor sit amet",
   currentPrice = 1999,
-  originalPrice = 2599,
-  discount = 56,
-  daysLeft = 2,
+  courseId,
   totalLectures = 6,
   courseLevel = "Beginner and Intermediate",
   language = "Hindi",
@@ -37,7 +33,15 @@ export default function Component({
   const [isCopied, setIsCopied] = useState(false)
   const navigate = useNavigate();
   const handleBuyNow = () => {
-    navigate('/payment'); // Navigate to the Payment page
+    navigate("/payment", { 
+      state: { 
+        title:title,
+        subServiceId: courseId,
+        finalPrice: currentPrice,
+        // selectedFeatures,
+        itemType: "course"
+      } 
+    }); // Navigate to the Payment page
   }
 
   const copyLink = () => {
@@ -73,15 +77,13 @@ export default function Component({
         <div className="flex items-baseline justify-between mb-4">
           <div className="flex items-baseline gap-4">
             <span className="text-3xl font-bold">Rs {currentPrice.toLocaleString()}</span>
-            <span className="text-lg text-muted-foreground line-through">Rs {originalPrice.toLocaleString()}</span>
           </div>
-          <span className="text-sm bg-[#E9FFE9] text-[#253483] px-2 py-1 rounded">{discount}% OFF</span>
         </div>
         {/* <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription> */}
-        <div className="text-red-500 text-sm mt-2">
+        {/* <div className="text-red-500 text-sm mt-2">
           {daysLeft} days left at this price!
-        </div>
+        </div> */}
       </CardHeader>
       <CardContent className="space-y-6">
         <Separator className="my-4" />

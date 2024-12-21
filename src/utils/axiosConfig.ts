@@ -1,34 +1,81 @@
-import axios from "axios";
-import { BASE_URL } from "../utils/apiConstants";
+import { BASE_URL } from '@/utils/apiConstants';
+import axios from 'axios';
 
+// Create an axios instance
 export const api = axios.create({
-  withCredentials: false,
   baseURL: BASE_URL,
+  timeout: 10000, // 10 seconds timeout
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+// Interceptor setup function
+export const setupInterceptors = (logout:any) => {
+  // Request interceptor
+  api.interceptors.request.use(
+    (config) => {
+      // Add authorization token to requests if available
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  );
 
-const errorHandler = (error: any) => {
-  const statusCode = error.response?.status;
+  // Response interceptor
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      // Handle 401 (Unauthorized) status code
+      if (error.response && error.response.status === 401) {
+        // Clear any stored tokens
+        localStorage.removeItem('token');
+        
+        // Call logout function if provided
+        if (logout && typeof logout === 'function') {
+          logout();
+        }
 
-  if (statusCode && statusCode !== 401) {
-    console.error(error);
-  }
-
-  return Promise.reject(error);
+        // Optionally, redirect to login page
+        // This depends on your routing setup
+        window.location.href = '/login';
+      }
+      
+      return Promise.reject(error);
+    }
+  );
 };
 
-api.interceptors.response.use(undefined, (error) => {
-  return errorHandler(error);
-});
+type CancelApiMethod = {
+  handleRequestCancellation: () => {
+    signal: AbortSignal;
+    cancel: () => void;
+  };
+};
+
+type CancelApiObject<T> = {
+  [K in keyof T]: CancelApiMethod;
+};
+
+export const defineCancelApiObject = <T extends object>(apiObject: T): CancelApiObject<T> => {
+  const cancelApiObject = {} as CancelApiObject<T>;
+
+  // Iterate through all methods in the API object
+  Object.getOwnPropertyNames(apiObject).forEach((apiMethodName) => {
+    cancelApiObject[apiMethodName as keyof T] = {
+      handleRequestCancellation: () => {
+        const controller = new AbortController();
+        return {
+          signal: controller.signal,
+          cancel: () => {
+            controller.abort();
+          }
+        };
+      }
+    };
+  });
+
+  return cancelApiObject;
+};
