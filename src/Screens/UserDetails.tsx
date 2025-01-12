@@ -8,7 +8,6 @@ const UserDetails = () => {
   const [formData, setFormData] = useState({
     username: "",
     dob: "",
-    email: "",
     aadhar: "",
     pan: "",
   });
@@ -24,11 +23,13 @@ const UserDetails = () => {
     e.preventDefault();
 
     console.log(formData);
-    return;
+    // return;
     try {
       const response = await User.addDetails(formData);
-      console.log("Your Details are added Successfully:", response);
-      navigate("/");
+      if(response.success){
+        console.log("Your Details are added Successfully:", response);
+        navigate("/");
+      }
     } catch (error) {
       console.error("Signup Failed:", error);
       alert("Signup failed. Please try again.");
@@ -93,7 +94,7 @@ const UserDetails = () => {
                 />
               </div>
 
-              <div className="w-full">
+              {/* <div className="w-full">
                 <label
                   className="text-sm text-black font-[600] font-[Poppins] mb-[8px]"
                   htmlFor="email"
@@ -108,7 +109,7 @@ const UserDetails = () => {
                   onChange={handleChange}
                   className="w-full border border-gray-300 px-[12px] py-[10px] rounded-lg text-lg"
                 />
-              </div>
+              </div> */}
 
               <div className="w-full">
                 <label

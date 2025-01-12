@@ -40,7 +40,8 @@ export const setupInterceptors = (logout:any) => {
 
         // Optionally, redirect to login page
         // This depends on your routing setup
-        window.location.href = '/login';
+        // window.location.href = '/login';
+        // setIsVisibleForm(true);
       }
       
       return Promise.reject(error);

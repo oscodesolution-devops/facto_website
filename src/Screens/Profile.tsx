@@ -5,6 +5,7 @@ import ProfileCard from "@/Components/ui/profile-card";
 import TaxCard from "@/Components/ui/sub-card";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Toaster } from "sonner";
 interface PurchasedService {
   _id: string;
   title: string;
@@ -35,7 +36,7 @@ const Profile = () => {
   const fetchPurchasedServices = async (): Promise<void> => {
     try {
       const response = await axios.get(
-        "https://facto.org.in/api/v1/sub-services/my-services",
+        "http://localhost:3000/api/v1/sub-services/my-services",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -63,7 +64,7 @@ const Profile = () => {
   const handleViewDetails = async (serviceId: string) => {
     try {
       const response = await axios.get(
-        `https://facto.org.in/api/v1/application/${serviceId}`,
+        `http://localhost:3000/api/v1/application/${serviceId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -118,6 +119,7 @@ const Profile = () => {
   return (
     <div className="overflow-hidden">
       <Navbar />
+      <Toaster/>
       <div className="bg-[#DDE2FF]">
         <div className="flex justify-center py-10">
           <ProfileCard

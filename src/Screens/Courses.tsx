@@ -8,6 +8,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { VideoCourses } from "@/api";
+import { Toaster } from "sonner";
 
 type TotalCourseDetails = {
   value: number;
@@ -334,7 +335,7 @@ export default function Courses() {
   return (
     <div className="overflow-hidden">
       <Navbar />
-
+<Toaster/>
       <div className="w-full flex justify-start pt-6 md:pt-[90px] px-4 md:px-[78px]">
         <div data-aos="fade-up" className="flex flex-wrap gap-3 md:gap-5">
         {loading

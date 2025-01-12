@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 import Navbar from "@/Components/Navbar";
 import Phone from "@/Components/Phone";
 import Footer from "@/Components/Footer";
 import ComponentCard from "@/Components/ui/contact-card"; 
 import AOS from 'aos';
-import anuj from "../assets/anuj.png"
-import dolly from "../assets/dolly.png"
-import himanshu from "../assets/himanshu.png"
-import jagdish from "../assets/jg.png"
+import anuj from "../assets/Anuj.png"
+// import dolly from "../assets/dolly.png"
+import himanshu from "../assets/Himanshu.png"
+import jagdish from "../assets/Jagdish.png"
 import 'aos/dist/aos.css';
 
 const Contact = () => {
@@ -42,10 +42,17 @@ const Contact = () => {
   // Handle form submission
   const handleSubmit = async (e:any) => {
     e.preventDefault();
+    // console.log("heelo")
     
     // Basic form validation
     if (!formData.name || !formData.email || !formData.phoneNo || !formData.query) {
       toast.error('Please fill in all fields');
+      setFormData({
+        name: '',
+        email: '',
+        phoneNo: '',
+        query: ''
+      })
       return;
     }
 
@@ -53,6 +60,12 @@ const Contact = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       toast.error('Please enter a valid email address');
+      setFormData({
+        name: '',
+        email: '',
+        phoneNo: '',
+        query: ''
+      })
       return;
     }
 
@@ -60,13 +73,19 @@ const Contact = () => {
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.phoneNo)) {
       toast.error('Please enter a valid 10-digit phone number');
+      setFormData({
+        name: '',
+        email: '',
+        phoneNo: '',
+        query: ''
+      })
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post('https://facto.org.in/api/v1/query', formData);
+      const response = await axios.post('http://localhost:3000/api/v1/query', formData);
       if(response.data.success){
         toast.success('Query submitted successfully!');
       }
@@ -93,6 +112,7 @@ const Contact = () => {
       <div>
         <Navbar />
       </div>
+      <Toaster/>
       <div className="pt-[60px]">
         <div data-aos="fade-up" className="flex justify-center font-[poppins] font-[300] text-[16px]">
           OUR TEAM
@@ -105,7 +125,7 @@ const Contact = () => {
       {/* Team Cards Section - Unchanged */}
       <div data-aos="fade-up" className="font-[poppins] font-[500] flex pt-[40px] pb-[88px] gap-8 flex-wrap justify-center sm:gap-4 overflow-hidden">
         <ComponentCard
-          name="JAGDISH CHANDER CHUTANI"
+          name="JAGDISH CHUTANI"
           title="CEO"
           description="Chief Executive Officer"
           imageUrl={jagdish}
@@ -122,7 +142,7 @@ const Contact = () => {
           instagramUrl="#"
           twitterUrl="#"
         />
-        <ComponentCard
+        {/* <ComponentCard
           name="DOLLY CHUTANI"
           title="CMO"
           description="Chief Marketing Officer"
@@ -130,7 +150,7 @@ const Contact = () => {
           facebookUrl="#"
           instagramUrl="#"
           twitterUrl="#"
-        />
+        /> */}
         <ComponentCard
           name="ANUJ CHUTANI"
           title="CFO"
@@ -204,7 +224,7 @@ We also provide regular updates on tax, finance, and related topics to keep you 
       >
         <div className="text-center sm:text-left">Ask your Question</div>
         <form 
-          onSubmit={handleSubmit}
+          // onSubmit={handleSubmit}
           className="relative mt-4 border border-gray-300 rounded-md p-4 w-full max-w-[900px]"
         >
           <div className="space-y-4">
@@ -259,6 +279,7 @@ We also provide regular updates on tax, finance, and related topics to keep you 
                 ? 'bg-gray-400 cursor-not-allowed' 
                 : 'bg-primary hover:bg-blue-600'
               }`}
+              onClick={handleSubmit}
           >
             {isSubmitting ? 'Submitting...' : 'Send'}
           </button>

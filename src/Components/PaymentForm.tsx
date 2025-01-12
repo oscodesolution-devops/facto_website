@@ -8,9 +8,10 @@ interface PaymentFormProps {
   subServiceId?: string;
   itemType: string;
   selectedFeatures?: string[]
+  billingPeriod?: string
 }
 
-const PaymentForm = ({ amount, subServiceId, itemType,selectedFeatures }: PaymentFormProps) => {
+const PaymentForm = ({ amount, subServiceId, itemType,selectedFeatures,billingPeriod }: PaymentFormProps) => {
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -39,14 +40,15 @@ const PaymentForm = ({ amount, subServiceId, itemType,selectedFeatures }: Paymen
       console.log(itemType);
       // Make API call to the serverless API
       const { data } = await axios.post(
-        "https://facto.org.in/api/v1/payment/initiate-payment", 
+        "http://localhost:3000/api/v1/payment/initiate-payment", 
         { 
           userId: user?.user?._id,
           items: [
             {
               itemType:itemType,
               itemId: subServiceId || "675810412035dc3e92f0b32f",
-              price: amount
+              price: amount,
+              billingPeriod:billingPeriod
             }
           ],
           
@@ -73,8 +75,8 @@ const PaymentForm = ({ amount, subServiceId, itemType,selectedFeatures }: Paymen
             console.log(selectedFeatures);
             // Validate payment at server
             const verificationResponse = await axios.post(
-              "https://facto.org.in/api/v1/payment/verify-payment", 
-              {...response.body,selectedFeatures}
+              "http://localhost:3000/api/v1/payment/verify-payment", 
+              {...response.body,selectedFeatures,billingPeriod}
             );
 
             // On successful verification, show success dialog

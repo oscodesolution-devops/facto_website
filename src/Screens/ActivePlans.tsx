@@ -12,6 +12,7 @@ import { Services } from "@/api";
 import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
 import { Service } from "@/Screens/LandingPage";
 import { DocumentModal } from "@/Components/DocumentModal";
+import { Toaster } from "sonner";
 // import { Service } from "@/Screens/LandingPage";
 
 interface PurchasedService {
@@ -50,7 +51,7 @@ const ActivePlans: React.FC = () => {
   const fetchPurchasedServices = async (): Promise<void> => {
     try {
       const response = await axios.get(
-        "https://facto.org.in/api/v1/sub-services/my-services",
+        "http://localhost:3000/api/v1/sub-services/my-services",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -113,13 +114,15 @@ const ActivePlans: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
+    return <>
+    <Navbar/>
+    <div className="text-center py-10 text-red-500">{error}</div></>;
   }
 
   const handleViewDetails = async (serviceId: string) => {
     try {
       const response = await axios.get(
-        `https://facto.org.in/api/v1/application/${serviceId}`,
+        `http://localhost:3000/api/v1/application/${serviceId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -144,6 +147,7 @@ const ActivePlans: React.FC = () => {
       <div>
         <Navbar />
       </div>
+      <Toaster/>
       <div className="bg-[#DFFFE3] pt-[87px] pb-[127px] px-10">
         <div
           data-aos="fade-up"

@@ -12,7 +12,7 @@ import PricingCard from "./ui/pricingcard";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Services } from "@/api";
 import { Service } from "@/Screens/LandingPage";
 import GSTServiceCard from "./ui/detailcard";
@@ -39,16 +39,23 @@ type SubService = {
 const HeroSection = () => {
   const location = useLocation();
   const [id, setId] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState("");
   const [subServices, setSubServices] = useState<SubService[]>([]);
+  const [filteredSubServices, setFilteredSubServices] = useState<SubService[]>([]);
   const [services, setServices] = useState<Service[]>([]);
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [isLoadingSubServices, setIsLoadingSubServices] = useState(true);
   const [isLoadingServices, setIsLoadingServices] = useState(true);
-
+  const [serviceTitle, setServiceTitle] = useState<string | null>(null);
+  useEffect(() => {
+    const state = location.state;
+    setServiceTitle(state?.title || null);
+  }, [location]);
 
   useEffect(() => {
     AOS.init({ duration: 700 });
   }, []);
-
+  const navigate =useNavigate();
   // Extract `id` from the URL query params
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -64,6 +71,7 @@ const HeroSection = () => {
         try {
           const res = await Services.getSubServices(id as string);
           setSubServices(res.data.subServices);
+          setFilteredSubServices(res.data.subServices);
           setIsLoadingSubServices(false);
         } catch (error) {
           console.error("Error fetching sub-services:", error);
@@ -75,6 +83,7 @@ const HeroSection = () => {
         try {
           const res = await Services.getServices();
           setServices(res.data.services);
+          setFilteredServices(res.data.services);
           setIsLoadingServices(false);
         } catch (error) {
           console.error('Error fetching services:', error);
@@ -84,10 +93,28 @@ const HeroSection = () => {
     }
   }, [id]); // Runs whenever `id` changes
 
+  useEffect(() => {
+    if (id !== null) {
+      // Filter subServices
+      const filtered = subServices.filter((subService) =>
+        subService.title.toLowerCase().includes(searchText.toLowerCase()) ||
+        subService.description.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredSubServices(filtered);
+    } else {
+      // Filter services
+      const filtered = services.filter((service) =>
+        service.title.toLowerCase().includes(searchText.toLowerCase()) ||
+        service.description.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredServices(filtered);
+    }
+  }, [searchText, services, subServices, id]);
 
 
-
-
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
 
   return (
 <section className="bg-[#E9FFE9] pt-2 pb-36 w-full">
@@ -101,9 +128,9 @@ const HeroSection = () => {
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage className="text-primary">GST</BreadcrumbPage>
-        </BreadcrumbItem>
+        {serviceTitle&&<BreadcrumbItem>
+          <BreadcrumbPage className="text-primary">{serviceTitle}</BreadcrumbPage>
+        </BreadcrumbItem>}
       </BreadcrumbList>
     </Breadcrumb>
   </div>
@@ -128,10 +155,12 @@ const HeroSection = () => {
     >
       <Search size={20} className="text-gray-500 mr-3" />
       <Input
-        type="text"
-        placeholder="Search"
-        className="flex-1 border-none text-base placeholder:text-gray-500"
-      />
+            type="text"
+            placeholder="Search"
+            className="flex-1 border-none text-base placeholder:text-gray-500"
+            value={searchText}
+            onChange={handleSearchChange}
+          />
       <button className="ml-3 bg-[#253483] text-white rounded-full px-4 py-1 text-sm font-[lora]">
         Search
       </button>
@@ -140,7 +169,6 @@ const HeroSection = () => {
 
   {/* Cards Section */}
   <div
-  data-aos="fade-up"
   className="mt-20 grid gap-4"
   style={{
     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -156,7 +184,7 @@ const HeroSection = () => {
         .map((_, index) => <PricingCardSkeleton key={index} />)
     ) : (
       // Show actual sub-services when data is loaded
-      subServices.map((subService) => (
+      filteredSubServices.map((subService) => (
         <PricingCard
           key={subService._id}
           serviceId={subService._id}
@@ -177,7 +205,7 @@ const HeroSection = () => {
         .map((_, index) => <GSTServiceCardSkeleton key={index} />)
     ) : (
       // Show actual services when data is loaded
-      services.map((service) => (
+      filteredServices.map((service) => (
         <GSTServiceCard
           key={service._id}
           title={service.title}
@@ -214,7 +242,7 @@ const HeroSection = () => {
     </div>
 
     <div data-aos="fade-up" className="mt-5">
-      <button className="bg-[#3AB54A] border border-[#00750F] text-white rounded-md px-8 py-2 text-sm font-semibold font-[inter] tracking-wider">
+      <button onClick={()=>{navigate("/contact")}} className="bg-[#3AB54A] border border-[#00750F] text-white rounded-md px-8 py-2 text-sm font-semibold font-[inter] tracking-wider">
         Contact Us
       </button>
     </div>

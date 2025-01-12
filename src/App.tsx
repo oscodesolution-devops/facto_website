@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./Screens/LandingPage";
 import Services from "./Screens/Services";
-import LoginPage from "./Screens/Login";
+// import LoginPage from "./Screens/Login";
 import UserDetails from "./Screens/UserDetails";
 import Pricing from "./Screens/Pricing";
 import Update from "./Screens/Update";
@@ -17,6 +17,9 @@ import GlobalProvider from "@/context/GlobalContext";
 
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import TermsAndConditions from "@/Screens/TermsAndCondition";
+import PrivacyPolicy from "@/Screens/PrivacyPolicy";
+import RefundPolicy from "@/Screens/RefundPolicy";
 
 const ScrollToTop = () => {
   const location = useLocation();
@@ -38,7 +41,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/login" element={<LoginPage />} />
+        {/* <Route path="/login" element={<LoginPage />} /> */}
         <Route path="/user-details" element={<UserDetails />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/update" element={<Update />} />
@@ -50,6 +53,9 @@ const App: React.FC = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/upload-page" element={<UploadPage />} />
+        <Route path="/termsncondition" element={<TermsAndConditions/>}/>
+        <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
+        <Route path="/refundpolicy" element={<RefundPolicy/>}/>
       </Routes>
       </GlobalProvider>
     </Router>

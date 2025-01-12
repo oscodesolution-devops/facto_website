@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
 import axios from "axios";
 import QuotationCard from "@/Components/QuotationCard";
+import { Toaster } from "sonner";
 
 
 interface SubServiceId {
@@ -35,7 +36,10 @@ interface Service {
 }
 
 const Pricing = () => {
+  const [searchText, setSearchText] = useState("");
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [services, setServices] = useState<Service[]>([])
+
   const [isLoadingServices, setIsLoadingServices] = useState(true);
   useEffect(() => {
     AOS.init({
@@ -44,7 +48,7 @@ const Pricing = () => {
 
     async function fetchServices() {
       try {
-        const res = await axios.get("https://facto.org.in/api/v1/quotation",{
+        const res = await axios.get("http://localhost:3000/api/v1/quotation",{
           headers:{
             Authorization:`Bearer ${localStorage.getItem("token")}`
           }
@@ -58,10 +62,28 @@ const Pricing = () => {
     }
     fetchServices()
   }, []);
+  useEffect(() => {
+    const filtered = services.filter((service) => {
+      const searchLower = searchText.toLowerCase();
+      return (
+        service.subServiceId.title.toLowerCase().includes(searchLower) ||
+        service.selectedFeatures.some(feature => 
+          feature.toLowerCase().includes(searchLower)
+        ) ||
+        service.subServiceId.description.toLowerCase().includes(searchLower) ||
+        (service.price && service.price.toString().includes(searchText))
+      );
+    });
+    setFilteredServices(filtered);
+  }, [searchText, services]);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
   return (
     <div className="overflow-hidden">
       <Navbar />
-
+    <Toaster/>
       <div className="bg-[#DDE2FF] pt-12">
         <div className="text-center">
           <h1 data-aos="fade-up" className="font-[erode] font-medium text-lg md:text-2xl">
@@ -78,8 +100,10 @@ const Pricing = () => {
             <Search size={20} className="text-gray-500 mr-3" />
             <Input
               type="text"
-              placeholder="Search"
+              placeholder="Search by title, features, or price"
               className="flex-1 text-sm placeholder:text-gray-500 border-none"
+              value={searchText}
+              onChange={handleSearchChange}
             />
             <button className="ml-3 bg-[#253483] text-white rounded-full px-4 py-1 text-sm font-lora">
               Search
@@ -95,32 +119,30 @@ const Pricing = () => {
   }}
 >
   <div
-    data-aos="fade-up"
+    // data-aos="fade-up"
     className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-[50px]"
   >
     {isLoadingServices
       ? Array(3)
           .fill(null)
           .map((_, index) => <GSTServiceCardSkeleton key={index} />)
-      : services?.map((service) => (
-          // <GSTServiceCard
-          //   key={service._id}
-          //   title={service.title}
-          //   description={service.description}
-          //   icon={service.icon}
-          //   _id={service._id}
-          // />
+      : filteredServices.length > 0 ? (
+        filteredServices.map((service) => (
           <QuotationCard
-          key={service.subServiceId._id}
-          title={service.subServiceId.title}
-          price={service.price}
-          currency="INR"
-          selectedFeatures={service.selectedFeatures}
-          subServiceId={service.subServiceId._id}
-          status={service.price?"approved":"pending"} 
-          createdAt={service.subServiceId.createdAt}
-        />
-        ))}
+            key={service.subServiceId._id}
+            title={service.subServiceId.title}
+            price={service.price}
+            currency="INR"
+            selectedFeatures={service.selectedFeatures}
+            subServiceId={service.subServiceId._id}
+            status={service.price ? "approved" : "pending"}
+            createdAt={service.subServiceId.createdAt}
+          />
+        ))):(
+          <div className="col-span-full text-center text-gray-500">
+            No services found matching your search.
+          </div>
+        )}
   </div>
 </div>
 

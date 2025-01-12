@@ -6,8 +6,11 @@ const cancelApiObject = defineCancelApiObject(api);
 export const fetchUserProfile = async (cancel = false) => {
   try {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/user/profile",
+      url: "http://localhost:3000/api/v1/user/profile",
       method: "GET",
+      headers:{
+        "Authorization":`Bearer ${localStorage.getItem('token')}`
+      },
       signal: cancel
         ? cancelApiObject.fetchUserProfile.handleRequestCancellation().signal
         : undefined,
@@ -27,7 +30,7 @@ export const fetchUserProfile = async (cancel = false) => {
 export const updateUserProfile = async (profileData: any, cancel = false) => {
   try {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/user/profile",
+      url: "http://localhost:3000/api/v1/user/profile",
       method: "PUT",
       data: profileData,
       signal: cancel
@@ -47,13 +50,12 @@ export const updateUserProfile = async (profileData: any, cancel = false) => {
 };
 
 export const AUTH = {
-  PostLogin: async (data: any, cancel = false) => {
+  sendOtp: async (data: any, cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/auth/login",
+      url: "http://localhost:3000/api/v1/auth/sendOtp",
       method: "POST",
       data: {
-        email: data.email,
-        password: data.password,
+        phoneNo:data.phoneNo,
       },
       signal: cancel
         ? cancelApiObject.PostLogin.handleRequestCancellation().signal
@@ -62,15 +64,13 @@ export const AUTH = {
     return response.data;
   },
 
-  PostSignup: async (data: any, cancel = false) => {
+  verifyOtp: async (data: any, cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/auth/signup",
+      url: "http://localhost:3000/api/v1/auth/verifyOtp",
       method: "POST",
       data: {
-        fullName: data.fullName,
-        email: data.email,
-        password: data.password,
-        phoneNumber: data.phoneNumber,
+        phoneNo:data.phoneNo,
+        otp:data.otp
       },
       signal: cancel
         ? cancelApiObject.PostSignup.handleRequestCancellation().signal
@@ -84,35 +84,44 @@ export const AUTH = {
 export const User = {
   addDetails: async (data: any, cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/user/profile",
-      method: "PUT",
-      data: {
-        fullName: data.fullName,
-        email: data.email,
-        role: data?.role,
-        phoneNumber: data?.phoneNumber,
-        aadharNumber: data?.aadharNumber,
-        panNumber: data?.panNumber,
-        gender: data?.gender,
-        gstNumber: data?.gstNumber,
-        dateOfBirth: data?.dateOfBirth,
-        address: data?.address,
-      },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-      signal: cancel
-        ? cancelApiObject.PostSignup.handleRequestCancellation().signal
-        : undefined,
+        url: "http://localhost:3000/api/v1/user/profile",
+        method: "PUT",
+        data: {
+            // Basic Details
+            fullName: data.fullName,
+            email: data.email,
+            fathersName: data.fathersName,
+            alternativePhone: data.alternativePhone,
+            phoneNumber: data?.phoneNumber,
+            aadharNumber: data?.aadharNumber,
+            panNumber: data?.panNumber,
+            gender: data?.gender,
+            dateOfBirth: data?.dateOfBirth,
+            address: data?.address,
+            state: data?.state,
+            profilePictureUrl: data?.profilePictureUrl,
+
+            // GST Profile
+            gstProfile: data?.gstProfile ? data.gstProfile : undefined,
+
+            // Income Tax Profile
+            incomeTaxProfile: data?.incomeTaxProfile ? data.incomeTaxProfile: undefined,
+        },
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+        signal: cancel
+            ? cancelApiObject.PostSignup.handleRequestCancellation().signal
+            : undefined,
     });
     console.log(response);
     return response.data;
-  },
+},
 
   getDetails: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/user/profile",
+      url: "http://localhost:3000/api/v1/user/profile",
       method: "GET",
       headers:{
         "Authorization":`Bearer ${localStorage.getItem("token")}`
@@ -129,7 +138,7 @@ export const User = {
 export const Services = {
   getServices: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/services",
+      url: "http://localhost:3000/api/v1/services",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getServices.handleRequestCancellation().signal
@@ -139,7 +148,7 @@ export const Services = {
   },
   getSubServices: async (id: string, cancel = false) => {
     const response = await api.request({
-      url: `https://facto.org.in/api/v1/sub-services/service/${id}`,
+      url: `http://localhost:3000/api/v1/sub-services/service/${id}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject.getSubServices.handleRequestCancellation().signal
@@ -152,7 +161,7 @@ export const Services = {
 export const Notifications = {
   getNotifications: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/notification",
+      url: "http://localhost:3000/api/v1/notification",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getNotifications.handleRequestCancellation().signal
@@ -165,7 +174,7 @@ export const Notifications = {
 export const Updates = {
   getBlogs: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/blogs",
+      url: "http://localhost:3000/api/v1/blogs",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getBlogs.handleRequestCancellation().signal
@@ -175,7 +184,7 @@ export const Updates = {
   },
   getBlogById: async (id: string, cancel = false) => {
     const response = await api.request({
-      url: `https://facto.org.in/api/v1/blogs/${id}`,
+      url: `http://localhost:3000/api/v1/blogs/${id}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject.getBlogById.handleRequestCancellation().signal
@@ -188,7 +197,7 @@ export const Updates = {
 export const VideoCourses = {
   getMyCourses: async (cancel = false) =>{
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/course/my-courses",
+      url: "http://localhost:3000/api/v1/course/my-courses",
       method: "GET",
       headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -201,7 +210,7 @@ export const VideoCourses = {
   },
   getCourses: async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/course",
+      url: "http://localhost:3000/api/v1/course",
       method: "GET",
       signal: cancel
         ? cancelApiObject.getCourses.handleRequestCancellation().signal
@@ -214,7 +223,7 @@ export const VideoCourses = {
 export const Upload = {
   getUpload: async (serviceId: string, cancel = false) => {
     const response = await api.request({
-      url: `https://facto.org.in/api/v1/requirements/${serviceId}`,
+      url: `http://localhost:3000/api/v1/requirements/${serviceId}`,
       method: "GET",
       signal: cancel
         ? cancelApiObject.getUpload.handleRequestCancellation().signal
@@ -239,7 +248,7 @@ export const Upload = {
     console.log(id, "id");
     try {
       const response = await fetch(
-        `https://facto.org.in/api/v1/document/upload/${id}`,
+        `http://localhost:3000/api/v1/document/upload/${id}`,
         {
           method: requestOptions.method,
           headers: requestOptions.headers,
@@ -253,6 +262,23 @@ export const Upload = {
     }
   },
 };
+
+export const Documents = {
+  getAllDocuments:async(cancel:any=false)=>{
+    
+    const response = await api.request({
+      url: `http://localhost:3000/api/v1/document/get`,
+      method: "GET",
+      headers:{
+        Authorization:`Bearer ${localStorage.getItem("token")}`
+      },
+      signal: cancel
+        ? cancelApiObject.getUpload.handleRequestCancellation().signal
+        : undefined,
+    });
+    return response.data;
+  }
+}
 
 // const myHeaders = new Headers();
 // myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ0NDIwODIzMDJhMmVhNjYzYWRkNzgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3MzI1MjcwNzYsImV4cCI6MTczMjYxMzQ3Nn0.yxClp90Nd-ERVfj5Q2BvQmtYTQIAV-KprbIw_jLnris");
@@ -277,28 +303,32 @@ export const Upload = {
 
 
 export const Quotation = {
-  postQuotation:async (data: any, cancel = false) => {
-    console.log(data.selectedFeatures)
-    const response = await api.request({
-      url: "https://facto.org.in/api/v1/quotation/",
-      method: "POST",
-      headers:{
-        "Authorization":`Bearer ${localStorage.getItem("token")}`
-      },
-      data: {
-        subServiceId: data.subServiceId,
-        selectedFeatures: data.selectedFeatures,
-      },
-      signal: cancel
-        ? cancelApiObject.PostSignup.handleRequestCancellation().signal
-        : undefined,
-    });
-    console.log(response);
-    return response.data;
+  postQuotation: async (data: { subServiceId: string, selectedFeatures: string[],billingPeriod:string }, cancel = false) => {
+    try {
+      const response = await api.request({
+        url: "http://localhost:3000/api/v1/quotation/",
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        data: {
+          subServiceId: data.subServiceId,
+          selectedFeatures: data.selectedFeatures,
+          billingPeriod: data.billingPeriod
+        },
+        signal: cancel
+          ? cancelApiObject.PostSignup.handleRequestCancellation().signal
+          : undefined,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
   },
   getQuotation:async (cancel = false) => {
     const response = await api.request({
-      url: "https://facto.org.in/api/v1/quotation/",
+      url: "http://localhost:3000/api/v1/quotation/",
       method: "POST",
       headers:{
         "Authorization":`Bearer ${localStorage.getItem("token")}`

@@ -2,18 +2,47 @@ import { Input } from './ui/input';
 import StartFillingSvg from '../assets/StartedFilling.svg'; 
 import { Instagram, Twitter, Facebook } from 'lucide-react'; 
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 const Footer = () => {
+  const [phoneNo,setPhoneNo] = useState("")
+  const handleSumbit = async(e:any)=>{
+    console.log(phoneNo)
+    e.preventDefault()
+    try{
+      const response = await axios.post("http://localhost:3000/api/v1/request",{
+        phoneNo
+      })
+      if(response.data.success){
+        toast.success('Request submitted successfully!');
+      }
+      setPhoneNo("")
+    }catch(err){
+      toast.error("Error occured please try again later")
+    }
+  }
   return (
 <div className="bg-[#262626] py-[33px] px-[48px] pb-[50px]">
   <div className="flex flex-col md:flex-row justify-between">
   <div className="relative w-full max-w-[478px] flex flex-col items-center">
   <Input
+  value={phoneNo}
+  onChange={(e:any)=>{if(isNaN(Number(e.target.value))){
+    toast.error("Fill appropriate number")
+  }else if(e.target.value.length>10){
+    toast.error("Number cant exceed 10 digits")
+    
+  }else{
+    setPhoneNo(e.target.value)}}
+  }
     type="text"
     placeholder="Phone Number"
     className="bg-primary rounded-[30px] w-full h-[48px] text-white px-[16px] py-[12px]" 
   />
   <button 
+  onClick={handleSumbit}
     className="absolute right-1 top-0 bg-[#B0C2D6] text-primary font-[lora] rounded-[30px] w-[160px] h-[42px] px-[18px] py-0 mt-[3px]"
   >
     Request Call Back
@@ -57,8 +86,10 @@ const Footer = () => {
     </div>
 
     <div className="flex flex-col items-center md:items-end font-[Poppins] mt-[10px] md:mt-0">
-      <a href="#" className="text-white text-[15px] font-medium leading-[32.17px]">Terms & Conditions</a>
-      <a href="#" className="text-white text-[15px] font-medium leading-[32.17px]">Privacy Policy</a>
+      <Link to="/termsncondition" className="text-white text-[15px] font-medium leading-[32.17px]">Terms & Conditions</Link>
+      <Link to="/privacy-policy" className="text-white text-[15px] font-medium leading-[32.17px]">Privacy Policy</Link>
+      <Link to="/refundpolicy" className="text-white text-[15px] font-medium leading-[32.17px]">Refund Policy</Link>
+
     </div>
   </div>
 </div>

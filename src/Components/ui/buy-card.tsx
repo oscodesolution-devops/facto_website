@@ -72,7 +72,7 @@ export default function Component({
   }
 
   return (
-    <Card className="w-[424px]">
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-baseline justify-between mb-4">
           <div className="flex items-baseline gap-4">

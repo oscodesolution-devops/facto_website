@@ -1,8 +1,8 @@
-import { Button } from "@/Components/ui/button";
+// import { Button } from "@/Components/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
+  // CardFooter,
   CardHeader,
 } from "@/Components/ui/card";
 
@@ -11,7 +11,7 @@ interface NewsCardProps {
   imageAlt: string;
   title: string;
   description: string;
-  buttonText: string;
+  // buttonText: string;
   onButtonClick?: () => void;
 }
 
@@ -20,11 +20,11 @@ export default function NewsCard({
   imageAlt,
   title,
   description,
-  buttonText,
+  // buttonText,
   onButtonClick,
 }: NewsCardProps) {
   return (
-    <Card className="w-full max-w-[344px] min-w-[] h-[434px] overflow-hidden shadow-lg border-none flex flex-col">
+    <Card className="w-full max-w-[344px] min-h-[434px] p-2 shadow-lg border-none flex flex-col" onClick={onButtonClick}>
       <CardHeader className="p-0">
         <div className="relative w-full h-48">
           <img
@@ -41,14 +41,7 @@ export default function NewsCard({
           </h2>
           <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
         </div>
-        <CardFooter className="p-0">
-          <Button
-            className="w-full bg-[#2E3192] hover:bg-[#252679] text-white"
-            onClick={onButtonClick}
-          >
-            {buttonText}
-          </Button>
-        </CardFooter>
+        
       </CardContent>
     </Card>
   );

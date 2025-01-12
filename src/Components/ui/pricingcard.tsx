@@ -1,11 +1,20 @@
 import { useState } from "react"
 import PricingDialog from "./pricing-dialog"
 
+interface Option {
+  name: string;
+  priceModifier: number;
+  needsQuotation: boolean;
+}
+
 interface Request {
   name: string;
   needsQuotation: boolean;
   priceModifier: number;
   _id: string;
+  inputType: "dropdown" | "checkbox";
+  isMultipleSelect?: boolean;
+  options?: Option[];
 }
 
 export default function PricingCard({
@@ -21,7 +30,6 @@ export default function PricingCard({
   startingText = "Starting from",
   price = "1001",
   currency = "Rs",
-  period = "/Month",
   serviceId = ""
 }: {
   title?: string
@@ -71,7 +79,7 @@ export default function PricingCard({
             <span className="font-semibold text-red-500">
               {currency} {price}
             </span>
-            <span className="text-sm text-muted-foreground">{period}</span>
+            {/* <span className="text-sm text-muted-foreground">{period}</span> */}
           </div>
         </div>
       </div>
@@ -81,7 +89,7 @@ export default function PricingCard({
           title={title}
           basePrice={Number(price)}
           currency={currency}
-          period={period}
+          
           requests={requests}
           subServiceId={serviceId} 
           isOpen={isDialogOpen}

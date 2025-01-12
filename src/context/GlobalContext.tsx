@@ -1,3 +1,4 @@
+import { User } from "@/api";
 import React, {
   createContext,
   useState,
@@ -9,7 +10,7 @@ import React, {
 } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-interface IAuth {
+export interface IAuth {
   user: {
     _id: string;
     email: string;
@@ -18,14 +19,39 @@ interface IAuth {
     aadharNumber: number;
     panNumber: number;
     role: string;
+    profilePictureUrl?:string;
     lastLogin: string;
     registrationDate: string;
+    address?: string;
+    alternativePhone?: string;
+    gstProfile?: {
+      gstNumber: string;
+      gstPassword: string;
+      gstPortalLoginId: string;
+      gstrType: string;
+      returnType: string;
+      tradeName: string;
+      additionalTradeName: string;
+    };
+    incomeTaxProfile?: {
+      itrType: string;
+      password: string;
+      bankDetails: {
+        accountNumber: string;
+        ifscCode: string;
+      };
+    };
+    dateOfBirth?: string;
+    fathersName?: string;
+    state?: string;
   };
   token: string;
 }
 
 interface IGlobalContext {
+  isVisibleForm:any;
   user: IAuth | null;
+  setIsVisibleForm: Dispatch<SetStateAction<any>>;
   saveUser: (data: IAuth) => void;
   isAuthenticated: boolean;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
@@ -51,17 +77,69 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       return null;
     }
   });
+  const refreshUserData = async (token: string) => {
+    try {
+      const response = await User.getDetails();
+      console.log(response,"ssss");
+      
+      if (response.success) {
+        const userData = await response.data.user;
+        console.log(userData);
+        saveUser({ user: userData, token });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+      return false;
+    }
+  };
 
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => !!localStorage.getItem("token")
   );
 
+  const [isVisibleForm,setIsVisibleForm] = useState(false);
+  // const [isInitialized, setIsInitialized] = useState(false);
   const privateRoutes = ["/profile", "/update", "/active-plans", "/payment", "/upload-page","/pricing"];
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const token = localStorage.getItem("token");
+      const storedUser = localStorage.getItem("user");
+      if (token) {
+        try {
+          // If we have stored user data, use it immediately
+          if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+            setIsAuthenticated(true);
+          }
+
+          // Refresh user data in the background
+          const refreshSuccess = await refreshUserData(token);
+          if (!refreshSuccess && storedUser) {
+            // If refresh failed but we have stored data, keep using it
+            console.warn('Could not refresh user data, using stored data');
+          }
+        } catch (error) {
+          console.error("Error during authentication initialization:", error);
+          logout();
+        }
+      } else {
+        // Clear invalid data
+        logout();
+      }
+      
+      // setIsInitialized(true);
+    };
+
+    initializeAuth();
+  }, [navigate]);
 
   const saveUser = (data: IAuth) => {
     setUser(data);
     localStorage.setItem("user", JSON.stringify(data));
-    localStorage.setItem("token", data.token);
+    // localStorage.setItem("token", data.token);
     setIsAuthenticated(true);
   };
 
@@ -84,7 +162,8 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setIsAuthenticated(false);
-    navigate("/login");
+    navigate("/");
+    setIsVisibleForm(false);
   };
 
   useEffect(() => {
@@ -95,15 +174,17 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     // Redirect logic
     if (isPrivateRoute && !isAuthenticated) {
-      navigate("/login");
+      // navigate("/login");
+      setIsVisibleForm(true);
     }
   }, [location.pathname, isAuthenticated, navigate]);
-
   return (
     <GlobalContext.Provider 
       value={{ 
         user, 
-        saveUser, 
+        saveUser,
+        isVisibleForm,
+        setIsVisibleForm, 
         isAuthenticated, 
         setIsAuthenticated, 
         logout, 

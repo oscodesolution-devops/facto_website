@@ -49,43 +49,59 @@ const CourseContent: React.FC<{
   duration,
   myCourses
 }) => {
-  // State to track the currently selected lecture
-  const [selectedLecture, setSelectedLecture] = useState<LectureDetails | null>(
-    null
-  );
+  const [selectedLecture, setSelectedLecture] = useState<LectureDetails | null>(null);
 
-  // Initialize AOS
   useEffect(() => {
     AOS.init({
       duration: 500,
     });
   }, []);
 
-  // Set initial lecture when component mounts or course changes
   useEffect(() => {
-    // Find first lecture with a video URL
     const firstLecture = lectures.find((lecture) => lecture.videoUrl);
     setSelectedLecture(firstLecture || null);
   }, [lectures]);
 
-  // Function to determine if a lecture is locked
   const isLectureLocked = (lecture: LectureDetails) => {
-    // If no video URL is provided or not free, consider the lecture locked
     return !lecture.videoUrl || !lecture.isFree;
   };
 
-  // Handler for lecture selection
   const handleLectureSelect = (lecture: LectureDetails) => {
-    // Only allow selection if lecture is not locked and has a video
     if (!isLectureLocked(lecture)) {
       setSelectedLecture(lecture);
     }
   };
 
-  // Determine the total number of lectures
   const availableLectures = lectures.filter(
     (lecture) => lecture.videoUrl
   ).length;
+
+  // Prepare course data for CoursesBuy component
+  const courseData = {
+    _id,
+    title,
+    videoSrc: selectedLecture?.videoUrl || "",
+    price: price.toString(),
+    originalPrice: price.toString(), // Add if you have original price
+    discount: "0", // Add if you have discount
+    reviews: 4.5, // Add your review logic here
+    description,
+    lectures: lectures.map(lecture => ({
+      id: lecture.lectureNumber,
+      title: lecture.title,
+      videoSrc: lecture.videoUrl,
+      isLocked: isLectureLocked(lecture),
+      duration: lecture.duration,
+      subtitle: lecture.subtitle,
+      subtitleLanguage: lecture.subtitleLanguage,
+      courseLevel: lecture.courseLevel
+    })),
+    category,
+    language,
+    totalLectures,
+    duration,
+    courseLevel: lectures[0]?.courseLevel || "Beginner"
+  };
 
   return (
     <div
@@ -136,20 +152,22 @@ const CourseContent: React.FC<{
                 <li>Category: {category}</li>
               </ul>
 
-              {!myCourses&&
-              <>
-              <Link
-                to={`/courses-buy/${_id}`}
-                state={{ course: { _id, title, price } }}
-              >
-                <button className="bg-primary text-white rounded-full px-4 py-2 mr-3 text-sm">
-                  Buy Now
-                </button>
-              </Link>
+              {!myCourses && (
+                <>
+                  <Link
+                    to={`/courses-buy/${_id}`}
+                    state={{ course: courseData }}
+                  >
+                    <button className="bg-primary text-white rounded-full px-4 py-2 mr-3 text-sm">
+                      Buy Now
+                    </button>
+                  </Link>
 
-              <button className="bg-secondary text-white rounded-full px-4 py-2 text-sm">
-                Watch Demo
-              </button></>}
+                  <button className="bg-secondary text-white rounded-full px-4 py-2 text-sm">
+                    Watch Demo
+                  </button>
+                </>
+              )}
             </div>
 
             <div className="p-4 flex flex-col items-start">
@@ -202,13 +220,11 @@ const CourseContent: React.FC<{
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                      <span className="text-gray-500">
-                        No Preview Available
-                      </span>
+                      <span className="text-gray-500">No Preview Available</span>
                     </div>
                   )}
 
-                  {(isLocked&&!myCourses) && (
+                  {(isLocked && !myCourses) && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                       <div className="w-10 h-10 md:w-14 md:h-14 bg-blue-500 rounded-full flex items-center justify-center">
                         <Lock className="w-6 h-6 md:w-8 md:h-8 text-white" />

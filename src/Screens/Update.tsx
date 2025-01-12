@@ -1,292 +1,221 @@
-  import { useNavigate } from "react-router-dom";
-  import Navbar from "@/Components/Navbar";
-  import {
-    Breadcrumb,
-    BreadcrumbList,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbSeparator,
-    BreadcrumbPage,
-  } from "@/Components/ui/breadcrumb";
-  import { Search } from "lucide-react";
-  import { Input } from "@/Components/ui/input";
-  import { useState } from "react";
-  import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-  } from "@/Components/ui/dropdown-menu";
-  import { ChevronDown, ChevronUp } from "lucide-react";
-  import { Button } from "@/Components/ui/button";
-  import NewsCard from "@/Components/ui/news-card";
-  import Footer from "@/Components/Footer";
-  import Phone from "@/Components/Phone";
-  import AOS from 'aos';
-  import 'aos/dist/aos.css';
-  import { useEffect } from 'react';
-  import { Updates } from "@/api";
-  import NewsCardSkeleton from "@/Components/ui/news-card-skeleton";
+import { useEffect, useState } from "react";
+// import { ChevronDown, ChevronUp } from "lucide-react";
+import "aos/dist/aos.css";
 
-  const DropdownMenuDemo = ({ selected, setSelected }: any) => {
+import Navbar from "@/Components/Navbar";
+import Footer from "@/Components/Footer";
+import Phone from "@/Components/Phone";
+import NewsCardSkeleton from "@/Components/ui/news-card-skeleton";
+import { Updates } from "@/api";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/Components/ui/breadcrumb";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuGroup,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/Components/ui/dropdown-menu";
+// import { Button } from "@/Components/ui/button";
 
-    useEffect(() => {
-      AOS.init({
-        duration: 800,
-      });
-    }, []);
+type Blog = {
+  _id: string; // Unique identifier for the blog
+  title: string; // Title of the blog
+  content: string; // Main content of the blog
+  contentType: "image" | "video" | "text"; // Type of content (image, video, or text)
+  contentUrl: string; // URL for the media content (image or video)
+  tags: string[]; // Array of tags associated with the blog
+  reference: { url: string }; // Reference URL for additional details
+  createdAt: string; // Creation date of the blog
+};
 
-    const [isOpen, setIsOpen] = useState(false);
 
-    const options = ["Daily", "Weekly", "Monthly", "Yearly"];
+// const DropdownMenuDemo = ({
+//   selected,
+//   setSelected,
+// }: {
+//   selected: string;
+//   setSelected: React.Dispatch<React.SetStateAction<string>>;
+// }) => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const options = ["Daily", "Weekly", "Monthly", "Yearly"];
 
-    return (
-      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="flex items-center font-[Poppins] font-[300] text-sm"
-          >
-            {selected}
-            {isOpen ? (
-              <ChevronUp className="ml-2 h-4 w-4" />
-            ) : (
-              <ChevronDown className="ml-2 h-4 w-4" />
-            )}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-44 font-[Poppins] font-[300] text-sm">
-          <DropdownMenuGroup>
-            {options.map((option) => (
-              <DropdownMenuItem
-                key={option}
-                onClick={() => setSelected(option)}
-              >
-                {option}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
+//   return (
+//     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+//       <DropdownMenuTrigger asChild>
+//         <Button
+//           variant="outline"
+//           className="flex items-center font-[Poppins] font-light text-sm"
+//         >
+//           {selected}
+//           {isOpen ? (
+//             <ChevronUp className="ml-2 h-4 w-4" />
+//           ) : (
+//             <ChevronDown className="ml-2 h-4 w-4" />
+//           )}
+//         </Button>
+//       </DropdownMenuTrigger>
+//       <DropdownMenuContent className="w-44 font-[Poppins] font-light text-sm">
+//         <DropdownMenuGroup>
+//           {options.map((option) => (
+//             <DropdownMenuItem
+//               key={option}
+//               onClick={() => setSelected(option)}
+//             >
+//               {option}
+//             </DropdownMenuItem>
+//           ))}
+//         </DropdownMenuGroup>
+//       </DropdownMenuContent>
+//     </DropdownMenu>
+//   );
+// };
+
+const Update = () => {
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
+  const [activeCategory, setActiveCategory] = useState("All");
+  // const [selectedTimeframe, setSelectedTimeframe] = useState("Weekly");
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  const handleReadMore = (id: string) => {
+    location.href = id;
   };
 
-  // {
-  //   "_id": "67489bc2d4f4b2315368adf3",
-  //   "title": "How to Install Apps",
-  //   "imageUrl": "https://res.cloudinary.com/diush63ly/image/upload/v1732811713/course_thumbnails/bh6asyo8ru4g2u3ouyph.jpg",
-  //   "tags": [],
-  //   "createdAt": "2024-11-28T16:35:14.821Z"
-  // }
-  type Blog = {
-    _id: string;
-    title: string;
-    imageUrl: string;
-    tags: string[];
-    createdAt: string;
-  }
+  const categories = ["All", "Recent Updates", "GST", "Income Tax", "Other2", "Other", "Other3"];
 
-  const Update = () => {
-    const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
-    const [activeCategory, setActiveCategory] = useState("All");
-    const [selectedTimeframe, setSelectedTimeframe] = useState("Weekly");
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const navigate = useNavigate();
-
-    const handleReadMore = (id: string) => {
-      navigate(`/update-details?id=${id}`);
-    };
-
-    const categories = [
-      "All",
-      "Recent Updates",
-      "GST",
-      "Income Tax",
-      "Other2",
-      "Other",
-      "Other3",
-    ];
-
-    // const newsData = [
-    //   {
-    //     imageUrl: "https://via.placeholder.com/355x180",
-    //     imageAlt: "News Image 1",
-    //     title: "GST Collection Drops Amid Global Uncertainty",
-    //     description:
-    //       "The GST collections have seen a decline due to fluctuating exports and slowing domestic consumption.",
-    //   },
-    //   {
-    //     imageUrl: "https://via.placeholder.com/355x180",
-    //     imageAlt: "News Image 2",
-    //     title: "Economic Slowdown: What It Means for Businesses",
-    //     description:
-    //       "India's economic slowdown continues to impact various sectors, with a significant rise in unemployment.",
-    //   },
-    //   {
-    //     imageUrl: "https://via.placeholder.com/355x180",
-    //     imageAlt: "News Image 3",
-    //     title: "Income Tax Reform: A New Chapter",
-    //     description:
-    //       "The government introduces reforms to simplify the income tax structure and ease the burden on taxpayers.",
-    //   },
-    //   {
-    //     imageUrl: "https://via.placeholder.com/355x180",
-    //     imageAlt: "News Image 1",
-    //     title: "GST Collection Drops Amid Global Uncertainty",
-    //     description:
-    //       "The GST collections have seen a decline due to fluctuating exports and slowing domestic consumption.",
-    //   },
-    //   {
-    //     imageUrl: "https://via.placeholder.com/355x180",
-    //     imageAlt: "News Image 2",
-    //     title: "Economic Slowdown: What It Means for Businesses",
-    //     description:
-    //       "India's economic slowdown continues to impact various sectors, with a significant rise in unemployment.",
-    //   },
-    //   {
-    //     imageUrl: "https://via.placeholder.com/355x180",
-    //     imageAlt: "News Image 3",
-    //     title: "Income Tax Reform: A New Chapter",
-    //     description:
-    //       "The government introduces reforms to simplify the income tax structure and ease the burden on taxpayers.",
-    //   },
-
-    // ];
-
-    useEffect(() => {
-      async function fetchBlogs() {
-        try {
-          const res = await Updates.getBlogs();
-          setBlogs(res.data.blogs);
-          setIsLoadingBlogs(false);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      fetchBlogs();
-    }, []);
-
-
-
-    return (
-      <div className="overflow-hidden">
-        <Navbar />
-        <section>
-
-          <div className="mb-10 pl-[83px] pt-[12px]">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    href="#"
-                    className="text-[#8F9EB2] font-light font-[Poppins]"
-                  >
-                    Update
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="text-black font-[Poppins]">
-                    GST
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-
-          <div className="w-full flex justify-center py-6">
-            <div data-aos="fade-up" className="flex gap-5 flex-wrap justify-center">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`min-w-[138px] px-4 py-2 rounded-full font-[Poppins] font-[300] text-sm transition-all ${activeCategory === category
-                    ? "bg-primary text-white"
-                    : "bg-[#D1FADF] text-black"
-                    }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-
-
-          <div className="mt-5 flex flex-wrap justify-center items-center w-full mx-auto">
-    {/* Search Bar */}
-    <div className="mt-5 flex items-center justify-center px-4 md:pl-[78px] md:pt-[20px] w-full md:w-[762px]">
-      <div
-        data-aos="fade-up"
-        className="flex items-center bg-white rounded-full w-full px-4 py-2 mx-auto"
-        style={{ boxShadow: '0px 0.94px 6.57px 0px #00000040' }}
-      >
-        <Search size={20} className="text-gray-500 mr-3" />
-        <Input
-          type="text"
-          placeholder="Search"
-          className="flex-1 text-sm placeholder:text-gray-500 border-none shadow-none"
+  const renderMediaContent = (blog: Blog) => {
+    if (blog.contentType === "image") {
+      return (
+        <img
+          src={blog.contentUrl || "https://via.placeholder.com/600x300"}
+          alt={blog.title}
+          className="w-full max-w-[600px] h-auto object-cover rounded-md"
+          style={{ height: "300px" }}
         />
-        <button className="ml-3 bg-secondary text-white rounded-full px-4 py-1 text-sm font-[lora]">
-          Search
-        </button>
-      </div>
-    </div>
-
-    {/* Dropdown Menu */}
-    <div
-      data-aos="fade-up"
-      className="flex flex-col sm:flex-row items-center gap-4 mt-4 sm:mt-0 w-full md:w-auto"
-    >
-      <span className="text-sm font-[Poppins] font-[600] text-black">Sort by:</span>
-      <DropdownMenuDemo
-        selected={selectedTimeframe}
-        setSelected={setSelectedTimeframe}
-      />
-    </div>
-  </div>
-
-  {/* Blog Grid */}
-  <div
-  data-aos="fade-up"
-  className="mt-10 sm:mt-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 md:gap-10 pt-[40px] pb-[140px] mx-auto max-w-screen-xl"
->
-  {isLoadingBlogs ? (
-    Array(3).fill(null).map((_, index) => (
-      <NewsCardSkeleton key={index} />
-    ))
-  ) : (
-    blogs.map((blog) => (
-      <NewsCard
-        key={blog._id}
-        imageUrl={blog.imageUrl}
-        imageAlt={blog.title}
-        title={blog.title}
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
-        buttonText="Read More"
-        onButtonClick={() => handleReadMore(blog._id)}
-      />
-    ))
-  )}
-</div>
-
-
-
-
-
-
-      
-
-        </section>
-
-        <div className="bg-[#DDE2FF] ">
-          <Phone />
-        </div>
-        <div className="">
-          <Footer />
-        </div>
-      </div>
-    );
+      );
+    } else if (blog.contentType === "video") {
+      if (blog.contentUrl.includes("youtube.com") || blog.contentUrl.includes("youtu.be")) {
+        const embedUrl = blog.contentUrl.includes("youtube.com")
+          ? blog.contentUrl.replace("watch?v=", "embed/")
+          : `https://www.youtube.com/embed/${blog.contentUrl.split("/").pop()?.split("?")[0]}`;
+        return (
+          <iframe
+            src={embedUrl}
+            title="YouTube Video"
+            className="w-full max-w-[600px] h-auto rounded-md"
+            style={{ height: "300px" }}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        );
+      }
+      return (
+        <video
+          src={blog.contentUrl}
+          controls
+          className="w-full max-w-[600px] h-auto rounded-md"
+          style={{ height: "300px" }}
+        >
+          Your browser does not support the video tag.
+        </video>
+      );
+    }
+    return <p>No media content available.</p>;
   };
+  
 
-  export default Update;
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const res = await Updates.getBlogs();
+        setBlogs(res.data.blogs);
+        setIsLoadingBlogs(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchBlogs();
+  }, []);
+
+  return (
+    <div className="overflow-hidden">
+      <Navbar />
+      <section>
+        <div className="mb-10 pl-[83px] pt-[12px]">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#" className="text-[#8F9EB2] font-light font-[Poppins]">
+                  Update
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="text-black font-[Poppins]">
+                  GST
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+
+        {/* Categories */}
+        <div className="w-full flex justify-center py-6">
+          <div data-aos="fade-up" className="flex gap-5 flex-wrap justify-center">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`min-w-[138px] px-4 py-2 rounded-full font-[Poppins] font-[300] text-sm transition-all ${
+                  activeCategory === category ? "bg-primary text-white" : "bg-[#D1FADF] text-black"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Blogs */}
+        <div
+          data-aos="fade-up"
+          className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 md:gap-10 pt-[40px] pb-[140px] mx-auto max-w-screen-xl"
+        >
+          {isLoadingBlogs
+            ? Array(3)
+                .fill(null)
+                .map((_, index) => <NewsCardSkeleton key={index} />)
+            : blogs.map((blog) => (
+                <div key={blog._id} className="flex flex-col gap-4">
+                  {renderMediaContent(blog)}
+                  <h2 className="text-lg font-semibold">{blog.title}</h2>
+                  <p className="text-sm text-gray-500">{blog.content}</p>
+                  <button
+                    onClick={() => handleReadMore(blog.reference.url)}
+                    className="text-primary underline text-sm"
+                  >
+                    Read More
+                  </button>
+                </div>
+              ))}
+        </div>
+      </section>
+
+      <div className="bg-[#DDE2FF] ">
+        <Phone />
+      </div>
+      <div>
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default Update;

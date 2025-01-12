@@ -1,220 +1,311 @@
-"use client"
-import * as React from "react"
-import {  FileText } from 'lucide-react'
-import { Button } from "@/Components/ui/button"
+import * as React from "react";
+import { FileText } from "lucide-react";
+import { Button } from "@/Components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/Components/ui/card"
-import { Checkbox } from "@/Components/ui/checkbox"
-import { Label } from "@/Components/ui/label"
-import { Dialog, DialogContent } from "@/Components/ui/dialog"
-import { cn } from "@/lib/utils"
-import { useNavigate } from 'react-router-dom'
-import { useGlobalContext } from "@/context/GlobalContext"
-import { Quotation } from "@/api"
+} from "@/Components/ui/card";
+import { Checkbox } from "@/Components/ui/checkbox";
+import { Label } from "@/Components/ui/label";
+import { Dialog, DialogContent } from "@/Components/ui/dialog";
+import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { Quotation } from "@/api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/Components/ui/select";
 
-// Updated interface to match the new request structure
+interface Option {
+  name: string;
+  priceModifier: number;
+  needsQuotation: boolean;
+}
+
 interface Request {
   name: string;
   needsQuotation: boolean;
   priceModifier: number;
-  _id: string;
+  inputType: "dropdown" | "checkbox";
+  isMultipleSelect?: boolean;
+  options?: Option[];
 }
 
 interface PricingDialogProps {
   title: string;
   basePrice: number;
   currency: string;
-  period: string;
   requests: Request[];
+  subServiceId: string;
   isOpen: boolean;
-  subServiceId:string;
   onClose: () => void;
 }
+
+type BillingPeriod = "monthly" | "quarterly" | "half_yearly" | "yearly" | "one_time";
 
 export default function PricingDialog({
   title,
   basePrice,
   currency,
-  period,
   requests,
   subServiceId,
   isOpen,
-  onClose
+  onClose,
 }: PricingDialogProps) {
-  // State to track checked requests and invoice details
-  const [checkedItems, setCheckedItems] = React.useState<{ [key: string]: boolean }>({});
-  
+  const [selectedOptions, setSelectedOptions] = React.useState<{
+    [key: string]: string | boolean;
+  }>({});
   const [totalPrice, setTotalPrice] = React.useState(basePrice);
+  const [hasQuotationRequest, setHasQuotationRequest] = React.useState(false);
+  const [billingPeriod, setBillingPeriod] = React.useState<BillingPeriod>("monthly");
 
+  const handleCheckboxChange = (
+    requestName: string,
+    checked: boolean,
+    needsQuotation: boolean,
+    priceModifier: number
+  ) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [requestName]: checked,
+    }));
+    updateTotalPrice(requestName, checked ? priceModifier : -priceModifier);
+    if (needsQuotation) {
+      setHasQuotationRequest(checked);
+    }
+  };
+
+  const handleDropdownChange = (
+    requestName: string,
+    value: string,
+    options: Option[]
+  ) => {
+    const selectedOption = options.find((option) => option.name === value);
+    if (selectedOption) {
+      setSelectedOptions((prev) => ({
+        ...prev,
+        [requestName]: value,
+      }));
+      updateTotalPrice(requestName, selectedOption.priceModifier);
+      if (selectedOption.needsQuotation) {
+        setHasQuotationRequest(true);
+      } else {
+        setHasQuotationRequest(false);
+      }
+    }
+  };
+
+  const handleBillingPeriodChange = (period: BillingPeriod) => {
+    setBillingPeriod(period);
+  };
+
+  const updateTotalPrice = (requestName: string, priceModifier: number) => {
+    console.log(requestName)
+    setTotalPrice((prev) => prev + priceModifier);
+  };
+
+  const renderInput = (request: Request) => {
+    if (request.inputType === "checkbox") {
+      return (
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id={request.name}
+            checked={!!selectedOptions[request.name]}
+            onCheckedChange={(checked) =>
+              handleCheckboxChange(
+                request.name,
+                checked === true,
+                request.needsQuotation,
+                request.priceModifier
+              )
+            }
+            className="h-4 w-4 border-[#3b4ba7] text-green-500"
+          />
+          <Label htmlFor={request.name}>
+            {request.name}
+            {request.needsQuotation && (
+              <span className="ml-2 text-red-500">(Quotation Needed)</span>
+            )}
+          </Label>
+        </div>
+      );
+    }
+    if (request.inputType === "dropdown" && request.options) {
+      return (
+        <div className="space-y-2">
+          <Label htmlFor={request.name}>{request.name}</Label>
+          <Select
+            onValueChange={(value) =>
+              handleDropdownChange(request.name, value, request.options || [])
+            }
+            value={selectedOptions[request.name] as string}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              {request.options.map((option) => (
+                <SelectItem key={option.name} value={option.name}>
+                  {option.name}
+                  {option.needsQuotation && " (Quotation Needed)"}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const { user, isAuthenticated, setIsVisibleForm } = useGlobalContext();
   const navigate = useNavigate();
 
-  // Effect to calculate total price based on checked requests
-  React.useEffect(() => {
-    let calculatedPrice = basePrice;
-    requests.forEach(request => {
-      if (checkedItems[request._id]) {
-        calculatedPrice += request.priceModifier;
-      }
-    });
-    setTotalPrice(calculatedPrice);
-  }, [checkedItems, basePrice, requests]);
-
-  // Handle checkbox change
-  const handleCheckboxChange = (id: string, checked: boolean) => {
-    setCheckedItems(prev => ({ ...prev, [id]: checked }));
-  }
-
-  // Handle plan activation
-  const {user,isAuthenticated} = useGlobalContext();
   const handleActivatePlan = () => {
+    console.log("go")
     try {
-      console.log("hrellp")
-      console.log("ddd",user);
-      // Check if token exists in session storage
-      
-      
       if (!isAuthenticated) {
-        // If no token, navigate to login
-        navigate("/login");
+        console.log("first: login")
+        setIsVisibleForm(true);
         return;
       }
-  
-      // Retrieve user data from global context
-      // console.log("User",data);
-      // Check if user data exists
+
       if (!user) {
-        // If no user data, potentially re-fetch user data or handle accordingly
-        navigate("/login");
+        console.log("second user details chahiye na")
+        setIsVisibleForm(true);
         return;
       }
-  
-      // Check profile completion 
-      // Adjust these conditions based on your exact user model and required fields
+
       const isProfileComplete = user.user.aadharNumber && user.user.panNumber;
-  
+      console.log(user)
+
       if (!isProfileComplete) {
-        // If profile is incomplete, navigate to profile page
-        navigate("/profile", { 
-          state: { 
-            message: "Please complete your profile to proceed" 
-          } 
+        console.log("profile complete kr")
+        navigate("/profile", {
+          state: {
+            message: "Please complete your profile to proceed",
+          },
         });
       } else {
-        const selectedFeatures = requests
-          .filter(request => checkedItems[request._id])
-          .map(request => request.name);
+        const selectedFeatures = Object.entries(selectedOptions)
+          .filter(([_, value]) => value)
+          .map(([key, _]) => key);
 
-        // Navigate to payment with additional details
-        navigate("/payment", { 
-          state: { 
+        navigate("/payment", {
+          state: {
             title,
             subServiceId,
             finalPrice: totalPrice,
             selectedFeatures,
-            itemType: "service"
-          } 
+            itemType: "service",
+            billingPeriod,
+          },
         });
       }
     } catch (error) {
-      // Handle any unexpected errors
       console.error("Error checking user status:", error);
-      // navigate("/login");
     }
   };
 
-  // Check if any request needs quotation
-  const hasQuotationRequest = requests.some(request => 
-    request.needsQuotation && checkedItems[request._id]
-  );
+  const handleGetQuotation = async () => {
+    try {
+      const selectedFeatures = Object.entries(selectedOptions)
+        .filter(([_, value]) => value)
+        .map(([key, value]) => (typeof value === "boolean" ? key : value));
 
-  const handleGetQuotation=async()=>{
-    try{
-      const selectedFeatures = requests
-        .filter(request => checkedItems[request._id])
-        .map(request => request.name);
-      console.log(selectedFeatures);
-
-      const response = await Quotation.postQuotation({subServiceId,selectedFeatures})
-      // console.log(response)
-      if(response.success){
+      const response = await Quotation.postQuotation({
+        subServiceId,
+        selectedFeatures,
+        billingPeriod,
+      });
+      if (response.success) {
         navigate("/");
-      }else{
-        console.log("error",response.status)
+      } else {
+        console.log("error", response.status);
       }
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] p-0">
         <Card className="border-0 shadow-none">
           <CardHeader className="pb-4">
-            <div className="flex justify-between items-center">
+            <div className="flex gap-4 items-center">
               <div className="flex items-center space-x-2">
                 <FileText className="h-6 w-6 text-[#3b4ba7]" />
                 <CardTitle>{title}</CardTitle>
               </div>
-              <span className="text-base mt-0">{period}</span>
+              <Select
+                value={billingPeriod}
+                onValueChange={(value: BillingPeriod) => handleBillingPeriodChange(value)}
+              >
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Select billing period" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="quarterly">Quarterly</SelectItem>
+                  <SelectItem value="half_yearly">Half-Yearly</SelectItem>
+                  <SelectItem value="yearly">Yearly</SelectItem>
+                  <SelectItem value="one_time">One-Time</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
           <CardContent className="pt-0">
-            <form>
-              <div className="grid gap-2">
-                {requests.map((request) => (
-                  <div 
-                    key={request._id} 
-                    className={`flex items-center space-x-2 p-2 rounded ${checkedItems[request._id] ? 'bg-[#e8f5e9]' : ''}`}
-                  >
-                    <Checkbox 
-                      id={request._id} 
-                      checked={!!checkedItems[request._id]}
-                      onCheckedChange={(checked) => handleCheckboxChange(request._id, checked === true)}
-                      className={cn(
-                        "h-4 w-4 border-[#3b4ba7] text-green-500 focus:ring-0 focus:ring-offset-0",
-                        "checked:bg-green-500 checked:border-green-500 rounded-sm",
-                        "data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500",
-                        "after:content-[''] after:block after:w-full after:h-full"
-                      )}
-                    />
-                    <Label htmlFor={request._id}>
-                      {request.name}
-                      {request.needsQuotation && <span className="ml-2 text-red-500">(Quotation Needed)</span>}
-                    </Label>
-                  </div>
-                ))}
-              </div>
+            <form className="space-y-4">
+              {requests.map((request) => (
+                <div
+                  key={request.name}
+                  className="p-2 rounded hover:bg-gray-50"
+                >
+                  {renderInput(request)}
+                </div>
+              ))}
             </form>
           </CardContent>
           <CardFooter className="flex items-center justify-between pt-6">
             {!hasQuotationRequest ? (
-            <Button className="bg-[#3b4ba7] hover:bg-[#2d3a8c]" onClick={handleActivatePlan}>
-            Activate Plan
-          </Button>  
-            ):(
-              <Button className="bg-[#3b4ba7] hover:bg-[#2d3a8c]" onClick={handleGetQuotation}>
-              Request Quotation
-            </Button>
+              <Button
+                className="bg-[#3b4ba7] hover:bg-[#2d3a8c]"
+                onClick={handleActivatePlan}
+              >
+                Activate Plan
+              </Button>
+            ) : (
+              <Button
+                className="bg-[#3b4ba7] hover:bg-[#2d3a8c]"
+                onClick={handleGetQuotation}
+              >
+                Request Quotation
+              </Button>
             )}
-            
+
             <div>
-              {/* <span className="text-sm text-muted-foreground">Starting from</span> */}
-              {!hasQuotationRequest &&
+              {!hasQuotationRequest && (
                 <>
-                  <span className="ml-1 text-2xl text-[red] font-bold">{currency}{totalPrice}</span>
-                  <span className="text-sm text-muted-foreground">/Month</span>
+                  <span className="ml-1 text-2xl text-[red] font-bold">
+                    {currency}
+                    {totalPrice}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    /{billingPeriod === "one_time" ? "One-Time" : billingPeriod.charAt(0).toUpperCase() + billingPeriod.slice(1)}
+                  </span>
                 </>
-              }
+              )}
             </div>
           </CardFooter>
         </Card>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -33,7 +33,7 @@ const Header = () => {
   Your Trusted Partner
   for Easy <span className="text-secondary">GST</span> ,{" "}
   <span className="text-secondary">Income tax</span> and{" "}
-  <span className="text-secondary">other tax and financial matters</span>
+  <span className="text-secondary">other financial matters</span>
 
 
 </div>

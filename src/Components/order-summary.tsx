@@ -11,6 +11,7 @@ interface OrderSummaryProps {
   subServiceId?: string;
   selectedFeatures?: string[];
   itemType: string;
+  billingPeriod: string;
 }
 
 export default function OrderSummary({ 
@@ -19,6 +20,7 @@ export default function OrderSummary({
   subServiceId, 
   selectedFeatures,
   itemType, 
+  billingPeriod,
 }: OrderSummaryProps) {
   // Platform charge as a fixed percentage (e.g., 2% of the amount)
   const platformCharge = Math.round(amount * 0.02);
@@ -91,6 +93,7 @@ export default function OrderSummary({
         amount={total}
         selectedFeatures={selectedFeatures} 
         subServiceId={subServiceId}
+        billingPeriod={billingPeriod}
       />
     </section>
   )

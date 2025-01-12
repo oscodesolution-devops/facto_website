@@ -14,6 +14,8 @@ import Footer from "@/Components/Footer";
 import Factoo from "../assets/Factoo.png";
 import { Notifications, Services } from "@/api";
 import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
+import { toast, Toaster } from "sonner";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 // Types
 export interface Service {
@@ -44,13 +46,18 @@ const LoadingSpinner = () => (
 );
 
 const LandingPage = () => {
+  const [searchText, setSearchText] = useState("");
+  
+  const {setIsVisibleForm} = useGlobalContext();
   const [services, setServices] = useState<Service[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoadingCards, setIsLoadingCards] = useState(true);
   const [isLoadingNotifications, setIsLoadingNotifications] = useState(true);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [phoneNo,setPhoneNo] = useState('')
+  const [filteredServices,setFilteredServices] = useState<Service[]>([]);
+ 
   // Initialize AOS
   useEffect(() => {
     AOS.init({
@@ -66,7 +73,14 @@ const LandingPage = () => {
       AOS.refresh();
     };
   }, []);
-
+  useEffect(() => {
+    
+    const filtered = services.filter((service) =>
+      service.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+    
+    setFilteredServices(()=>filtered);
+  }, [searchText, services]);
   // Fetch data
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +91,7 @@ const LandingPage = () => {
         ]);
 
         setServices(servicesRes.data.services);
+        setFilteredServices(servicesRes.data.services);
         setNotifications(notificationsRes.data.notifications);
         setError(null);
       } catch (error) {
@@ -91,7 +106,22 @@ const LandingPage = () => {
 
     fetchData();
   }, []);
-
+  const handleSignupNow=async ()=>{
+    // console.log(phoneNo)
+    // e.preventDefault()
+    setIsVisibleForm(phoneNo);
+    // try{
+    //   const response = await axios.post("http://localhost:3000/api/v1/request",{
+    //     phoneNo
+    //   })
+    //   if(response.data.success){
+    //     toast.success('Request submitted successfully!');
+    //   }
+    //   setPhoneNo("")
+    // }catch(err){
+    //   toast.error("Error occured please try again later")
+    // }
+  }
   // Refresh AOS when content loads
   useEffect(() => {
     if (isPageLoaded) {
@@ -102,6 +132,8 @@ const LandingPage = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [isPageLoaded]);
+
+  
 
   if (error) {
     return (
@@ -114,12 +146,23 @@ const LandingPage = () => {
   if (!isPageLoaded) {
     return <LoadingSpinner />;
   }
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value;
+    setSearchText(searchValue);
+
+    // // Filter services immediately
+    // setFilteredServices(
+    //   services.filter((service) =>
+    //     service.title.toLowerCase().includes(searchValue.toLowerCase())
+    //   )
+    // );
+  };
 
   return (
     <div className="overflow-x-hidden">
       <Navbar />
       <Header />
-
+<Toaster/>
       <main className="flex flex-col md:flex-row gap-6 z-20">
         <div className="w-full md:w-1/2 pt-10 md:pt-20 px-4 md:pl-16 lg:pl-20">
           <div className="w-full md:max-w-[554px] mx-auto">
@@ -241,6 +284,8 @@ const LandingPage = () => {
               placeholder="Search"
               className="flex-1 text-base placeholder:text-gray-500 border-none"
               style={{ height: "40px", fontSize: "16px" }}
+              value={searchText}
+            onChange={handleSearchChange}
             />
             <button
               className="ml-3 bg-[#253483] text-white rounded-full w-[70.88px] h-[27.77px] text-sm"
@@ -257,19 +302,20 @@ const LandingPage = () => {
               ? Array.from({ length: 3 }).map((_, index) => (
                   <GSTServiceCardSkeleton key={index} />
                 ))
-              : services.map((service, index) => (
-                  <div
-                    key={service._id}
-                    data-aos="fade-up"
-                    data-aos-delay={`${index * 100}`}
-                  >
+              : filteredServices.map((service, index) => (
+                  // <div
+                  //   key={service._id}
+                  //   data-aos="fade-up"
+                  //   data-aos-delay={`${index * 100}`}
+                  // >
                     <GSTServiceCard
+                    key={index}
                       title={service.title}
                       description={service.description}
                       icon={service.icon}
                       _id={service._id}
                     />
-                  </div>
+                  // </div>
                 ))}
           </div>
         </div>
@@ -339,6 +385,15 @@ const LandingPage = () => {
 
         <div className="mt-[32px] flex justify-center gap-[24px] flex-col md:flex-row items-center">
           <Input
+            value={phoneNo}
+            onChange={(e:any)=>{if(isNaN(Number(e.target.value))){
+              toast.error("Fill appropriate number")
+            }else if(e.target.value.length>10){
+              toast.error("Number cant exceed 10 digits")
+              
+            }else{
+              setPhoneNo(e.target.value)}}
+            }
             type="text"
             placeholder="Enter your Phone number"
             className="w-[280px] h-[49px] md:w-[321px] text-black"
@@ -348,6 +403,7 @@ const LandingPage = () => {
             }}
           />
           <button
+            onClick={handleSignupNow}
             data-aos="fade-up"
             className="bg-secondary text-white font-[poppins] font-[300] text-[14px] md:text-[16px] rounded-[7.17px] w-[267px] h-[48.51px] flex items-center justify-center"
           >

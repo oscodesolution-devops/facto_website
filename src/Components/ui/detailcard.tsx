@@ -30,9 +30,10 @@ export default function GSTServiceCard({
   // onSecondaryClick = () => {}
 }: GSTServiceCardProps) {
   const navigate = useNavigate();  // Use the hook to navigate
-
   const handlePrimaryButtonClick = () => {
-    navigate(`/services?id=${_id}`);  // Navigate to /services with _id as a query parameter
+    navigate(`/services?id=${_id}`,{
+      state: { title: title }
+    });  // Navigate to /services with _id as a query parameter
     if (onPrimaryClick) {
       onPrimaryClick();  // Optionally call the passed in callback function
     }
