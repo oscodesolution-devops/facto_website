@@ -205,7 +205,7 @@ export default function ProfileCard() {
     try {
       // Upload image to Cloudinary
       const response = await axios.post(
-        "http://localhost:3000/api/v1/image",
+        "https://facto.org.in/api/v1/image",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

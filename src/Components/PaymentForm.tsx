@@ -40,7 +40,7 @@ const PaymentForm = ({ amount, subServiceId, itemType,selectedFeatures,billingPe
       console.log(itemType);
       // Make API call to the serverless API
       const { data } = await axios.post(
-        "http://localhost:3000/api/v1/payment/initiate-payment", 
+        "https://facto.org.in/api/v1/payment/initiate-payment", 
         { 
           userId: user?.user?._id,
           items: [
@@ -75,7 +75,7 @@ const PaymentForm = ({ amount, subServiceId, itemType,selectedFeatures,billingPe
             console.log(selectedFeatures);
             // Validate payment at server
             const verificationResponse = await axios.post(
-              "http://localhost:3000/api/v1/payment/verify-payment", 
+              "https://facto.org.in/api/v1/payment/verify-payment", 
               {...response.body,selectedFeatures,billingPeriod}
             );
 

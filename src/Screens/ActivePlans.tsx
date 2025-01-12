@@ -51,7 +51,7 @@ const ActivePlans: React.FC = () => {
   const fetchPurchasedServices = async (): Promise<void> => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/v1/sub-services/my-services",
+        "https://facto.org.in/api/v1/sub-services/my-services",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -122,7 +122,7 @@ const ActivePlans: React.FC = () => {
   const handleViewDetails = async (serviceId: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/v1/application/${serviceId}`,
+        `https://facto.org.in/api/v1/application/${serviceId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

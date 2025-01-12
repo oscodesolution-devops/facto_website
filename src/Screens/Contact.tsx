@@ -85,7 +85,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/query', formData);
+      const response = await axios.post('https://facto.org.in/api/v1/query', formData);
       if(response.data.success){
         toast.success('Query submitted successfully!');
       }

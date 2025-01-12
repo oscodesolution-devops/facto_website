@@ -48,7 +48,7 @@ const Pricing = () => {
 
     async function fetchServices() {
       try {
-        const res = await axios.get("http://localhost:3000/api/v1/quotation",{
+        const res = await axios.get("https://facto.org.in/api/v1/quotation",{
           headers:{
             Authorization:`Bearer ${localStorage.getItem("token")}`
           }
