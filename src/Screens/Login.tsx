@@ -26,7 +26,7 @@ export default function Login() {
     address: '',
   })
   const navigate = useNavigate();
-
+  console.log("heee")
   const handlePhoneAuth = async (phoneNo: string, otp: string) => {
     try {
       const response = await AUTH.verifyOtp({ phoneNo, otp })

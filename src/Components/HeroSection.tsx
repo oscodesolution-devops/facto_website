@@ -115,6 +115,7 @@ const HeroSection = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
+  console.log("first")
 
   return (
 <section className="bg-[#E9FFE9] pt-2 pb-36 w-full">
@@ -207,6 +208,7 @@ const HeroSection = () => {
       // Show actual services when data is loaded
       filteredServices.map((service) => (
         <GSTServiceCard
+          features={service.features}
           key={service._id}
           title={service.title}
           description={service.description}

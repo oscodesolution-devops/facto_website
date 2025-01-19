@@ -7,8 +7,8 @@ import PhoneNum from "./PhoneNum";
 import QRCodeImage from "../assets/QRCode.svg";
 import { FaGooglePlay } from "react-icons/fa";
 import { Apple } from "lucide-react";
-import WhatsAppIcon from "../assets/whatsapp.svg";
-import PhoneButtonIcon from "../assets/Phonebutton.svg";
+// import WhatsAppIcon from "../assets/whatsapp.svg";
+// import PhoneButtonIcon from "../assets/Phonebutton.svg";
 
 const Header = () => {
   useEffect(() => {

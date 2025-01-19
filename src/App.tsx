@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import LandingPage from "./Screens/LandingPage";
 import Services from "./Screens/Services";
 // import LoginPage from "./Screens/Login";
@@ -23,10 +23,14 @@ import RefundPolicy from "@/Screens/RefundPolicy";
 
 const ScrollToTop = () => {
   const location = useLocation();
-
-  useEffect(() => {
+  const navigate = useNavigate();
+  useEffect(() => { 
     window.scrollTo(0, 0);
   }, [location]);
+  
+  useEffect(()=>{
+    console.log(location.pathname)
+  },[navigate])
 
   return null; // This component does not render anything
 };
@@ -45,6 +49,7 @@ const App: React.FC = () => {
         <Route path="/user-details" element={<UserDetails />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/update" element={<Update />} />
+        <Route path="/update/:id" element={<Update />} />
         <Route path="/update-details" element={<UpdateDetails />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses-buy/:courseId" element={<CoursesBuy />} /> 

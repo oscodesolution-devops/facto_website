@@ -29,18 +29,18 @@ export default function Component({
   twitterUrl = "#",
 }: ProfileCardProps) {
   return (
-    <Card className="w-[287px] h-[399px] flex flex-col">
+    <Card className="w-[287px] h-[399px] flex flex-col border-black shadow-xl bg-black bg-opacity-25">
       <CardHeader className="flex-grow flex flex-col items-center justify-center pt-6">
         {/* <img src={imageUrl} alt={name} className="w-32 h-32 bg-green-700 rounded-full mb-4 object-cover" /> */}
         <div className="relative inline-block">
           {/* Background circle */}
-          <div className="w-36 h-36 bg-green-300 rounded-full absolute top-2 left-2 opacity-20" />
+          <div className="w-36 h-36 bg-white rounded-full absolute top-2 left-2 opacity-20" />
 
           {/* Middle circle */}
-          <div className="w-36 h-36 bg-green-300 rounded-full absolute top-1 left-1 opacity-40" />
+          <div className="w-36 h-36 bg-white rounded-full absolute top-1 left-1 opacity-40" />
 
           {/* Front circle */}
-          <div className="w-36 h-36 bg-green-300 rounded-full relative">
+          <div className="w-36 h-36 bg-white rounded-full relative">
             {/* Image container */}
             <div className="absolute inset-0 rounded-full">
               <img

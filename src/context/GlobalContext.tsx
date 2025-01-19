@@ -101,7 +101,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const [isVisibleForm,setIsVisibleForm] = useState(false);
   // const [isInitialized, setIsInitialized] = useState(false);
-  const privateRoutes = ["/profile", "/update", "/active-plans", "/payment", "/upload-page","/pricing"];
+  const privateRoutes = ["/profile", "/active-plans", "/payment", "/upload-page","/pricing"];
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem("token");
@@ -113,6 +113,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             const parsedUser = JSON.parse(storedUser);
             setUser(parsedUser);
             setIsAuthenticated(true);
+  
           }
 
           // Refresh user data in the background
@@ -134,7 +135,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     initializeAuth();
-  }, [navigate]);
+  }, []);
 
   const saveUser = (data: IAuth) => {
     setUser(data);
@@ -167,14 +168,17 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log("hey route changed")
     // Check if the current route is a private route
     const isPrivateRoute = privateRoutes.some(route => 
       location.pathname.startsWith(route)
     );
 
+    console.log("first",isPrivateRoute,isAuthenticated);
     // Redirect logic
     if (isPrivateRoute && !isAuthenticated) {
       // navigate("/login");
+      console.log("hwloo")
       setIsVisibleForm(true);
     }
   }, [location.pathname, isAuthenticated, navigate]);

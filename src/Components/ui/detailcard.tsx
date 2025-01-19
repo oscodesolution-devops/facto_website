@@ -6,6 +6,7 @@ interface GSTServiceCardProps {
   showPrimaryButton?: boolean
   showSecondaryButton?: boolean
   primaryButtonText?: string
+  features: string[]
   secondaryButtonText?: string
   onPrimaryClick?: () => void
   onSecondaryClick?: () => void
@@ -23,6 +24,7 @@ export default function GSTServiceCard({
   primaryButtonText = "Start Filing",
   secondaryButtonText = "More Details",
   title,
+  features,
   description,
   icon,
   _id,
@@ -58,11 +60,7 @@ export default function GSTServiceCard({
   </CardHeader>
   <CardContent className="space-y-4">
     <ul className="space-y-2 text-sm sm:text-xs md:text-[10px] text-gray-600">
-      {[
-        'Click "More Details" or "Start Filing," then select the return type or request a callback directly.',
-        'Choose options to get an estimated price.',
-        'Activate your plan.',
-      ].map((step, index) => (
+      {features?.map((step, index) => (
         <li key={index} className="flex items-start gap-2">
           <span className="mt-1.5 h-1 w-1 rounded-full bg-gray-600 flex-shrink-0" />
           <span>{step}</span>
@@ -70,7 +68,7 @@ export default function GSTServiceCard({
       ))}
     </ul>
 
-    <p className="text-xs italic text-[#32357B]">Note: You can pay after your GST filing is completed.</p>
+    {/* <p className="text-xs italic text-[#32357B]">Note: You can pay after your GST filing is completed.</p> */}
 
     <div className="flex flex-col sm:flex-row gap-2">
       {showSecondaryButton && (

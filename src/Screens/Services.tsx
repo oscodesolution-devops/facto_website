@@ -13,7 +13,7 @@ const ServicesPage = () => {
     window.scrollTo(0, 0); 
     
   }, []); 
-
+  console.log("services")
   return (
     <div className='overflow-hidden'>
       <Navbar />

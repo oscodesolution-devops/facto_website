@@ -15,6 +15,8 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/Components/ui/breadcrumb";
+import { FaFacebook, FaLink, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
 // import {
 //   DropdownMenu,
 //   DropdownMenuContent,
@@ -35,57 +37,16 @@ type Blog = {
   createdAt: string; // Creation date of the blog
 };
 
-
-// const DropdownMenuDemo = ({
-//   selected,
-//   setSelected,
-// }: {
-//   selected: string;
-//   setSelected: React.Dispatch<React.SetStateAction<string>>;
-// }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const options = ["Daily", "Weekly", "Monthly", "Yearly"];
-
-//   return (
-//     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-//       <DropdownMenuTrigger asChild>
-//         <Button
-//           variant="outline"
-//           className="flex items-center font-[Poppins] font-light text-sm"
-//         >
-//           {selected}
-//           {isOpen ? (
-//             <ChevronUp className="ml-2 h-4 w-4" />
-//           ) : (
-//             <ChevronDown className="ml-2 h-4 w-4" />
-//           )}
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent className="w-44 font-[Poppins] font-light text-sm">
-//         <DropdownMenuGroup>
-//           {options.map((option) => (
-//             <DropdownMenuItem
-//               key={option}
-//               onClick={() => setSelected(option)}
-//             >
-//               {option}
-//             </DropdownMenuItem>
-//           ))}
-//         </DropdownMenuGroup>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   );
-// };
-
 const Update = () => {
+  const { id } = useParams<{ id: string }>();
   const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
-  // const [selectedTimeframe, setSelectedTimeframe] = useState("Weekly");
   const [blogs, setBlogs] = useState<Blog[]>([]);
-
+  const [singleBlog, setSingleBlog] = useState<Blog | null>(null);
   const handleReadMore = (id: string) => {
     location.href = id;
   };
+  const navigate = useNavigate();
 
   const categories = ["All", "Recent Updates", "GST", "Income Tax", "Other2", "Other", "Other3"];
 
@@ -129,20 +90,34 @@ const Update = () => {
     }
     return <p>No media content available.</p>;
   };
-  
-
-  useEffect(() => {
-    async function fetchBlogs() {
-      try {
-        const res = await Updates.getBlogs();
-        setBlogs(res.data.blogs);
-        setIsLoadingBlogs(false);
-      } catch (err) {
-        console.log(err);
-      }
+  const fetchSingleBlog = async (blogId: string) => {
+    try {
+      const res = await Updates.getBlogById(blogId);
+      console.log(res) // Assume your API has a `getBlogById` method
+      setSingleBlog(res.data.blog);
+      setIsLoadingBlogs(false);
+    } catch (err) {
+      console.error("Error fetching single blog:", err);
     }
-    fetchBlogs();
-  }, []);
+  };
+  const fetchBlogs= async ()=> {
+    try {
+      const res = await Updates.getBlogs();
+      setBlogs(res.data.blogs);
+      setIsLoadingBlogs(false);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    if (id) {
+      // Fetch a single blog if ID is in the URL
+      fetchSingleBlog(id);
+    } else {
+      // Fetch all blogs if no ID is provided
+      fetchBlogs();
+    }
+  }, [id]);
 
   return (
     <div className="overflow-hidden">
@@ -186,25 +161,130 @@ const Update = () => {
         {/* Blogs */}
         <div
           data-aos="fade-up"
-          className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 md:gap-10 pt-[40px] pb-[140px] mx-auto max-w-screen-xl"
+          className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 md:gap-10 pt-[40px] pb-[140px] mx-auto max-w-screen-x px-12"
         >
           {isLoadingBlogs
             ? Array(3)
                 .fill(null)
                 .map((_, index) => <NewsCardSkeleton key={index} />)
-            : blogs.map((blog) => (
-                <div key={blog._id} className="flex flex-col gap-4">
-                  {renderMediaContent(blog)}
-                  <h2 className="text-lg font-semibold">{blog.title}</h2>
-                  <p className="text-sm text-gray-500">{blog.content}</p>
-                  <button
-                    onClick={() => handleReadMore(blog.reference.url)}
-                    className="text-primary underline text-sm"
+            :id && singleBlog ? 
+              // Render Single Blog
+              <div className="flex flex-col gap-4">
+                {renderMediaContent(singleBlog)}
+                <h1 className="text-2xl font-bold">{singleBlog.title}</h1>
+                <p className="text-gray-700">{singleBlog.content}</p>
+                {/* Share Options */}
+                <div className="flex gap-4 mt-2">
+                  {/* Facebook Share */}
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=https://facto.org.in/update/${singleBlog._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600"
                   >
-                    Read More
+                    <FaFacebook/>
+                  </a>
+            
+                  {/* Twitter Share */}
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=https://facto.org.in/update/${singleBlog._id}&text=${encodeURIComponent(singleBlog.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400"
+                  >
+                    <FaTwitter/>
+                  </a>
+            
+                  {/* WhatsApp Share */}
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(
+                      `Check this out: https://facto.org.in/update/${singleBlog._id}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-500"
+                  >
+                    <FaWhatsapp/>
+                  </a>
+            
+                  {/* Copy Link */}
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(`https://facto.org.in/update/${singleBlog._id}`);
+                      alert('Link copied to clipboard!');
+                    }}
+                    className="text-gray-600 underline"
+                  >
+                    <FaLink/>
                   </button>
                 </div>
-              ))}
+                <button
+                  onClick={() => navigate("/update")}
+                  className="mt-4 text-primary underline"
+                >
+                  Back to Updates
+                </button>
+              </div>
+             : blogs.map((blog) => (
+              <div key={blog._id} className="flex flex-col gap-4">
+                {renderMediaContent(blog)}
+                <h2 className="text-lg font-semibold">{blog.title}</h2>
+                <p className="text-sm text-gray-500">{blog.content}</p>
+                <button
+                  onClick={() => handleReadMore(blog.reference.url)}
+                  className="text-primary underline text-sm"
+                >
+                  Read More
+                </button>
+                {/* Share Options */}
+                <div className="flex gap-4 mt-2">
+                  {/* Facebook Share */}
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=https://facto.org.in/update/${blog._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600"
+                  >
+                    <FaFacebook/>
+                  </a>
+            
+                  {/* Twitter Share */}
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=https://facto.org.in/update/${blog._id}&text=${encodeURIComponent(blog.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400"
+                  >
+                    <FaTwitter/>
+                  </a>
+            
+                  {/* WhatsApp Share */}
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(
+                      `Check this out: https://facto.org.in/update/${blog._id}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-500"
+                  >
+                    <FaWhatsapp/>
+                  </a>
+            
+                  {/* Copy Link */}
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(`https://facto.org.in/update/${blog._id}`);
+                      alert('Link copied to clipboard!');
+                    }}
+                    className="text-gray-600 underline"
+                  >
+                    <FaLink/>
+                  </button>
+                </div>
+              </div>
+            ))
+            
+            }
         </div>
       </section>
 

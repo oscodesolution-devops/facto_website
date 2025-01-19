@@ -290,6 +290,7 @@ const ActivePlans: React.FC = () => {
               : // Show actual services when data is loaded
                 services.map((service) => (
                   <GSTServiceCard
+                  features={service.features}
                     key={service._id}
                     title={service.title}
                     description={service.description}

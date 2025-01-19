@@ -26,6 +26,7 @@ export interface Service {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  features: string[];
   __v: number;
 }
 
@@ -312,6 +313,7 @@ const LandingPage = () => {
                     key={index}
                       title={service.title}
                       description={service.description}
+                      features={service.features}
                       icon={service.icon}
                       _id={service._id}
                     />
