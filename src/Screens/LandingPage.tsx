@@ -211,7 +211,7 @@ const LandingPage = () => {
               />
               <span
                 data-aos="fade-up"
-                className="text-black text-xl font-medium"
+                className="text-black text-xl font-extrabold"
                 style={{ fontFamily: "Erode", fontSize: "18px" }}
               >
                 Latest Update
@@ -233,7 +233,7 @@ const LandingPage = () => {
                         />
                       ))
                   : notifications.map((notification) => (
-                      <li key={notification._id} className="mb-4">
+                      <li key={notification._id} className="mb-3 font-bold">
                         {notification.title}
                       </li>
                     ))}

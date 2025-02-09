@@ -42,8 +42,8 @@ export default function GSTServiceCard({
   };
   return (
     <div>
-    <Card className="w-full sm:w-[280px] md:w-[260px] lg:w-[329.06px] max-h-[390px] mx-auto overflow-auto">
-  <CardHeader className="space-y-4 pb-4">
+    <Card className="w-full sm:w-[280px] md:w-[260px] lg:w-[329.06px] max-h-[390px] md:h-[400px] mx-auto overflow-auto flex flex-col justify-between">
+  <CardHeader className="space-y-4 pb-4 ">
     <div className="flex items-center justify-start">
       <div className="rounded-full bg-[#E6F7EC] p-3">
         <img src={icon} alt="service-icon" className="h-6 w-6" />
@@ -58,7 +58,7 @@ export default function GSTServiceCard({
       </p>
     </div>
   </CardHeader>
-  <CardContent className="space-y-4">
+  <CardContent className="space-y-4 ">
     <ul className="space-y-2 text-sm sm:text-xs md:text-[10px] text-gray-600">
       {features?.map((step, index) => (
         <li key={index} className="flex items-start gap-2">

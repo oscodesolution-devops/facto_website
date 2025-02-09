@@ -14,7 +14,7 @@ import Profile from "./Screens/Profile";
 import Payment from "./Screens/Payment";
 import UploadPage from "./Screens/Documents";
 import GlobalProvider from "@/context/GlobalContext";
-
+import WhatsAppButton from "./Components/WhatsAppButton";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import TermsAndConditions from "@/Screens/TermsAndCondition";
@@ -62,6 +62,7 @@ const App: React.FC = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy/>}/>
         <Route path="/refundpolicy" element={<RefundPolicy/>}/>
       </Routes>
+      <WhatsAppButton />
       </GlobalProvider>
     </Router>
 

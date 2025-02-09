@@ -123,7 +123,7 @@ const Update = () => {
     <div className="overflow-hidden">
       <Navbar />
       <section>
-        <div className="mb-10 pl-[83px] pt-[12px]">
+        <div className="mb-10 pl-[83px] pt-[12px] ">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -161,7 +161,7 @@ const Update = () => {
         {/* Blogs */}
         <div
           data-aos="fade-up"
-          className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 md:gap-10 pt-[40px] pb-[140px] mx-auto max-w-screen-x px-12"
+          className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 md:gap-10 pt-[40px] pb-[140px] mx-auto max-w-screen-x mdpx-0 px-5"
         >
           {isLoadingBlogs
             ? Array(3)
@@ -226,7 +226,7 @@ const Update = () => {
                 </button>
               </div>
              : blogs.map((blog) => (
-              <div key={blog._id} className="flex flex-col gap-4">
+              <div key={blog._id} className="flex flex-col gap-4 md:w-lvw md:px-8">
                 {renderMediaContent(blog)}
                 <h2 className="text-lg font-semibold">{blog.title}</h2>
                 <p className="text-sm text-gray-500">{blog.content}</p>

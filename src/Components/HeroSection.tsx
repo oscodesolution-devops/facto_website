@@ -148,7 +148,7 @@ const HeroSection = () => {
   </div>
 
   {/* Search Bar Section */}
-  <div className="mt-5 flex justify-center px-4">
+  <div className="mt-5 flex justify-center px-4 ">
     <div
       data-aos="fade-up"
       className="flex items-center bg-white rounded-full px-4 py-1 w-full max-w-md"
@@ -170,7 +170,7 @@ const HeroSection = () => {
 
   {/* Cards Section */}
   <div
-  className="mt-20 grid gap-4"
+  className="mt-20 grid gap-4 "
   style={{
     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
     paddingLeft: 'clamp(16px, 5%, 36px)',
