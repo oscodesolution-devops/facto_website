@@ -8,7 +8,7 @@ import ComponentCard from "@/Components/ui/contact-card";
 import AOS from 'aos';
 import anuj from "../assets/anuj.png"
 // import dolly from "../assets/dolly.png"
-import himanshu from "../assets/Himanshu.png"
+import himanshu from "../assets/himanshu.png"
 import jagdish from "../assets/Jagdish.png"
 import 'aos/dist/aos.css';
 
