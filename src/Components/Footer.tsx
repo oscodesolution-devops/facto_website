@@ -43,7 +43,7 @@ const Footer = () => {
   />
   <button 
   onClick={handleSumbit}
-    className="absolute right-1 top-0 bg-[#B0C2D6] text-primary font-[lora] rounded-[30px] w-[160px] h-[42px] px-[18px] py-0 mt-[3px] text-[1vw]"
+    className="absolute right-1 top-0 bg-[#B0C2D6] text-primary font-[lora] rounded-[30px] w-[160px] h-[42px] px-[18px] py-0 mt-[3px] md:text-[1vw]"
   >
     Request Call Back
   </button>
