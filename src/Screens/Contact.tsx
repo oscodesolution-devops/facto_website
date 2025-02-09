@@ -6,7 +6,7 @@ import Phone from "@/Components/Phone";
 import Footer from "@/Components/Footer";
 import ComponentCard from "@/Components/ui/contact-card"; 
 import AOS from 'aos';
-import anuj from "../assets/Anuj.png"
+import anuj from "../assets/anuj.png"
 // import dolly from "../assets/dolly.png"
 import himanshu from "../assets/Himanshu.png"
 import jagdish from "../assets/Jagdish.png"
