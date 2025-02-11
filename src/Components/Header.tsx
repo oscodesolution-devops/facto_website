@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 import iPhoneImage from "../assets/iPhone_15_pro.png";
 import headerBg from "../assets/headerbg.svg";
 import PhoneNum from "./PhoneNum";
-import QRCodeImage from "../assets/QRCode.svg";
+import QRCodeImage from "../assets/qrCode.png";
 import { FaGooglePlay } from "react-icons/fa";
 import { Apple } from "lucide-react";
 // import WhatsAppIcon from "../assets/whatsapp.svg";

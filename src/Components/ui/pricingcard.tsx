@@ -48,6 +48,15 @@ export default function PricingCard({
   return (
     <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105">
       <h3 className="text-lg font-semibold text-primary">{title}</h3>
+      <div className="sm:col-span-2 text-left mt-4 flex gap-4 items-center">
+          <span className="block text-lg text-muted-foreground">{startingText}</span>
+          <div>
+            <span className="font-bold text-red-500 text-3xl">
+              {currency}. {price}
+            </span>
+            {/* <span className="text-sm text-muted-foreground">{period}</span> */}
+          </div>
+        </div>
       <p className="mt-2 text-sm text-muted-foreground font-poppins text-[#4A4A4A]">{description}</p>
       
       <ul className="mt-4 space-y-2">
@@ -73,15 +82,6 @@ export default function PricingCard({
           Documents
         </button>
         
-        <div className="sm:col-span-2 text-right mt-4">
-          <span className="block text-sm text-muted-foreground">{startingText}</span>
-          <div>
-            <span className="font-semibold text-red-500">
-              {currency} {price}
-            </span>
-            {/* <span className="text-sm text-muted-foreground">{period}</span> */}
-          </div>
-        </div>
       </div>
 
       {isDialogOpen && (

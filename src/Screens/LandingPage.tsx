@@ -195,6 +195,9 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+          <div className=" mt-5 w-[80%] translate-x-12 font-semibold">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem earum sed ipsum necessitatibus neque voluptatum enim tenetur dignissimos iusto animi!</p>
+          </div>
         </div>
 
         <div

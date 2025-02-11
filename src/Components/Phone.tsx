@@ -1,9 +1,9 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import iPhoneImage from "../assets/iphone.svg"; 
-import QRCodeImage from "../assets/QRCode.svg"; 
-import { FaGooglePlay } from "react-icons/fa"; 
-import { Apple } from "lucide-react"; 
+import iPhoneImage from "../assets/iphone.svg";
+// import QRCodeImage from "../assets/QRCode.svg";
+// import { FaGooglePlay } from "react-icons/fa";
+// import { Apple } from "lucide-react";
 import { useEffect } from 'react';
 
 const Phone = () => {
@@ -23,49 +23,29 @@ const Phone = () => {
           alt="iPhone 13 Pro"
           className="w-[180px] sm:w-[250px] md:w-[250px] lg:w-[280px] xl:w-[350px] h-auto"
         />
-  
-        <div data-aos="fade-up" className="text-center lg:text-left w-full">
-  
-          <div className="w-full lg:w-[450px] xl:w-[520px] mx-auto">
-            <h2 className="text-[22px] sm:text-[28px] lg:text-[32px] xl:text-[36px] font-[poppins] font-semibold leading-[30px] sm:leading-[36px] lg:leading-[42px] xl:leading-[46px]">
-              Your Trusted Partner for Easy <span className="text-secondary">GST</span> and <span className="text-secondary">Income tax Solutions</span> and <span className='text-secondary'>other tax and financial matter</span>
-            </h2>
-          </div>
-  
-          <div className="w-full lg:w-[450px] xl:w-[520px] mx-auto mt-[17px]">
-            <p className="text-[12px] sm:text-[14px] font-[300] leading-[20px] sm:leading-[22px] tracking-[-0.02em] text-[#4F4F4F]">
-            We make GST and Income Tax filing easy, fast, and stress-free for individuals and businesses. Save time, stay compliant, and enjoy hassle-free tax management with FACTO
-            </p>
-          </div>
-  
-          <div className="mt-[17px] flex flex-col lg:flex-row gap-[16px] sm:gap-[20px] justify-center items-center lg:items-start">
-            <img
-              src={QRCodeImage}
-              alt="QR Code"
-              className="w-[100px] sm:w-[120px] lg:w-[140px] xl:w-[150px] h-[100px] sm:h-[120px] lg:h-[140px] xl:h-[150px]"
-            />
-  
-            <div className="flex flex-col gap-[10px]">
-             
-              <button className="p-3 bg-black text-white w-full lg:w-[200px] xl:w-[220px] h-[45px] lg:h-[55px] xl:h-[60px] flex items-center justify-center gap-2 rounded-md">
-                <FaGooglePlay size={20} />
-                <span className="text-[12px] sm:text-[14px] xl:text-[16px]">Get on Google Play Store</span>
-              </button>
-  
-              <button className="p-3 bg-black text-white w-full lg:w-[200px] xl:w-[220px] h-[45px] lg:h-[55px] xl:h-[60px] flex items-center justify-center gap-2 rounded-md">
-                <Apple size={20} />
-                <span className="text-[12px] sm:text-[14px] xl:text-[16px]">Get from App Store</span>
-              </button>
-            </div>
-          </div>
+
+        <div className="text-center lg:text-left w-full  p-6">
+          <h1 className="text-[32px] sm:text-[40px] md:text-[48px] font-poppins font-semibold leading-[30px] sm:leading-[36px] lg:leading-[42px] xl:leading-[46px] text-blue-950">
+            FACTO - Your Trusted Partner for Easy GST and Income Tax Solutions
+          </h1>
+          <p className="text-[14px] md: mt-12 sm:text-[18px] md:text-[22px] font-light leading-[20px] sm:leading-[22px] tracking-[-0.02em] text-gray-700">
+            We help businesses and individuals simplify their GST and Income Tax filing process, save time, and reduce stress.
+          </p>
+
+          <input
+            type="text"
+            placeholder="Enter your details"
+            className="mt-4 p-2 border border-gray-300 rounded w-full max-w-md"
+          />
+
+          <button className="w-[150px] h-[45px] mt-4 translate-x-5 bg-blue-950 text-[14px] font-poppins font-semibold leading-[20px] sm:leading-[22px] tracking-[-0.02em] text-white rounded-md">
+            Get Started
+          </button>
         </div>
+
       </div>
     </div>
   );
-  
-  
-  
-  
 };
 
 export default Phone;
