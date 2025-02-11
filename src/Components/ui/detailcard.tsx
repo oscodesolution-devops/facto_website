@@ -42,7 +42,7 @@ export default function GSTServiceCard({
   };
   return (
     <div>
-    <Card className="w-full sm:w-[280px] md:w-[260px] lg:w-[329.06px] max-h-[390px] md:h-[400px] mx-auto overflow-auto flex flex-col justify-between">
+    <Card className="w-full sm:w-[280px] md:w-[260px] lg:w-[300px] max-h-[390px] md:h-[400px] mx-auto overflow-auto flex flex-col justify-between">
   <CardHeader className="space-y-4 pb-4 ">
     <div className="flex items-center justify-start">
       <div className="rounded-full bg-[#E6F7EC] p-3">

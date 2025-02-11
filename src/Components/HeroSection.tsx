@@ -169,14 +169,7 @@ const HeroSection = () => {
   </div>
 
   {/* Cards Section */}
-  <div
-  className="mt-20 grid gap-4 "
-  style={{
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-    paddingLeft: 'clamp(16px, 5%, 36px)',
-    paddingRight: 'clamp(16px, 5%, 36px)',
-  }}
->
+  <div className="mt-20 grid gap-4 grid-cols-4 p-2 ">
   {id !== null ? (
     // Show loading skeletons if `isLoadingSubServices` is true
     isLoadingSubServices ? (
