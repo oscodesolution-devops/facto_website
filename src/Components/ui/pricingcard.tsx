@@ -46,7 +46,7 @@ export default function PricingCard({
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
-    <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105">
+    <div className="md:mt-0 mt-14 w-full md:max-w-sm md:p-6 p-4 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 md:flex md:flex-col justify-between">
       <h3 className="text-lg font-semibold text-primary">{title}</h3>
       <div className="sm:col-span-2 text-left mt-4 flex gap-4 items-center">
           <span className="block text-lg text-muted-foreground">{startingText}</span>

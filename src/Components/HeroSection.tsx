@@ -169,7 +169,7 @@ const HeroSection = () => {
   </div>
 
   {/* Cards Section */}
-  <div className="mt-20 grid gap-4 grid-cols-4 p-2 ">
+  <div className="mt-20 md:grid md:gap-4 md:grid-cols-4 grid-cols-1 md:p-2 p-4 md:h-auto h-[200vh] ">
   {id !== null ? (
     // Show loading skeletons if `isLoadingSubServices` is true
     isLoadingSubServices ? (
