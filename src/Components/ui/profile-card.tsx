@@ -19,6 +19,7 @@ import { Documents, User } from "@/api";
 import axios from "axios";
 import DocumentCard from "@/Components/ui/documentCard";
 import { toast } from "sonner";
+import { BASE_URL } from "@/utils/apiConstants";
 export interface BankDetails {
   accountNumber: string;
   ifscCode: string;
@@ -204,13 +205,9 @@ export default function ProfileCard() {
 
     try {
       // Upload image to Cloudinary
-      const response = await axios.post(
-        "https://facto.org.in/api/v1/image",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       // console.log(response);
 
       // Update the profile picture URL in the state

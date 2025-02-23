@@ -13,6 +13,7 @@ import GSTServiceCardSkeleton from "@/Components/GSTServiceCardLoader";
 import { Service } from "@/Screens/LandingPage";
 import { DocumentModal } from "@/Components/DocumentModal";
 import { Toaster } from "sonner";
+import { BASE_URL } from "@/utils/apiConstants";
 // import { Service } from "@/Screens/LandingPage";
 
 interface PurchasedService {
@@ -50,14 +51,11 @@ const ActivePlans: React.FC = () => {
 
   const fetchPurchasedServices = async (): Promise<void> => {
     try {
-      const response = await axios.get(
-        "https://facto.org.in/api/v1/sub-services/my-services",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/sub-services/my-services`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       console.log(response.data.data);
       if (response.data.success) {
         setPurchasedServices(response.data.data);
@@ -76,11 +74,11 @@ const ActivePlans: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   // const [isLoadingSubServices, setIsLoadingSubServices] = useState(true);
   const [isLoadingServices, setIsLoadingServices] = useState(true);
-  
-    const [selectedServiceDocuments, setSelectedServiceDocuments] = useState<
-      any[]
-    >([]);
-    const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+
+  const [selectedServiceDocuments, setSelectedServiceDocuments] = useState<
+    any[]
+  >([]);
+  const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
 
   useEffect(() => {
     fetchPurchasedServices();
@@ -114,21 +112,21 @@ const ActivePlans: React.FC = () => {
   }
 
   if (error) {
-    return <>
-    <Navbar/>
-    <div className="text-center py-10 text-red-500">{error}</div></>;
+    return (
+      <>
+        <Navbar />
+        <div className="text-center py-10 text-red-500">{error}</div>
+      </>
+    );
   }
 
   const handleViewDetails = async (serviceId: string) => {
     try {
-      const response = await axios.get(
-        `https://facto.org.in/api/v1/application/${serviceId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/application/${serviceId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         setSelectedServiceDocuments(
@@ -147,7 +145,7 @@ const ActivePlans: React.FC = () => {
       <div>
         <Navbar />
       </div>
-      <Toaster/>
+      <Toaster />
       <div className="bg-[#DFFFE3] pt-[87px] pb-[127px] px-10">
         <div
           data-aos="fade-up"
@@ -215,7 +213,7 @@ const ActivePlans: React.FC = () => {
                   serviceId={service.serviceId._id}
                   updatedAt={service.updatedAt}
                   requests={service.requests}
-                  onViewDetails={() =>handleViewDetails(service._id)}
+                  onViewDetails={() => handleViewDetails(service._id)}
                 />
               </div>
             ))}
@@ -236,11 +234,11 @@ const ActivePlans: React.FC = () => {
               </div>
             ))}
         </div>
-        <DocumentModal 
-  isOpen={isDocumentModalOpen}
-  onClose={() => setIsDocumentModalOpen(false)}
-  documents={selectedServiceDocuments}
-/>
+        <DocumentModal
+          isOpen={isDocumentModalOpen}
+          onClose={() => setIsDocumentModalOpen(false)}
+          documents={selectedServiceDocuments}
+        />
       </div>
       <div className="bg-[#DDE2FF] pt-[60px]">
         <div className="text-center ">
@@ -290,7 +288,7 @@ const ActivePlans: React.FC = () => {
               : // Show actual services when data is loaded
                 services.map((service) => (
                   <GSTServiceCard
-                  features={service.features}
+                    features={service.features}
                     key={service._id}
                     title={service.title}
                     description={service.description}

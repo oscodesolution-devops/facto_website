@@ -3,6 +3,7 @@ import { DocumentModal } from "@/Components/DocumentModal";
 import Navbar from "@/Components/Navbar";
 import ProfileCard from "@/Components/ui/profile-card";
 import TaxCard from "@/Components/ui/sub-card";
+import { BASE_URL } from "@/utils/apiConstants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
@@ -35,14 +36,11 @@ const Profile = () => {
 
   const fetchPurchasedServices = async (): Promise<void> => {
     try {
-      const response = await axios.get(
-        "https://facto.org.in/api/v1/sub-services/my-services",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/sub-services/my-services`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         setPurchasedServices(response.data.data);
@@ -63,14 +61,11 @@ const Profile = () => {
 
   const handleViewDetails = async (serviceId: string) => {
     try {
-      const response = await axios.get(
-        `https://facto.org.in/api/v1/application/${serviceId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/application/${serviceId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (response.data.success) {
         setSelectedServiceDocuments(
@@ -119,7 +114,7 @@ const Profile = () => {
   return (
     <div className="overflow-hidden">
       <Navbar />
-      <Toaster/>
+      <Toaster />
       <div className="bg-[#DDE2FF]">
         <div className="flex justify-center py-10">
           <ProfileCard
