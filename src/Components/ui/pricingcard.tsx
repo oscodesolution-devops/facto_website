@@ -1,5 +1,5 @@
-import { useState } from "react"
-import PricingDialog from "./pricing-dialog"
+import { useState } from "react";
+import PricingDialog from "./pricing-dialog";
 
 interface Option {
   name: string;
@@ -23,42 +23,48 @@ export default function PricingCard({
   features = [
     "Capital gains",
     "More than one house property",
-    "Foreign Income/Foreign Asset"
+    "Foreign Income/Foreign Asset",
   ],
-  requests=[],
+  requests = [],
   buttonText = "GET QUOTATION",
   startingText = "Starting from",
   price = "1001",
   currency = "Rs",
-  serviceId = ""
+  serviceId = "",
+  pricingStructure,
 }: {
-  title?: string
-  description?: string
-  features?: string[]
-  requests?: Request[]
-  buttonText?: string
-  startingText?: string
-  price?: string
-  currency?: string
-  period?: string
-  serviceId?: string
+  title?: string;
+  description?: string;
+  features?: string[];
+  requests?: Request[];
+  buttonText?: string;
+  startingText?: string;
+  price?: string;
+  currency?: string;
+  period?: string;
+  serviceId?: string;
+  pricingStructure: { price: number; period: string }[];
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <div className="md:mt-0 mt-14 w-full md:max-w-sm md:p-6 p-4 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 md:flex md:flex-col justify-between">
       <h3 className="text-lg font-semibold text-primary">{title}</h3>
       <div className="sm:col-span-2 text-left mt-4 flex gap-4 items-center">
-          <span className="block text-lg text-muted-foreground">{startingText}</span>
-          <div>
-            <span className="font-bold text-red-500 text-3xl">
-              {currency}. {price}
-            </span>
-            {/* <span className="text-sm text-muted-foreground">{period}</span> */}
-          </div>
+        <span className="block text-lg text-muted-foreground">
+          {startingText}
+        </span>
+        <div>
+          <span className="font-bold text-red-500 text-3xl">
+            {currency}. {price}
+          </span>
+          {/* <span className="text-sm text-muted-foreground">{period}</span> */}
         </div>
-      <p className="mt-2 text-sm text-muted-foreground font-poppins text-[#4A4A4A]">{description}</p>
-      
+      </div>
+      <p className="mt-2 text-sm text-muted-foreground font-poppins text-[#4A4A4A]">
+        {description}
+      </p>
+
       <ul className="mt-4 space-y-2">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center gap-2 text-sm">
@@ -67,7 +73,7 @@ export default function PricingCard({
           </li>
         ))}
       </ul>
-      
+
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <button
           onClick={() => setIsDialogOpen(true)}
@@ -75,27 +81,28 @@ export default function PricingCard({
         >
           {buttonText}
         </button>
-        <button 
-          onClick={() => window.location.href = `/upload-page?serviceId=${serviceId}`}
+        <button
+          onClick={() =>
+            (window.location.href = `/upload-page?serviceId=${serviceId}`)
+          }
           className="w-full rounded-md bg-[#1F2B6C] px-4 py-2 text-sm font-medium text-white hover:bg-[#1F2B6C]/90 transition-colors"
         >
           Documents
         </button>
-        
       </div>
 
       {isDialogOpen && (
         <PricingDialog
           title={title}
-          basePrice={Number(price)}
+          basePrice={Number(pricingStructure[0].price)}
           currency={currency}
-          
           requests={requests}
-          subServiceId={serviceId} 
+          subServiceId={serviceId}
           isOpen={isDialogOpen}
+          pricingStructure={pricingStructure}
           onClose={() => setIsDialogOpen(false)}
         />
       )}
     </div>
-  )
+  );
 }

@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/Components/ui/select";
+import { snakeToHumanReadable } from "@/utils/manipulators";
 
 interface Option {
   name: string;
@@ -45,9 +46,15 @@ interface PricingDialogProps {
   subServiceId: string;
   isOpen: boolean;
   onClose: () => void;
+  pricingStructure: { price: number; period: string }[];
 }
 
-type BillingPeriod = "monthly" | "quarterly" | "half_yearly" | "yearly" | "one_time";
+type BillingPeriod =
+  | "monthly"
+  | "quarterly"
+  | "half_yearly"
+  | "yearly"
+  | "one_time";
 
 export default function PricingDialog({
   title,
@@ -57,13 +64,20 @@ export default function PricingDialog({
   subServiceId,
   isOpen,
   onClose,
+  pricingStructure,
 }: PricingDialogProps) {
   const [selectedOptions, setSelectedOptions] = React.useState<{
     [key: string]: string | boolean;
   }>({});
   const [totalPrice, setTotalPrice] = React.useState(basePrice);
   const [hasQuotationRequest, setHasQuotationRequest] = React.useState(false);
-  const [billingPeriod, setBillingPeriod] = React.useState<BillingPeriod>("monthly");
+  const [billingPeriod, setBillingPeriod] = React.useState<string>("monthly");
+
+  console.log("billing period", billingPeriod);
+
+  React.useEffect(() => {
+    setBillingPeriod(pricingStructure[0].period);
+  }, [pricingStructure]);
 
   const handleCheckboxChange = (
     requestName: string,
@@ -87,6 +101,7 @@ export default function PricingDialog({
     options: Option[]
   ) => {
     const selectedOption = options.find((option) => option.name === value);
+    console.log("first", selectedOption);
     if (selectedOption) {
       setSelectedOptions((prev) => ({
         ...prev,
@@ -102,11 +117,16 @@ export default function PricingDialog({
   };
 
   const handleBillingPeriodChange = (period: BillingPeriod) => {
+    console.log("billing period", period, billingPeriod);
+    const priceToShow = pricingStructure.find(
+      (p) => p.period === period
+    )?.price;
+    setTotalPrice(priceToShow ?? 0);
     setBillingPeriod(period);
   };
 
   const updateTotalPrice = (requestName: string, priceModifier: number) => {
-    console.log(requestName)
+    console.log("requestName", requestName, totalPrice, priceModifier);
     setTotalPrice((prev) => prev + priceModifier);
   };
 
@@ -168,25 +188,33 @@ export default function PricingDialog({
   const navigate = useNavigate();
 
   const handleActivatePlan = () => {
-    console.log("go")
+    console.log(
+      "go",
+      title,
+      subServiceId,
+      totalPrice,
+      selectedOptions,
+      // itemType: "service",
+      billingPeriod
+    );
     try {
       if (!isAuthenticated) {
-        console.log("first: login")
+        console.log("first: login");
         setIsVisibleForm(true);
         return;
       }
 
       if (!user) {
-        console.log("second user details chahiye na")
+        console.log("second user details chahiye na");
         setIsVisibleForm(true);
         return;
       }
 
       const isProfileComplete = user.user.aadharNumber && user.user.panNumber;
-      console.log(user)
+      console.log(user);
 
       if (!isProfileComplete) {
-        console.log("profile complete kr")
+        console.log("profile complete kr");
         navigate("/profile", {
           state: {
             message: "Please complete your profile to proceed",
@@ -246,18 +274,30 @@ export default function PricingDialog({
               </div>
               <Select
                 value={billingPeriod}
-                onValueChange={(value: BillingPeriod) => handleBillingPeriodChange(value)}
+                onValueChange={(value: BillingPeriod) => {
+                  console.log("on valuee change");
+                  handleBillingPeriodChange(value);
+                }}
               >
                 <SelectTrigger className="w-40">
                   <SelectValue placeholder="Select billing period" />
                 </SelectTrigger>
                 <SelectContent>
+                  {pricingStructure.map(
+                    (p: { price: number; period: string }, i: number) => (
+                      <SelectItem key={i} value={p.period}>
+                        {snakeToHumanReadable(p.period)}
+                      </SelectItem>
+                    )
+                  )}
+                </SelectContent>
+                {/* <SelectContent>
                   <SelectItem value="monthly">Monthly</SelectItem>
                   <SelectItem value="quarterly">Quarterly</SelectItem>
                   <SelectItem value="half_yearly">Half-Yearly</SelectItem>
                   <SelectItem value="yearly">Yearly</SelectItem>
                   <SelectItem value="one_time">One-Time</SelectItem>
-                </SelectContent>
+                </SelectContent> */}
               </Select>
             </div>
           </CardHeader>
@@ -298,7 +338,11 @@ export default function PricingDialog({
                     {totalPrice}
                   </span>
                   <span className="text-sm text-muted-foreground">
-                    /{billingPeriod === "one_time" ? "One-Time" : billingPeriod.charAt(0).toUpperCase() + billingPeriod.slice(1)}
+                    /
+                    {billingPeriod === "one_time"
+                      ? "One-Time"
+                      : billingPeriod.charAt(0).toUpperCase() +
+                        billingPeriod.slice(1)}
                   </span>
                 </>
               )}
