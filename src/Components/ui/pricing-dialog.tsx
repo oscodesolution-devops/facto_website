@@ -210,8 +210,14 @@ export default function PricingDialog({
         return;
       }
 
-      const isProfileComplete = user.user.aadharNumber && user.user.panNumber;
-      console.log(user);
+      const isProfileComplete =
+        (user as any)?.user?.aadharNumber && (user as any)?.user?.panNumber;
+      console.log(
+        "user",
+        user,
+        (user as any)?.aadharNumber,
+        (user as any)?.panNumber
+      );
 
       if (!isProfileComplete) {
         console.log("profile complete kr");
