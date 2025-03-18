@@ -53,8 +53,8 @@ const Pricing = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(res.data);
-        setServices(res.data.data);
+        console.log("service data", res.data);
+        setServices(res?.data?.data?.services);
         setIsLoadingServices(false);
       } catch (error) {
         console.error("Error fetching services:", error);
@@ -63,17 +63,26 @@ const Pricing = () => {
     fetchServices();
   }, []);
   useEffect(() => {
-    const filtered = services.filter((service) => {
-      const searchLower = searchText.toLowerCase();
-      return (
-        service.subServiceId.title.toLowerCase().includes(searchLower) ||
-        service.selectedFeatures.some((feature) =>
-          feature.toLowerCase().includes(searchLower)
-        ) ||
-        service.subServiceId.description.toLowerCase().includes(searchLower) ||
-        (service.price && service.price.toString().includes(searchText))
-      );
-    });
+    if (!searchText) {
+      setFilteredServices(services);
+      return;
+    }
+
+    const filtered =
+      services &&
+      services?.filter((service) => {
+        const searchLower = searchText?.toLowerCase();
+        return (
+          service?.subServiceId?.title?.toLowerCase().includes(searchLower) ||
+          service?.selectedFeatures?.some((feature) =>
+            feature.toLowerCase().includes(searchLower)
+          ) ||
+          service?.subServiceId?.description
+            .toLowerCase()
+            .includes(searchLower) ||
+          (service?.price && service?.price?.toString().includes(searchText))
+        );
+      });
     setFilteredServices(filtered);
   }, [searchText, services]);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,17 +145,17 @@ const Pricing = () => {
               Array(3)
                 .fill(null)
                 .map((_, index) => <GSTServiceCardSkeleton key={index} />)
-            ) : filteredServices.length > 0 ? (
-              filteredServices.map((service) => (
+            ) : filteredServices?.length > 0 ? (
+              filteredServices?.map((service) => (
                 <QuotationCard
-                  key={service.subServiceId._id}
-                  title={service.subServiceId.title}
+                  key={service?.subServiceId?._id}
+                  title={service?.subServiceId?.title}
                   price={service.price}
                   currency="INR"
-                  selectedFeatures={service.selectedFeatures}
-                  subServiceId={service.subServiceId._id}
-                  status={service.price ? "approved" : "pending"}
-                  createdAt={service.subServiceId.createdAt}
+                  selectedFeatures={service?.selectedFeatures}
+                  subServiceId={service?.subServiceId?._id}
+                  status={service?.price ? "approved" : "pending"}
+                  createdAt={service?.subServiceId?.createdAt}
                 />
               ))
             ) : (

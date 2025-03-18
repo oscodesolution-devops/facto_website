@@ -9,18 +9,23 @@ import { BASE_URL } from "@/utils/apiConstants";
 
 const Footer = () => {
   const [phoneNo, setPhoneNo] = useState("");
+  const [error, setError] = useState("");
   const handleSumbit = async (e: any) => {
     console.log(phoneNo);
     e.preventDefault();
+    setError("");
     try {
       const response = await axios.post(`${BASE_URL}/request`, {
         phoneNo,
       });
       if (response.data.success) {
         toast.success("Request submitted successfully!");
+      } else {
+        setError("Please enter a valid mobile number");
       }
       setPhoneNo("");
     } catch (err) {
+      setError("Please enter a valid mobile number");
       toast.error("Error occured please try again later");
     }
   };
@@ -49,6 +54,7 @@ const Footer = () => {
           >
             Request Call Back
           </button>
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           <p className="text-white text-center mt-[10px] text-[14px] font-[500] font-[poppins]">
             Stay up to date with the latest updates of our company
           </p>

@@ -48,17 +48,17 @@ const LoadingSpinner = () => (
 
 const LandingPage = () => {
   const [searchText, setSearchText] = useState("");
-  
-  const {setIsVisibleForm} = useGlobalContext();
+
+  const { setIsVisibleForm } = useGlobalContext();
   const [services, setServices] = useState<Service[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoadingCards, setIsLoadingCards] = useState(true);
   const [isLoadingNotifications, setIsLoadingNotifications] = useState(true);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [phoneNo,setPhoneNo] = useState('')
-  const [filteredServices,setFilteredServices] = useState<Service[]>([]);
- 
+  const [phoneNo, setPhoneNo] = useState("");
+  const [filteredServices, setFilteredServices] = useState<Service[]>([]);
+
   // Initialize AOS
   useEffect(() => {
     AOS.init({
@@ -75,12 +75,11 @@ const LandingPage = () => {
     };
   }, []);
   useEffect(() => {
-    
     const filtered = services.filter((service) =>
       service.title.toLowerCase().includes(searchText.toLowerCase())
     );
-    
-    setFilteredServices(()=>filtered);
+
+    setFilteredServices(() => filtered);
   }, [searchText, services]);
   // Fetch data
   useEffect(() => {
@@ -107,7 +106,7 @@ const LandingPage = () => {
 
     fetchData();
   }, []);
-  const handleSignupNow=async ()=>{
+  const handleSignupNow = async () => {
     // console.log(phoneNo)
     // e.preventDefault()
     setIsVisibleForm(phoneNo);
@@ -122,7 +121,7 @@ const LandingPage = () => {
     // }catch(err){
     //   toast.error("Error occured please try again later")
     // }
-  }
+  };
   // Refresh AOS when content loads
   useEffect(() => {
     if (isPageLoaded) {
@@ -133,8 +132,6 @@ const LandingPage = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [isPageLoaded]);
-
-  
 
   if (error) {
     return (
@@ -163,7 +160,7 @@ const LandingPage = () => {
     <div className="overflow-x-hidden">
       <Navbar />
       <Header />
-<Toaster/>
+      <Toaster />
       <main className="flex flex-col md:flex-row gap-6 z-20">
         <div className="w-full md:w-1/2 pt-10 md:pt-20 px-4 md:pl-16 lg:pl-20">
           <div className="w-full md:max-w-[554px] mx-auto">
@@ -196,7 +193,11 @@ const LandingPage = () => {
             </div>
           </div>
           <div className=" mt-5 w-[80%] translate-x-12 font-semibold">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem earum sed ipsum necessitatibus neque voluptatum enim tenetur dignissimos iusto animi!</p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem
+              earum sed ipsum necessitatibus neque voluptatum enim tenetur
+              dignissimos iusto animi!
+            </p>
           </div>
         </div>
 
@@ -237,7 +238,7 @@ const LandingPage = () => {
                       ))
                   : notifications.map((notification) => (
                       <li key={notification._id} className="mb-3 font-bold">
-                        {notification.title}
+                        {notification?.title} - {notification?.content}
                       </li>
                     ))}
               </ul>
@@ -289,7 +290,7 @@ const LandingPage = () => {
               className="flex-1 text-base placeholder:text-gray-500 border-none"
               style={{ height: "40px", fontSize: "16px" }}
               value={searchText}
-            onChange={handleSearchChange}
+              onChange={handleSearchChange}
             />
             <button
               className="ml-3 bg-[#253483] text-white rounded-full w-[70.88px] h-[27.77px] text-sm"
@@ -312,14 +313,14 @@ const LandingPage = () => {
                   //   data-aos="fade-up"
                   //   data-aos-delay={`${index * 100}`}
                   // >
-                    <GSTServiceCard
+                  <GSTServiceCard
                     key={index}
-                      title={service.title}
-                      description={service.description}
-                      features={service.features}
-                      icon={service.icon}
-                      _id={service._id}
-                    />
+                    title={service.title}
+                    description={service.description}
+                    features={service.features}
+                    icon={service.icon}
+                    _id={service._id}
+                  />
                   // </div>
                 ))}
           </div>
@@ -391,14 +392,15 @@ const LandingPage = () => {
         <div className="mt-[32px] flex justify-center gap-[24px] flex-col md:flex-row items-center">
           <Input
             value={phoneNo}
-            onChange={(e:any)=>{if(isNaN(Number(e.target.value))){
-              toast.error("Fill appropriate number")
-            }else if(e.target.value.length>10){
-              toast.error("Number cant exceed 10 digits")
-              
-            }else{
-              setPhoneNo(e.target.value)}}
-            }
+            onChange={(e: any) => {
+              if (isNaN(Number(e.target.value))) {
+                toast.error("Fill appropriate number");
+              } else if (e.target.value.length > 10) {
+                toast.error("Number cant exceed 10 digits");
+              } else {
+                setPhoneNo(e.target.value);
+              }
+            }}
             type="text"
             placeholder="Enter your Phone number"
             className="w-[280px] h-[49px] md:w-[321px] text-black"
